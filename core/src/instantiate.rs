@@ -54,8 +54,5 @@ pub fn init(msg: InstantiateMsg, deps: DepsMut) -> Result<Response, ContractErro
                 .into_iter()
                 .map(|addr| Attribute::new(ALLOWED_TRAIT_ADDRESS_SET_EVENT, addr)),
         )
-        .add_attribute(
-            BASE_TOKEN_SET_EVENT,
-            format!("{}:{}", base_token.address, base_token.token_id),
-        ))
+        .add_attribute(BASE_TOKEN_SET_EVENT, base_token))
 }

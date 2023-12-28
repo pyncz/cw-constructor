@@ -1,6 +1,7 @@
 use cosmwasm_std::Addr;
 use cw721::{ContractInfoResponse, NftInfoResponse};
 use serde::{Deserialize, Serialize};
+use std::fmt::Display;
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct Metadata<T> {
@@ -12,6 +13,15 @@ pub struct Metadata<T> {
 pub struct TokenConfig<A: Into<String> = Addr> {
     pub address: A,
     pub token_id: String,
+}
+
+impl<T> Into<String> for TokenConfig<T>
+where
+    T: Into<String> + Display,
+{
+    fn into(self) -> String {
+        format!("{}:{}", self.address, self.token_id)
+    }
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]

@@ -26,7 +26,7 @@ pub fn execute_apply(msg: ApplyMsg, deps: DepsMut) -> Result<Response, ContractE
         .add_attributes(
             traits_to_add
                 .into_iter()
-                .map(|t| Attribute::new(APPLY_EVENT, format!("{}:{}", t.address, t.token_id))),
+                .map(|t| Attribute::new(APPLY_EVENT, t)),
         ))
 }
 
@@ -61,7 +61,7 @@ pub fn execute_exempt(msg: ExemptMsg, deps: DepsMut) -> Result<Response, Contrac
         .add_attributes(
             traits_to_remove
                 .into_iter()
-                .map(|t| Attribute::new(EXEMPT_EVENT, format!("{}:{}", t.address, t.token_id))),
+                .map(|t| Attribute::new(EXEMPT_EVENT, t)),
         ))
 }
 
@@ -75,6 +75,6 @@ pub fn execute_exempt_all(_msg: ExemptAllMsg, deps: DepsMut) -> Result<Response,
         .add_attributes(
             current_traits
                 .into_iter()
-                .map(|t| Attribute::new(EXEMPT_EVENT, format!("{}:{}", t.address, t.token_id))),
+                .map(|t| Attribute::new(EXEMPT_EVENT, t)),
         ))
 }
