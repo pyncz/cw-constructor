@@ -1,11 +1,10 @@
 use crate::error::ContractError;
-use crate::execute::execute_greet;
+use crate::execute::{execute_apply, execute_exempt, execute_exempt_all};
+use crate::instantiate::init;
 use crate::msg::{ExecuteMsg, InstantiateMsg, QueryMsg};
-use crate::query::query_list_admins;
-use crate::state::ADMINS;
+use crate::query::{query_config, query_traits};
 use cosmwasm_std::{
-    entry_point, to_json_binary, Attribute, Binary, Deps, DepsMut, Env, MessageInfo, Response,
-    StdResult,
+    entry_point, to_json_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult,
 };
 
 #[cfg_attr(not(feature = "library"), entry_point)]
@@ -15,28 +14,14 @@ pub fn instantiate(
     _info: MessageInfo,
     msg: InstantiateMsg,
 ) -> Result<Response, ContractError> {
-    let admins: StdResult<Vec<_>> = msg
-        .admins
-        .into_iter()
-        .map(|address| deps.api.addr_validate(&address))
-        .collect();
-    let admins = admins.unwrap();
-
-    ADMINS.save(deps.storage, &admins)?;
-    Ok(Response::new()
-        .add_attribute("action", "instantiate")
-        .add_attributes(
-            admins
-                .into_iter()
-                .map(|admin_address| Attribute::new("set_admin", admin_address))
-                .collect::<Vec<Attribute>>(),
-        ))
+    init(msg, deps)
 }
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
     match msg {
-        QueryMsg::ListAdmins {} => to_json_binary(&query_list_admins(deps)?),
+        QueryMsg::GetConfig(msg) => to_json_binary(&query_config(msg, deps)?),
+        QueryMsg::GetTraits(msg) => to_json_binary(&query_traits(msg, deps)?),
     }
 }
 
@@ -49,14 +34,19 @@ pub fn execute(
     msg: ExecuteMsg,
 ) -> Result<Response, ContractError> {
     match msg {
-        ExecuteMsg::Greet {} => execute_greet(),
+        ExecuteMsg::Apply(msg) => execute_apply(msg),
+        ExecuteMsg::Exempt(msg) => execute_exempt(msg),
+        ExecuteMsg::ExemptAll(msg) => execute_exempt_all(msg),
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::msg::ListAdminsResp;
+    use crate::{
+        models::TokenConfig,
+        msg::{GetConfigMsg, GetConfigResp},
+    };
     use cosmwasm_std::Addr;
     use cw_multi_test::{App, ContractWrapper, Executor};
 
@@ -66,24 +56,44 @@ mod tests {
         let code = ContractWrapper::new(execute, instantiate, query);
         let code_id = app.store_code(Box::new(code));
 
+        let base_token_unchecked = TokenConfig {
+            address: "base_token".to_string(),
+            token_id: "1".to_string(),
+        };
+        let base_token: TokenConfig = TokenConfig {
+            address: Addr::unchecked("base_token"),
+            token_id: "1".to_string(),
+        };
+
         // Case: No admins
         let contract_address = app
             .instantiate_contract(
                 code_id,
                 Addr::unchecked("owner"),
-                &InstantiateMsg { admins: vec![] },
+                &InstantiateMsg {
+                    base_token: base_token_unchecked.clone(),
+                    allowed_traits_addresses: None,
+                    admins: None,
+                },
                 &[],
                 "Contract 1",
                 None,
             )
             .unwrap();
 
-        let resp: ListAdminsResp = app
+        let resp: GetConfigResp = app
             .wrap()
-            .query_wasm_smart(contract_address, &QueryMsg::ListAdmins {})
+            .query_wasm_smart(contract_address, &QueryMsg::GetConfig(GetConfigMsg {}))
             .unwrap();
 
-        assert_eq!(resp, ListAdminsResp { admins: vec![] });
+        assert_eq!(
+            resp,
+            GetConfigResp {
+                base_token: base_token.clone(),
+                allowed_traits_addresses: vec![],
+                admins: vec![]
+            }
+        );
 
         // Case: Some admins
         let contract_address = app
@@ -91,7 +101,9 @@ mod tests {
                 code_id,
                 Addr::unchecked("owner"),
                 &InstantiateMsg {
-                    admins: vec!["admin1".to_owned(), "admin2".to_owned()],
+                    base_token: base_token_unchecked,
+                    allowed_traits_addresses: None,
+                    admins: Some(vec!["admin1".to_owned(), "admin2".to_owned()]),
                 },
                 &[],
                 "Contract 2",
@@ -99,14 +111,16 @@ mod tests {
             )
             .unwrap();
 
-        let resp: ListAdminsResp = app
+        let resp: GetConfigResp = app
             .wrap()
-            .query_wasm_smart(contract_address, &QueryMsg::ListAdmins {})
+            .query_wasm_smart(contract_address, &QueryMsg::GetConfig(GetConfigMsg {}))
             .unwrap();
 
         assert_eq!(
             resp,
-            ListAdminsResp {
+            GetConfigResp {
+                base_token,
+                allowed_traits_addresses: vec![],
                 admins: vec![Addr::unchecked("admin1"), Addr::unchecked("admin2")],
             }
         );

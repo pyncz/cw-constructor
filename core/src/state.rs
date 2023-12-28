@@ -1,4 +1,6 @@
-use cosmwasm_std::Addr;
+use crate::models::{Config, TokenConfig};
 use cw_storage_plus::Item;
 
-pub const ADMINS: Item<Vec<Addr>> = Item::new("admins");
+pub const CONFIG: Item<Config> = Item::new("config");
+
+pub const TRAITS: Item<Vec<TokenConfig>> = Item::new("traits");
