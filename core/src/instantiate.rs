@@ -1,3 +1,7 @@
+use crate::events::{
+    ACTION, ADMIN_SET_EVENT, ALLOWED_TRAIT_ADDRESS_SET_EVENT, BASE_TOKEN_SET_EVENT,
+    INSTANTIATE_ACTION,
+};
 use crate::models::Config;
 use crate::msg::InstantiateMsg;
 use crate::state::CONFIG;
@@ -31,24 +35,27 @@ pub fn init(msg: InstantiateMsg, deps: DepsMut) -> Result<Response, ContractErro
         &Config {
             base_token: base_token.clone(),
             allowed_traits_addresses: allowed_traits_addresses.clone(),
+            allow_multiple_tokens_per_contract: msg
+                .allow_multiple_tokens_per_contract
+                .unwrap_or(false),
             admins: admins.clone(),
         },
     )?;
 
     Ok(Response::new()
-        .add_attribute("action", "instantiate")
+        .add_attribute(ACTION, INSTANTIATE_ACTION)
         .add_attributes(
             admins
                 .into_iter()
-                .map(|addr| Attribute::new("set_admin", addr)),
+                .map(|addr| Attribute::new(ADMIN_SET_EVENT, addr)),
         )
         .add_attributes(
             allowed_traits_addresses
                 .into_iter()
-                .map(|addr| Attribute::new("set_allowed_trait_address", addr)),
+                .map(|addr| Attribute::new(ALLOWED_TRAIT_ADDRESS_SET_EVENT, addr)),
         )
         .add_attribute(
-            "set_base_token",
+            BASE_TOKEN_SET_EVENT,
             format!("{}:{}", base_token.address, base_token.token_id),
         ))
 }

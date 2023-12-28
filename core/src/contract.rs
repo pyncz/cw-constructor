@@ -28,15 +28,15 @@ pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
 #[allow(dead_code)]
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn execute(
-    _deps: DepsMut,
+    deps: DepsMut,
     _env: Env,
     _info: MessageInfo,
     msg: ExecuteMsg,
 ) -> Result<Response, ContractError> {
     match msg {
-        ExecuteMsg::Apply(msg) => execute_apply(msg),
-        ExecuteMsg::Exempt(msg) => execute_exempt(msg),
-        ExecuteMsg::ExemptAll(msg) => execute_exempt_all(msg),
+        ExecuteMsg::Apply(msg) => execute_apply(msg, deps),
+        ExecuteMsg::Exempt(msg) => execute_exempt(msg, deps),
+        ExecuteMsg::ExemptAll(msg) => execute_exempt_all(msg, deps),
     }
 }
 
@@ -73,6 +73,7 @@ mod tests {
                 &InstantiateMsg {
                     base_token: base_token_unchecked.clone(),
                     allowed_traits_addresses: None,
+                    allow_multiple_tokens_per_contract: None,
                     admins: None,
                 },
                 &[],
@@ -91,6 +92,7 @@ mod tests {
             GetConfigResp {
                 base_token: base_token.clone(),
                 allowed_traits_addresses: vec![],
+                allow_multiple_tokens_per_contract: false,
                 admins: vec![]
             }
         );
@@ -103,6 +105,7 @@ mod tests {
                 &InstantiateMsg {
                     base_token: base_token_unchecked,
                     allowed_traits_addresses: None,
+                    allow_multiple_tokens_per_contract: None,
                     admins: Some(vec!["admin1".to_owned(), "admin2".to_owned()]),
                 },
                 &[],
@@ -121,6 +124,7 @@ mod tests {
             GetConfigResp {
                 base_token,
                 allowed_traits_addresses: vec![],
+                allow_multiple_tokens_per_contract: false,
                 admins: vec![Addr::unchecked("admin1"), Addr::unchecked("admin2")],
             }
         );

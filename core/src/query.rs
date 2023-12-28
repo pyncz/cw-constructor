@@ -9,6 +9,7 @@ pub fn query_config(_msg: GetConfigMsg, deps: Deps) -> StdResult<GetConfigResp> 
     let resp = GetConfigResp {
         admins: config.admins,
         allowed_traits_addresses: config.allowed_traits_addresses,
+        allow_multiple_tokens_per_contract: config.allow_multiple_tokens_per_contract,
         base_token: config.base_token,
     };
     Ok(resp)

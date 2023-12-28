@@ -21,6 +21,8 @@ pub struct Config {
     /// Addresses of the contracts which tokens are allowed to be added as traits
     pub allowed_traits_addresses: Vec<Addr>,
 
+    pub allow_multiple_tokens_per_contract: bool,
+
     pub admins: Vec<Addr>,
 }
 

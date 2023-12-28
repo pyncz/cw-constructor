@@ -8,6 +8,7 @@ use crate::models::TokenConfig;
 pub struct InstantiateMsg {
     pub base_token: TokenConfig<String>,
     pub allowed_traits_addresses: Option<Vec<String>>,
+    pub allow_multiple_tokens_per_contract: Option<bool>,
     pub admins: Option<Vec<String>>,
 }
 
@@ -27,6 +28,7 @@ pub struct GetConfigMsg {}
 pub struct GetConfigResp {
     pub base_token: TokenConfig,
     pub allowed_traits_addresses: Vec<Addr>,
+    pub allow_multiple_tokens_per_contract: bool,
     pub admins: Vec<Addr>,
 }
 
@@ -50,12 +52,12 @@ pub enum ExecuteMsg {
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct ApplyMsg {
-    pub traits: Vec<TokenConfig>,
+    pub traits: Vec<TokenConfig<String>>,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 pub struct ExemptMsg {
-    pub traits: Vec<TokenConfig>,
+    pub traits: Vec<TokenConfig<String>>,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]

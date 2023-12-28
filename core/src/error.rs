@@ -12,4 +12,10 @@ pub enum ContractError {
 
     #[error("Payment error: {0}")]
     Payment(#[from] PaymentError),
+
+    #[error("Tokens from this collection are not allowed to be used as traits")]
+    TraitContractNotAllowed { address: Addr },
+
+    #[error("This token is already applied as a trait")]
+    TraitTokenAlreadyApplied { address: Addr, token_id: String },
 }
