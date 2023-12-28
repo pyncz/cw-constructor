@@ -1,9 +1,8 @@
-use crate::msg::GreetResp;
-use cosmwasm_std::StdResult;
+use crate::{msg::ListAdminsResp, state::ADMINS};
+use cosmwasm_std::{Deps, StdResult};
 
-pub fn query_greet() -> StdResult<GreetResp> {
-    let resp = GreetResp {
-        message: "Hey".to_owned(),
-    };
+pub fn query_list_admins(deps: Deps) -> StdResult<ListAdminsResp> {
+    let admins = ADMINS.load(deps.storage)?;
+    let resp = ListAdminsResp { admins };
     Ok(resp)
 }
