@@ -8,6 +8,9 @@ pub enum ContractError {
     Std(#[from] StdError),
 
     #[error("{sender} is not contract admin")]
+    NotAdmin { sender: Addr },
+
+    #[error("{sender} is authorized for this action")]
     Unauthorized { sender: Addr },
 
     #[error("Payment error: {0}")]
@@ -18,4 +21,7 @@ pub enum ContractError {
 
     #[error("This token is already applied as a trait")]
     TraitTokenAlreadyApplied { address: Addr, token_id: String },
+
+    #[error("Not instantiated!")]
+    NotInstantiated {},
 }

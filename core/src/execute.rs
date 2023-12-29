@@ -4,12 +4,18 @@ use crate::{
     models::TokenConfig,
     msg::{ApplyMsg, ExemptAllMsg, ExemptMsg},
     state::TRAITS,
-    utils::validate_trait,
+    utils::{_require_instantiated, validate_trait},
 };
-use cosmwasm_std::{Attribute, DepsMut, Response, StdResult};
+use cosmwasm_std::{Attribute, DepsMut, MessageInfo, Response, StdResult};
 
 /// Add provided tokens as traits
-pub fn execute_apply(msg: ApplyMsg, deps: DepsMut) -> Result<Response, ContractError> {
+pub fn execute_apply(
+    msg: ApplyMsg,
+    deps: DepsMut,
+    info: MessageInfo,
+) -> Result<Response, ContractError> {
+    _require_instantiated(&deps.as_ref(), &info).unwrap();
+
     let traits_to_add: Result<Vec<_>, ContractError> = msg
         .traits
         .into_iter()
@@ -31,7 +37,13 @@ pub fn execute_apply(msg: ApplyMsg, deps: DepsMut) -> Result<Response, ContractE
 }
 
 /// Remove provided tokens as traits
-pub fn execute_exempt(msg: ExemptMsg, deps: DepsMut) -> Result<Response, ContractError> {
+pub fn execute_exempt(
+    msg: ExemptMsg,
+    deps: DepsMut,
+    info: MessageInfo,
+) -> Result<Response, ContractError> {
+    _require_instantiated(&deps.as_ref(), &info).unwrap();
+
     let traits_to_remove: StdResult<Vec<_>> = msg
         .traits
         .into_iter()
@@ -66,7 +78,13 @@ pub fn execute_exempt(msg: ExemptMsg, deps: DepsMut) -> Result<Response, Contrac
 }
 
 /// Reset all added traits
-pub fn execute_exempt_all(_msg: ExemptAllMsg, deps: DepsMut) -> Result<Response, ContractError> {
+pub fn execute_exempt_all(
+    _msg: ExemptAllMsg,
+    deps: DepsMut,
+    info: MessageInfo,
+) -> Result<Response, ContractError> {
+    _require_instantiated(&deps.as_ref(), &info).unwrap();
+
     let current_traits = TRAITS.load(deps.storage)?;
 
     TRAITS.save(deps.storage, &vec![])?;

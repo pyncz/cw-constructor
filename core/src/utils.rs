@@ -1,7 +1,8 @@
 use crate::state::{CONFIG, TRAITS};
 use crate::{error::ContractError, models::TokenConfig};
-use cosmwasm_std::{Addr, Deps};
+use cosmwasm_std::{Addr, Deps, MessageInfo};
 
+#[allow(dead_code)]
 pub fn validate_trait(
     new_trait: &TokenConfig<String>,
     deps: Deps,
@@ -31,4 +32,38 @@ pub fn validate_trait(
             token_id: new_trait.token_id.clone(),
         })
     }
+}
+
+#[allow(dead_code)]
+pub fn _require_instantiated(deps: &Deps, _info: &MessageInfo) -> Result<(), ContractError> {
+    let config = CONFIG.may_load(deps.storage)?;
+    if config.is_none() {
+        return Err(ContractError::NotInstantiated {});
+    }
+    Ok(())
+}
+
+#[allow(dead_code)]
+pub fn _require_admin(deps: &Deps, info: &MessageInfo) -> Result<(), ContractError> {
+    let config = CONFIG.load(deps.storage)?;
+    if !config.admins.contains(&info.sender) {
+        return Err(ContractError::NotAdmin {
+            sender: info.sender.clone(),
+        });
+    }
+    Ok(())
+}
+
+#[allow(dead_code)]
+pub fn _require_sender(
+    address: &Addr,
+    _deps: &Deps,
+    info: &MessageInfo,
+) -> Result<(), ContractError> {
+    if info.sender != address {
+        return Err(ContractError::Unauthorized {
+            sender: info.sender.clone(),
+        });
+    }
+    Ok(())
 }

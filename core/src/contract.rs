@@ -30,13 +30,13 @@ pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
 pub fn execute(
     deps: DepsMut,
     _env: Env,
-    _info: MessageInfo,
+    info: MessageInfo,
     msg: ExecuteMsg,
 ) -> Result<Response, ContractError> {
     match msg {
-        ExecuteMsg::Apply(msg) => execute_apply(msg, deps),
-        ExecuteMsg::Exempt(msg) => execute_exempt(msg, deps),
-        ExecuteMsg::ExemptAll(msg) => execute_exempt_all(msg, deps),
+        ExecuteMsg::Apply(msg) => execute_apply(msg, deps, info),
+        ExecuteMsg::Exempt(msg) => execute_exempt(msg, deps, info),
+        ExecuteMsg::ExemptAll(msg) => execute_exempt_all(msg, deps, info),
     }
 }
 
