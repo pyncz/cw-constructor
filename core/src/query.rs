@@ -1,9 +1,10 @@
 use crate::{
-    msg::{GetConfigMsg, GetConfigResp, GetTraitsMsg, GetTraitsResp},
+    msg::{GetConfigMsg, GetConfigResp, GetTokensMsg, GetTokensResp, GetTraitsMsg, GetTraitsResp},
     state::{CONFIG, TRAITS},
     utils::helpers::get_slot_config_by_address,
 };
 use cosmwasm_std::{Deps, StdResult};
+use itertools::Itertools;
 
 pub fn config(_msg: &GetConfigMsg, deps: &Deps) -> StdResult<GetConfigResp> {
     let config = CONFIG.load(deps.storage)?;
@@ -40,4 +41,30 @@ pub fn traits(msg: &GetTraitsMsg, deps: &Deps) -> StdResult<GetTraitsResp> {
     Ok(GetTraitsResp {
         traits: filtered_traits,
     })
+}
+
+pub fn tokens(msg: &GetTokensMsg, deps: &Deps) -> StdResult<GetTokensResp> {
+    let traits = TRAITS.load(deps.storage)?;
+
+    // Apply filters from the message
+    let tokens = traits
+        .iter()
+        .filter(|t| {
+            if let Some(address) = msg.address.to_owned() {
+                if t.token.address != address {
+                    return false;
+                }
+                if let Some(token_id) = msg.token_id.to_owned() {
+                    if t.token.token_id != token_id {
+                        return false;
+                    }
+                }
+            }
+            true
+        })
+        .map(|t| t.token_id.to_owned())
+        .unique()
+        .collect::<Vec<String>>();
+
+    Ok(GetTokensResp { tokens })
 }

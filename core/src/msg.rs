@@ -20,6 +20,9 @@ pub enum QueryMsg {
 
     #[returns(GetTraitsResp)]
     GetTraits(GetTraitsMsg),
+
+    #[returns(GetTokensResp)]
+    GetTokens(GetTokensMsg),
 }
 
 // - GetConfig
@@ -45,6 +48,20 @@ pub struct GetTraitsMsg {
 #[cw_serde]
 pub struct GetTraitsResp {
     pub traits: Vec<Trait>,
+}
+
+// - GetTokens
+#[cw_serde]
+pub struct GetTokensMsg {
+    /// Filter by `token_id` of the trait token
+    pub token_id: Option<String>,
+    /// Filter by `address` of the trait token
+    pub address: Option<String>,
+}
+
+#[cw_serde]
+pub struct GetTokensResp {
+    pub tokens: Vec<String>,
 }
 
 // Execute messages
