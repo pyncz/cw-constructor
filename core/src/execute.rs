@@ -1,69 +1,86 @@
 use crate::{
-    error::ContractError,
-    events::{ACTION, APPLY_ACTION, APPLY_EVENT, EXEMPT_ACTION, EXEMPT_ALL_ACTION, EXEMPT_EVENT},
-    models::TokenConfig,
-    msg::{ApplyMsg, ExemptAllMsg, ExemptMsg},
-    state::TRAITS,
-    utils::{_require_instantiated, validate_trait},
+    error::{ContractResponse, ContractResult},
+    events::{ACTION, APPLY_ACTION, APPLY_EVENT, EXEMPT_ACTION, EXEMPT_EVENT, EXTEND_EVENT},
+    models::{token::TokenConfig, traits::Trait},
+    msg::{ApplyMsg, ExemptMsg},
+    state::{CONFIG, TRAITS},
+    utils::{
+        requirements::{require_instantiated, require_sender_cw721_approval},
+        validation::validate_traits,
+    },
 };
-use cosmwasm_std::{Attribute, DepsMut, MessageInfo, Response, StdResult};
+use cosmwasm_std::{Attribute, DepsMut, MessageInfo, Response};
 
 /// Add provided tokens as traits
-pub fn execute_apply(
-    msg: ApplyMsg,
-    deps: DepsMut,
-    info: MessageInfo,
-) -> Result<Response, ContractError> {
-    _require_instantiated(&deps.as_ref(), &info).unwrap();
+pub fn apply(msg: ApplyMsg, deps: DepsMut, info: MessageInfo) -> ContractResponse {
+    require_instantiated(&deps.as_ref(), &info)?;
 
-    let traits_to_add: Result<Vec<_>, ContractError> = msg
+    let config = CONFIG.load(deps.storage)?;
+
+    // To apply traits, the sender must be:
+    // - the base token's owner / approved spender
+    require_sender_cw721_approval(&config.base_token, &msg.token_id, &deps.as_ref(), &info)?;
+    // - the trait tokens' owner / approved spender
+    msg.traits
+        .iter()
+        .map(|t| require_sender_cw721_approval(&t.address, &t.token_id, &deps.as_ref(), &info))
+        .collect::<ContractResult>()?;
+
+    let input: Vec<_> = msg
         .traits
         .into_iter()
-        .map(|t| validate_trait(&t, deps.as_ref()))
+        .map(|t| Trait {
+            token_id: msg.token_id.to_owned(),
+            token: t,
+        })
         .collect();
-    let mut traits_to_add = traits_to_add.unwrap();
 
-    TRAITS.update(deps.storage, |mut traits| -> Result<_, ContractError> {
+    let mut traits_to_add = validate_traits(&input, &deps.as_ref())?;
+
+    TRAITS.update(deps.storage, |mut traits| -> ContractResult<_> {
         traits.append(&mut traits_to_add);
         Ok(traits)
     })?;
     Ok(Response::new()
         .add_attribute(ACTION, APPLY_ACTION)
+        .add_attribute(EXTEND_EVENT, msg.token_id)
         .add_attributes(
             traits_to_add
                 .into_iter()
-                .map(|t| Attribute::new(APPLY_EVENT, t)),
+                .map(|t| Attribute::new(APPLY_EVENT, t.token)),
         ))
 }
 
 /// Remove provided tokens as traits
-pub fn execute_exempt(
-    msg: ExemptMsg,
-    deps: DepsMut,
-    info: MessageInfo,
-) -> Result<Response, ContractError> {
-    _require_instantiated(&deps.as_ref(), &info).unwrap();
+pub fn exempt(msg: ExemptMsg, deps: DepsMut, info: MessageInfo) -> ContractResponse {
+    require_instantiated(&deps.as_ref(), &info)?;
 
-    let traits_to_remove: StdResult<Vec<_>> = msg
+    // To apply traits, the sender must be:
+    // - the trait tokens' owner / approved spender
+    msg.traits
+        .iter()
+        .map(|t| require_sender_cw721_approval(&t.address, &t.token_id, &deps.as_ref(), &info))
+        .collect::<ContractResult>()?;
+
+    let traits_to_remove = msg
         .traits
-        .into_iter()
+        .iter()
         .map(|t| {
-            let address = deps.api.addr_validate(&t.address).unwrap();
+            let address = deps.api.addr_validate(&t.address)?;
             Ok(TokenConfig {
                 address,
-                token_id: t.token_id,
+                token_id: t.token_id.to_owned(),
             })
         })
-        .collect();
-    let traits_to_remove = traits_to_remove.unwrap();
+        .collect::<ContractResult<Vec<_>>>()?;
 
-    TRAITS.update(deps.storage, |traits| -> Result<_, ContractError> {
+    TRAITS.update(deps.storage, |traits| -> ContractResult<_> {
         let traits = traits
             .into_iter()
             .filter(|current_t| {
-                !(&traits_to_remove)
-                    .into_iter()
-                    .any(|t| t.address == current_t.address && t.token_id == current_t.token_id)
+                !traits_to_remove.iter().any(|t| {
+                    t.address == current_t.token.address && t.token_id == current_t.token.token_id
+                })
             })
             .collect();
         Ok(traits)
@@ -73,26 +90,6 @@ pub fn execute_exempt(
         .add_attributes(
             traits_to_remove
                 .into_iter()
-                .map(|t| Attribute::new(EXEMPT_EVENT, t)),
-        ))
-}
-
-/// Reset all added traits
-pub fn execute_exempt_all(
-    _msg: ExemptAllMsg,
-    deps: DepsMut,
-    info: MessageInfo,
-) -> Result<Response, ContractError> {
-    _require_instantiated(&deps.as_ref(), &info).unwrap();
-
-    let current_traits = TRAITS.load(deps.storage)?;
-
-    TRAITS.save(deps.storage, &vec![])?;
-    Ok(Response::new()
-        .add_attribute(ACTION, EXEMPT_ALL_ACTION)
-        .add_attributes(
-            current_traits
-                .into_iter()
-                .map(|t| Attribute::new(EXEMPT_EVENT, t)),
+                .map(|t: TokenConfig| Attribute::new(EXEMPT_EVENT, t)),
         ))
 }

@@ -1,64 +1,69 @@
+use crate::models::traits::Trait;
+use crate::models::{config::SlotConfig, token::TokenConfig};
+use cosmwasm_schema::{cw_serde, QueryResponses};
 use cosmwasm_std::Addr;
-use serde::{Deserialize, Serialize};
-
-use crate::models::TokenConfig;
 
 // Instantiate message
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+#[cw_serde]
 pub struct InstantiateMsg {
-    pub base_token: TokenConfig<String>,
-    pub allowed_traits_addresses: Option<Vec<String>>,
-    pub allow_multiple_tokens_per_contract: Option<bool>,
+    pub base_token: String,
+    pub slots: Vec<SlotConfig<String>>,
     pub admins: Option<Vec<String>>,
 }
 
 // Query messages
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
-#[serde(rename_all = "snake_case")]
+#[cw_serde]
+#[derive(QueryResponses)]
 pub enum QueryMsg {
+    #[returns(GetConfigResp)]
     GetConfig(GetConfigMsg),
+
+    #[returns(GetTraitsResp)]
     GetTraits(GetTraitsMsg),
 }
 
 // - GetConfig
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+#[cw_serde]
 pub struct GetConfigMsg {}
 
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+#[cw_serde]
 pub struct GetConfigResp {
-    pub base_token: TokenConfig,
-    pub allowed_traits_addresses: Vec<Addr>,
-    pub allow_multiple_tokens_per_contract: bool,
+    pub base_token: Addr,
+    pub slots: Vec<SlotConfig>,
     pub admins: Vec<Addr>,
 }
 
 // - GetTraits
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
-pub struct GetTraitsMsg {}
+#[cw_serde]
+pub struct GetTraitsMsg {
+    /// Filter by `name` of the slot
+    pub slot: Option<String>,
+    /// Filter by `token_id` of the base token
+    pub token_id: Option<String>,
+}
 
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+#[cw_serde]
 pub struct GetTraitsResp {
-    pub traits: Vec<TokenConfig>,
+    pub traits: Vec<Trait>,
 }
 
 // Execute messages
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
-#[serde(rename_all = "snake_case")]
+#[cw_serde]
 pub enum ExecuteMsg {
     Apply(ApplyMsg),
     Exempt(ExemptMsg),
-    ExemptAll(ExemptAllMsg),
 }
 
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+#[cw_serde]
 pub struct ApplyMsg {
+    /// `token_id` of the base token
+    pub token_id: String,
+    /// `address` and `token_id` of the traits to apply
     pub traits: Vec<TokenConfig<String>>,
 }
 
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+#[cw_serde]
 pub struct ExemptMsg {
+    ///
     pub traits: Vec<TokenConfig<String>>,
 }
-
-#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
-pub struct ExemptAllMsg {}

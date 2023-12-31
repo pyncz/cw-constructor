@@ -4,19 +4,19 @@ use crate::{
 };
 use cosmwasm_std::{Deps, StdResult};
 
-pub fn query_config(_msg: GetConfigMsg, deps: Deps) -> StdResult<GetConfigResp> {
+pub fn config(_msg: GetConfigMsg, deps: Deps) -> StdResult<GetConfigResp> {
     let config = CONFIG.load(deps.storage)?;
-    let resp = GetConfigResp {
-        admins: config.admins,
-        allowed_traits_addresses: config.allowed_traits_addresses,
-        allow_multiple_tokens_per_contract: config.allow_multiple_tokens_per_contract,
+
+    Ok(GetConfigResp {
         base_token: config.base_token,
-    };
-    Ok(resp)
+        slots: config.slots,
+        admins: config.admins,
+    })
 }
 
-pub fn query_traits(_msg: GetTraitsMsg, deps: Deps) -> StdResult<GetTraitsResp> {
+pub fn traits(_msg: GetTraitsMsg, deps: Deps) -> StdResult<GetTraitsResp> {
     let traits = TRAITS.load(deps.storage)?;
-    let resp = GetTraitsResp { traits };
-    Ok(resp)
+
+    // TODO: Apply filters from the message
+    Ok(GetTraitsResp { traits })
 }

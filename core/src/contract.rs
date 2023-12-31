@@ -1,10 +1,10 @@
-use crate::error::ContractError;
-use crate::execute::{execute_apply, execute_exempt, execute_exempt_all};
+use crate::error::ContractResponse;
+use crate::execute;
 use crate::instantiate::init;
 use crate::msg::{ExecuteMsg, InstantiateMsg, QueryMsg};
-use crate::query::{query_config, query_traits};
+use crate::query;
 use cosmwasm_std::{
-    entry_point, to_json_binary, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult,
+    entry_point, to_json_binary, Binary, Deps, DepsMut, Env, MessageInfo, StdResult,
 };
 
 #[cfg_attr(not(feature = "library"), entry_point)]
@@ -13,40 +13,31 @@ pub fn instantiate(
     _env: Env,
     _info: MessageInfo,
     msg: InstantiateMsg,
-) -> Result<Response, ContractError> {
+) -> ContractResponse {
     init(msg, deps)
 }
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
     match msg {
-        QueryMsg::GetConfig(msg) => to_json_binary(&query_config(msg, deps)?),
-        QueryMsg::GetTraits(msg) => to_json_binary(&query_traits(msg, deps)?),
+        QueryMsg::GetConfig(msg) => to_json_binary(&query::config(msg, deps)?),
+        QueryMsg::GetTraits(msg) => to_json_binary(&query::traits(msg, deps)?),
     }
 }
 
 #[allow(dead_code)]
 #[cfg_attr(not(feature = "library"), entry_point)]
-pub fn execute(
-    deps: DepsMut,
-    _env: Env,
-    info: MessageInfo,
-    msg: ExecuteMsg,
-) -> Result<Response, ContractError> {
+pub fn execute(deps: DepsMut, _env: Env, info: MessageInfo, msg: ExecuteMsg) -> ContractResponse {
     match msg {
-        ExecuteMsg::Apply(msg) => execute_apply(msg, deps, info),
-        ExecuteMsg::Exempt(msg) => execute_exempt(msg, deps, info),
-        ExecuteMsg::ExemptAll(msg) => execute_exempt_all(msg, deps, info),
+        ExecuteMsg::Apply(msg) => execute::apply(msg, deps, info),
+        ExecuteMsg::Exempt(msg) => execute::exempt(msg, deps, info),
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{
-        models::TokenConfig,
-        msg::{GetConfigMsg, GetConfigResp},
-    };
+    use crate::msg::{GetConfigMsg, GetConfigResp};
     use cosmwasm_std::Addr;
     use cw_multi_test::{App, ContractWrapper, Executor};
 
@@ -56,14 +47,8 @@ mod tests {
         let code = ContractWrapper::new(execute, instantiate, query);
         let code_id = app.store_code(Box::new(code));
 
-        let base_token_unchecked = TokenConfig {
-            address: "base_token".to_string(),
-            token_id: "1".to_string(),
-        };
-        let base_token: TokenConfig = TokenConfig {
-            address: Addr::unchecked("base_token"),
-            token_id: "1".to_string(),
-        };
+        let base_token_unchecked = "base_token".to_string();
+        let base_token = Addr::unchecked("base_token");
 
         // Case: No admins
         let contract_address = app
@@ -71,9 +56,8 @@ mod tests {
                 code_id,
                 Addr::unchecked("owner"),
                 &InstantiateMsg {
-                    base_token: base_token_unchecked.clone(),
-                    allowed_traits_addresses: None,
-                    allow_multiple_tokens_per_contract: None,
+                    base_token: base_token_unchecked.to_owned(),
+                    slots: vec![],
                     admins: None,
                 },
                 &[],
@@ -90,9 +74,8 @@ mod tests {
         assert_eq!(
             resp,
             GetConfigResp {
-                base_token: base_token.clone(),
-                allowed_traits_addresses: vec![],
-                allow_multiple_tokens_per_contract: false,
+                base_token: base_token.to_owned(),
+                slots: vec![],
                 admins: vec![]
             }
         );
@@ -104,8 +87,7 @@ mod tests {
                 Addr::unchecked("owner"),
                 &InstantiateMsg {
                     base_token: base_token_unchecked,
-                    allowed_traits_addresses: None,
-                    allow_multiple_tokens_per_contract: None,
+                    slots: vec![],
                     admins: Some(vec!["admin1".to_owned(), "admin2".to_owned()]),
                 },
                 &[],
@@ -123,8 +105,7 @@ mod tests {
             resp,
             GetConfigResp {
                 base_token,
-                allowed_traits_addresses: vec![],
-                allow_multiple_tokens_per_contract: false,
+                slots: vec![],
                 admins: vec![Addr::unchecked("admin1"), Addr::unchecked("admin2")],
             }
         );
