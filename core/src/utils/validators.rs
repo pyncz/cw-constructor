@@ -10,7 +10,8 @@ use cosmwasm_std::{Deps, StdResult};
 #[allow(dead_code)]
 pub fn validate_slot_config(input: &SlotConfig<String>, deps: &Deps) -> ContractResult<SlotConfig> {
     // Validate allowed contract addresses
-    let allowed_contracts: StdResult<Vec<_>> = (&input.allowed_contracts)
+    let allowed_contracts: StdResult<Vec<_>> = input
+        .allowed_contracts
         .iter()
         .map(|addr| deps.api.addr_validate(addr))
         .collect();
@@ -47,7 +48,8 @@ pub fn validate_slot_configs(
 #[allow(dead_code)]
 pub fn validate_config(input: &ContractInfo<String>, deps: &Deps) -> ContractResult<ContractInfo> {
     // Validate admin addresses
-    let admins: StdResult<Vec<_>> = (&input.admins)
+    let admins: StdResult<Vec<_>> = input
+        .admins
         .iter()
         .map(|addr| deps.api.addr_validate(addr))
         .collect();
