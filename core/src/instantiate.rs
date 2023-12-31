@@ -5,7 +5,7 @@ use crate::events::{
 use crate::models::config::ContractInfo;
 use crate::msg::InstantiateMsg;
 use crate::state::CONFIG;
-use crate::utils::validation::validate_config;
+use crate::utils::validators::validate_config;
 use cosmwasm_std::{Attribute, DepsMut, Response};
 
 pub fn init(msg: InstantiateMsg, deps: DepsMut) -> ContractResponse {

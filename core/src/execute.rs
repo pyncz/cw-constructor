@@ -6,7 +6,7 @@ use crate::{
     state::{CONFIG, TRAITS},
     utils::{
         requirements::{require_instantiated, require_sender_cw721_approval},
-        validation::validate_traits,
+        validators::validate_traits,
     },
 };
 use cosmwasm_std::{Attribute, DepsMut, MessageInfo, Response};
