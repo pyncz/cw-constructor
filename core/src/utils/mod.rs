@@ -1,4 +1,4 @@
 pub mod helpers;
-pub mod query;
+pub mod queries;
 pub mod requirements;
 pub mod validators;

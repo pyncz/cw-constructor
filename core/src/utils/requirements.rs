@@ -1,8 +1,7 @@
+use super::queries::cw721_owner_of;
 use crate::error::{ContractError, ContractResult};
 use crate::state::CONFIG;
 use cosmwasm_std::{Deps, MessageInfo};
-
-use super::query::cw721_owner_of;
 
 #[allow(dead_code)]
 pub fn require_instantiated(deps: &Deps, _info: &MessageInfo) -> ContractResult {
