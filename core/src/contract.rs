@@ -20,8 +20,8 @@ pub fn instantiate(
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
     match msg {
-        QueryMsg::GetConfig(msg) => to_json_binary(&query::config(msg, deps)?),
-        QueryMsg::GetTraits(msg) => to_json_binary(&query::traits(msg, deps)?),
+        QueryMsg::GetConfig(msg) => to_json_binary(&query::config(&msg, &deps)?),
+        QueryMsg::GetTraits(msg) => to_json_binary(&query::traits(&msg, &deps)?),
     }
 }
 
