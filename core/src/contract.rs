@@ -6,6 +6,7 @@ use crate::query;
 use cosmwasm_std::{
     entry_point, to_json_binary, Binary, Deps, DepsMut, Env, MessageInfo, StdResult,
 };
+use serde::{Deserialize, Serialize};
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn instantiate(
@@ -18,11 +19,17 @@ pub fn instantiate(
 }
 
 #[cfg_attr(not(feature = "library"), entry_point)]
-pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
+pub fn query<T: Serialize + for<'de> Deserialize<'de>>(
+    deps: Deps,
+    _env: Env,
+    msg: QueryMsg,
+) -> StdResult<Binary> {
     match msg {
-        QueryMsg::GetConfig(msg) => to_json_binary(&query::config(&msg, &deps)?),
-        QueryMsg::GetTraits(msg) => to_json_binary(&query::traits(&msg, &deps)?),
-        QueryMsg::GetTokens(msg) => to_json_binary(&query::tokens(&msg, &deps)?),
+        QueryMsg::ContractInfo(msg) => to_json_binary(&query::contract_info(&msg, &deps)?),
+        QueryMsg::Traits(msg) => to_json_binary(&query::traits(&msg, &deps)?),
+        QueryMsg::Tokens(msg) => to_json_binary(&query::tokens(&msg, &deps)?),
+        QueryMsg::NftInfo(msg) => to_json_binary(&query::nft_info::<T>(&msg, &deps)?),
+        QueryMsg::AllNftInfo(msg) => to_json_binary(&query::all_nft_info::<T>(&msg, &deps)?),
     }
 }
 
@@ -38,14 +45,16 @@ pub fn execute(deps: DepsMut, _env: Env, info: MessageInfo, msg: ExecuteMsg) -> 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::msg::{GetConfigMsg, GetConfigResp};
-    use cosmwasm_std::Addr;
+    use crate::msg::{ContractInfoMsg, ContractInfoResp};
+    use cosmwasm_std::{Addr, Empty};
     use cw_multi_test::{App, ContractWrapper, Executor};
+
+    type TestMetadata = Option<Empty>;
 
     #[test]
     fn test_instantiate() {
         let mut app = App::default();
-        let code = ContractWrapper::new(execute, instantiate, query);
+        let code = ContractWrapper::new(execute, instantiate, query::<TestMetadata>);
         let code_id = app.store_code(Box::new(code));
 
         let base_token_unchecked = "base_token".to_string();
@@ -67,14 +76,17 @@ mod tests {
             )
             .unwrap();
 
-        let resp: GetConfigResp = app
+        let resp: ContractInfoResp = app
             .wrap()
-            .query_wasm_smart(contract_address, &QueryMsg::GetConfig(GetConfigMsg {}))
+            .query_wasm_smart(
+                contract_address,
+                &QueryMsg::ContractInfo(ContractInfoMsg {}),
+            )
             .unwrap();
 
         assert_eq!(
             resp,
-            GetConfigResp {
+            ContractInfoResp {
                 base_token: base_token.to_owned(),
                 slots: vec![],
                 admins: vec![]
@@ -97,14 +109,17 @@ mod tests {
             )
             .unwrap();
 
-        let resp: GetConfigResp = app
+        let resp: ContractInfoResp = app
             .wrap()
-            .query_wasm_smart(contract_address, &QueryMsg::GetConfig(GetConfigMsg {}))
+            .query_wasm_smart(
+                contract_address,
+                &QueryMsg::ContractInfo(ContractInfoMsg {}),
+            )
             .unwrap();
 
         assert_eq!(
             resp,
-            GetConfigResp {
+            ContractInfoResp {
                 base_token,
                 slots: vec![],
                 admins: vec![Addr::unchecked("admin1"), Addr::unchecked("admin2")],

@@ -36,11 +36,11 @@ pub fn require_sender(addresses: &Vec<String>, _deps: &Deps, info: &MessageInfo)
 #[allow(dead_code)]
 pub fn require_sender_cw721_approval<A: ToString>(
     address: A,
-    token_id: &str,
+    token_id: &String,
     deps: &Deps,
     info: &MessageInfo,
 ) -> ContractResult {
-    let owner_of_res = cw721_owner_of(&address.to_string(), token_id, &deps)?;
+    let owner_of_res = cw721_owner_of(&address.to_string(), &token_id, &deps)?;
     let mut spenders: Vec<_> = owner_of_res
         .approvals
         .into_iter()
