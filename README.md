@@ -1,6 +1,6 @@
 # cw-constructor
 
-Apply nft traits for a token and render metadata on the fly
+Equip nft traits for a token and render metadata on the fly
 
 ## Projects
 
@@ -8,9 +8,8 @@ Apply nft traits for a token and render metadata on the fly
 
 - [`core`](./core) - Core contract to bind NFTs-as-traits
 
-#### Examples:
+#### Example:
 
-- [`server`](./examples/server) - Web server to resolve images based on base token's metadata and applied traits
-- [`client`](./examples/client) - Frontend to view / apply / exempt traits
-- [`cw721-base`](./examples/contracts/cw721-base) - Base `cw721` NFT to apply traits for
-- [`cw721-trait`](./examples/contracts/cw721-trait) - `cw721` NFTs to use as traits
+- [`client`](./example/client) - Frontend to view / equip / unequip traits
+- [`contracts`](./example/contracts) - Base and trait `cw721` NFT contracts
+- [`scripts`](./example/scripts) - Scripts to upload on IPFS / deploy example NFTs
