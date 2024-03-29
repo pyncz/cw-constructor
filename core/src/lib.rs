@@ -10,3 +10,5 @@ pub mod state;
 mod execute;
 mod instantiate;
 mod query;
+
+mod tests;

@@ -10,7 +10,7 @@ pub struct SlotConfig<A: Into<String> = Addr> {
 
     // flags:
     /// If allow to add multiple traits for this slot at the same time
-    pub allow_multiple: Option<bool>,
+    pub allow_multiple: bool,
 }
 
 #[cw_serde]

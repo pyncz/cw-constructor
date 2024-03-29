@@ -1,8 +1,8 @@
 use crate::{
     error::{ContractResponse, ContractResult},
-    events::{ACTION, APPLY_ACTION, APPLY_EVENT, EXEMPT_ACTION, EXEMPT_EVENT, EXTEND_EVENT},
+    events::{ACTION, EQUIP_ACTION, EQUIP_EVENT, EQUIP_ON_EVENT, UNEQUIP_ACTION, UNEQUIP_EVENT},
     models::{token::TokenConfig, traits::Trait},
-    msg::{ApplyMsg, ExemptMsg},
+    msg::{EquipMsg, UnequipMsg},
     state::{CONFIG, TRAITS},
     utils::{
         requirements::{require_instantiated, require_sender_cw721_approval},
@@ -12,14 +12,15 @@ use crate::{
 use cosmwasm_std::{Attribute, DepsMut, MessageInfo, Response};
 
 /// Add provided tokens as traits
-pub fn apply(msg: ApplyMsg, deps: DepsMut, info: MessageInfo) -> ContractResponse {
+pub fn equip(msg: EquipMsg, deps: DepsMut, info: MessageInfo) -> ContractResponse {
     require_instantiated(&deps.as_ref(), &info)?;
 
     let config = CONFIG.load(deps.storage)?;
 
-    // To apply traits, the sender must be:
+    // To equip traits, the sender must be:
     // - the base token's owner / approved spender
     require_sender_cw721_approval(&config.base_token, &msg.token_id, &deps.as_ref(), &info)?;
+
     // - the trait tokens' owner / approved spender
     msg.traits
         .iter()
@@ -42,20 +43,20 @@ pub fn apply(msg: ApplyMsg, deps: DepsMut, info: MessageInfo) -> ContractRespons
         Ok(traits)
     })?;
     Ok(Response::new()
-        .add_attribute(ACTION, APPLY_ACTION)
-        .add_attribute(EXTEND_EVENT, msg.token_id)
+        .add_attribute(ACTION, EQUIP_ACTION)
+        .add_attribute(EQUIP_ON_EVENT, msg.token_id)
         .add_attributes(
             traits_to_add
                 .into_iter()
-                .map(|t| Attribute::new(APPLY_EVENT, t.token)),
+                .map(|t| Attribute::new(EQUIP_EVENT, t.token)),
         ))
 }
 
 /// Remove provided tokens as traits
-pub fn exempt(msg: ExemptMsg, deps: DepsMut, info: MessageInfo) -> ContractResponse {
+pub fn unequip(msg: UnequipMsg, deps: DepsMut, info: MessageInfo) -> ContractResponse {
     require_instantiated(&deps.as_ref(), &info)?;
 
-    // To apply traits, the sender must be:
+    // To equip traits, the sender must be:
     // - the trait tokens' owner / approved spender
     msg.traits
         .iter()
@@ -86,10 +87,10 @@ pub fn exempt(msg: ExemptMsg, deps: DepsMut, info: MessageInfo) -> ContractRespo
         Ok(traits)
     })?;
     Ok(Response::new()
-        .add_attribute(ACTION, EXEMPT_ACTION)
+        .add_attribute(ACTION, UNEQUIP_ACTION)
         .add_attributes(
             traits_to_remove
                 .into_iter()
-                .map(|t: TokenConfig| Attribute::new(EXEMPT_EVENT, t)),
+                .map(|t: TokenConfig| Attribute::new(UNEQUIP_EVENT, t)),
         ))
 }

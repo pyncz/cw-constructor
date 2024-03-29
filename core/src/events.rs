@@ -5,8 +5,9 @@ pub const BASE_TOKEN_SET_EVENT: &str = "base_token_set";
 pub const ADMIN_ADDED_EVENT: &str = "admin_added";
 pub const SLOT_ADDED_EVENT: &str = "slot_added";
 
-pub const APPLY_ACTION: &str = "apply";
-pub const EXEMPT_ACTION: &str = "exempt";
-pub const APPLY_EVENT: &str = "trait_applied";
-pub const EXTEND_EVENT: &str = "token_traits_extended";
-pub const EXEMPT_EVENT: &str = "trait_exempted";
+pub const EQUIP_ACTION: &str = "equip";
+pub const EQUIP_EVENT: &str = "equipped";
+pub const EQUIP_ON_EVENT: &str = "equipped_on";
+
+pub const UNEQUIP_ACTION: &str = "unequip";
+pub const UNEQUIP_EVENT: &str = "unequipped";

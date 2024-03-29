@@ -33,7 +33,7 @@ pub enum QueryMsg {
     NftInfo(NftInfoMsg),
 
     /// Get metadata of the base token and its applied trait tokens *separately*
-    #[returns(AllNftInfoResp<Empty>)]
+    #[returns(AllNftInfoResp<Empty, Empty>)]
     AllNftInfo(AllNftInfoMsg),
 }
 
@@ -83,8 +83,8 @@ pub struct NftInfoMsg {
 }
 
 #[cw_serde]
-pub struct NftInfoResp<T> {
-    pub info: TokenMetadata<T>,
+pub struct NftInfoResp<TExtension> {
+    pub info: TokenMetadata<TExtension>,
 }
 
 // - AllNftInfo
@@ -94,31 +94,33 @@ pub struct AllNftInfoMsg {
 }
 
 #[cw_serde]
-pub struct AllNftInfoResp<T> {
-    pub info: TokenMetadata<T>,
-    pub traits: Vec<TraitWithMetadataResp<T>>,
+pub struct AllNftInfoResp<TExtension, TTraitExtension> {
+    pub info: TokenMetadata<TExtension>,
+    pub traits: Vec<TraitWithMetadataResp<TTraitExtension>>,
 }
 
 // Execute messages
 #[cw_serde]
 pub enum ExecuteMsg {
-    /// Apply new trait tokens to the base token
-    Apply(ApplyMsg),
+    /// Equip new trait tokens to the base token
+    Equip(EquipMsg),
 
     /// Remove applied trait tokens
-    Exempt(ExemptMsg),
+    Unequip(UnequipMsg),
 }
 
+// - Equip
 #[cw_serde]
-pub struct ApplyMsg {
+pub struct EquipMsg {
     /// `token_id` of the base token
     pub token_id: String,
-    /// `address` and `token_id` of the traits to apply
+    /// `address` and `token_id` of the traits to equip
     pub traits: Vec<TokenConfig<String>>,
 }
 
+// - Unequip
 #[cw_serde]
-pub struct ExemptMsg {
+pub struct UnequipMsg {
     /// `address` and `token_id` of the traits to remove
     pub traits: Vec<TokenConfig<String>>,
 }

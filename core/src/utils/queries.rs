@@ -57,7 +57,7 @@ pub fn cw721_info<T: for<'de> Deserialize<'de>>(
     deps: &Deps,
 ) -> StdResult<TokenMetadata<T>> {
     Ok(TokenMetadata {
-        token: cw721_nft_info(address, token_id, deps)?,
+        token: cw721_nft_info::<T>(address, token_id, deps)?,
         contract: cw721_contract_info(address, deps)?,
     })
 }

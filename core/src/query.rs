@@ -1,16 +1,24 @@
 use crate::{
-    models::traits::{TraitResp, TraitWithMetadataResp},
+    models::{
+        metadata::{MergeWithTraitExtension, TokenMetadata},
+        traits::{TraitResp, TraitWithMetadataResp},
+    },
     msg::{
         AllNftInfoMsg, AllNftInfoResp, ContractInfoMsg, ContractInfoResp, NftInfoMsg, NftInfoResp,
         TokensMsg, TokensResp, TraitsMsg, TraitsResp,
     },
     state::{CONFIG, TRAITS},
-    utils::{helpers::get_slot_config_by_address, queries::cw721_info},
+    utils::{
+        helpers::get_slot_config_by_address,
+        queries::{cw721_info, cw721_nft_info},
+    },
 };
 use cosmwasm_std::{Deps, StdResult};
+use cw721::NftInfoResponse;
 use itertools::Itertools;
 use serde::Deserialize;
 
+/// Get contract configuration, including `base_token`, `admins` and trait slots' setup
 pub fn contract_info(_msg: &ContractInfoMsg, deps: &Deps) -> StdResult<ContractInfoResp> {
     let config = CONFIG.load(deps.storage)?;
 
@@ -21,10 +29,12 @@ pub fn contract_info(_msg: &ContractInfoMsg, deps: &Deps) -> StdResult<ContractI
     })
 }
 
+/// List trait tokens featured in the contract
+/// filtered by applied `slot` and their base token's `token_id`
 pub fn traits(msg: &TraitsMsg, deps: &Deps) -> StdResult<TraitsResp> {
     let traits = TRAITS.load(deps.storage)?;
 
-    // Apply filters from the message
+    // Equip filters from the message
     let filtered_traits = traits
         .into_iter()
         .filter_map(|t| {
@@ -54,10 +64,12 @@ pub fn traits(msg: &TraitsMsg, deps: &Deps) -> StdResult<TraitsResp> {
     })
 }
 
+/// List token IDs of the base tokens managed by the contract
+/// filtered by `address` and `token_id` of the traits it features
 pub fn tokens(msg: &TokensMsg, deps: &Deps) -> StdResult<TokensResp> {
     let traits = TRAITS.load(deps.storage)?;
 
-    // Apply filters from the message
+    // Equip filters from the message
     let tokens = traits
         .iter()
         .filter(|t| {
@@ -80,21 +92,59 @@ pub fn tokens(msg: &TokensMsg, deps: &Deps) -> StdResult<TokensResp> {
     Ok(TokensResp { tokens })
 }
 
-pub fn nft_info<T: for<'de> Deserialize<'de>>(
+/// Get merged metadata of base token and its applied trait tokens
+pub fn nft_info<
+    TExtension: for<'de> Deserialize<'de>,
+    TTraitExtension: for<'de> Deserialize<'de>,
+    TMergedExtension: MergeWithTraitExtension<TTraitExtension> + From<TExtension>,
+>(
     msg: &NftInfoMsg,
     deps: &Deps,
-) -> StdResult<NftInfoResp<T>> {
-    // TODO: Aggregate traits' metadata
+) -> StdResult<NftInfoResp<TMergedExtension>> {
     let config = CONFIG.load(deps.storage)?;
+    let traits = TRAITS.load(deps.storage)?;
+
+    let base_token_info =
+        cw721_info::<TExtension>(&config.base_token.to_string(), &msg.token_id, deps)?;
+
+    let merged_extension: TMergedExtension = traits
+        .into_iter()
+        .filter(|t| t.token_id == msg.token_id)
+        .fold(base_token_info.token.extension.into(), |mut acc, t| {
+            // Applied trait's info
+            let trait_info = cw721_nft_info::<TTraitExtension>(
+                &t.token.address.to_string(),
+                &t.token.token_id,
+                deps,
+            );
+
+            if let Ok(trait_info) = trait_info {
+                // Aggregate the initial base token's metadata with the trait metadata
+                acc.merge(&trait_info.extension);
+            }
+
+            acc
+        });
+
     Ok(NftInfoResp {
-        info: cw721_info::<T>(&config.base_token.to_string(), &msg.token_id, deps)?,
+        info: TokenMetadata {
+            contract: base_token_info.contract,
+            token: NftInfoResponse {
+                token_uri: base_token_info.token.token_uri,
+                extension: merged_extension,
+            },
+        },
     })
 }
 
-pub fn all_nft_info<T: for<'de> Deserialize<'de>>(
+/// Get separate metadata of base token and its trait tokens
+pub fn all_nft_info<
+    TExtension: for<'de> Deserialize<'de>,
+    TTraitExtension: for<'de> Deserialize<'de>,
+>(
     msg: &AllNftInfoMsg,
     deps: &Deps,
-) -> StdResult<AllNftInfoResp<T>> {
+) -> StdResult<AllNftInfoResp<TExtension, TTraitExtension>> {
     let config = CONFIG.load(deps.storage)?;
     let traits = TRAITS.load(deps.storage)?;
 
@@ -108,14 +158,18 @@ pub fn all_nft_info<T: for<'de> Deserialize<'de>>(
             Ok(TraitWithMetadataResp {
                 token_id: t.token_id,
                 token: t.token.to_owned(),
-                info: cw721_info::<T>(&t.token.address.to_string(), &t.token.token_id, deps)?,
+                info: cw721_info::<TTraitExtension>(
+                    &t.token.address.to_string(),
+                    &t.token.token_id,
+                    deps,
+                )?,
                 slot,
             })
         })
-        .collect::<StdResult<Vec<TraitWithMetadataResp<T>>>>()?;
+        .collect::<StdResult<Vec<TraitWithMetadataResp<TTraitExtension>>>>()?;
 
     Ok(AllNftInfoResp {
-        info: cw721_info::<T>(&config.base_token.to_string(), &msg.token_id, deps)?,
+        info: cw721_info::<TExtension>(&config.base_token.to_string(), &msg.token_id, deps)?,
         traits: traits_info,
     })
 }

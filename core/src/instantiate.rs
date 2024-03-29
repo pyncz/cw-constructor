@@ -4,7 +4,7 @@ use crate::events::{
 };
 use crate::models::config::ContractInfo;
 use crate::msg::InstantiateMsg;
-use crate::state::CONFIG;
+use crate::state::{CONFIG, TRAITS};
 use crate::utils::validators::validate_config;
 use cosmwasm_std::{Attribute, DepsMut, Response};
 
@@ -14,8 +14,13 @@ pub fn init(msg: InstantiateMsg, deps: DepsMut) -> ContractResponse {
         slots: msg.slots,
         admins: msg.admins.unwrap_or(vec![]),
     };
+
+    // Init state
+    // - config
     let config = validate_config(&input, &deps.as_ref())?;
     CONFIG.save(deps.storage, &config)?;
+    // - traits
+    TRAITS.save(deps.storage, &vec![])?;
 
     Ok(Response::new()
         .add_attribute(ACTION, INSTANTIATE_ACTION)

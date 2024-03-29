@@ -34,7 +34,7 @@ pub enum ContractError {
     #[error("No slot supports the provided address: {address}")]
     UnknownTraitAddress { address: Addr },
 
-    #[error("Cannot contain duplicate tokens as traits to apply")]
+    #[error("Cannot contain duplicate tokens as traits to equip")]
     TraitDuplicateToken {},
 
     #[error("Cannot contain tokens racing for the same slot of the base token")]

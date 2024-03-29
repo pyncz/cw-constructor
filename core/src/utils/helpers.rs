@@ -9,8 +9,8 @@ where
     T: IntoIterator,
     T::Item: Eq + Hash,
 {
-    let mut uniq = HashSet::new();
-    iter.into_iter().all(|x| uniq.insert(x))
+    let mut set = HashSet::new();
+    iter.into_iter().all(|x| set.insert(x))
 }
 
 pub fn get_slot_config_by_address(address: &Addr, deps: &Deps) -> StdResult<Option<SlotConfig>> {

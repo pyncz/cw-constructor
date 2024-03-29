@@ -84,7 +84,7 @@ pub fn validate_trait(input: &Trait<String>, deps: &Deps) -> ContractResult<Trai
 
     // Validate if the slot is not already taken for this base token
     if let Some(conf) = slot_config {
-        if !conf.allow_multiple.unwrap_or(false)
+        if !conf.allow_multiple
             && traits
                 .iter()
                 .filter(|t| t.token_id == parsed_trait.token_id)
@@ -133,6 +133,7 @@ pub fn validate_traits(input: &Vec<Trait<String>>, deps: &Deps) -> ContractResul
     ) {
         return Err(ContractError::TraitDuplicateToken {});
     }
+
     // - if there are no tokens racing for the same base token's slot
     if !all_unique(
         new_traits
@@ -140,7 +141,7 @@ pub fn validate_traits(input: &Vec<Trait<String>>, deps: &Deps) -> ContractResul
             .filter_map(|t| -> Option<(String, String)> {
                 match get_slot_config_by_address(&t.token.address, deps).unwrap_or(None) {
                     // Require slot+token uniqueness only among those slots where having multiple traits is not allowed
-                    Some(slot_config) if !slot_config.allow_multiple.unwrap_or(false) => {
+                    Some(slot_config) if !slot_config.allow_multiple => {
                         Some((t.token_id.to_owned(), slot_config.name))
                     }
                     _ => None,

@@ -18,9 +18,9 @@ pub struct TraitResp {
 }
 
 #[cw_serde]
-pub struct TraitWithMetadataResp<T> {
+pub struct TraitWithMetadataResp<TTraitExtension> {
     pub token_id: String,
     pub token: TokenConfig<Addr>,
     pub slot: Option<String>,
-    pub info: TokenMetadata<T>,
+    pub info: TokenMetadata<TTraitExtension>,
 }
