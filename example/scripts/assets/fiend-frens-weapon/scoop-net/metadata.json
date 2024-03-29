@@ -1,0 +1,10 @@
+{
+  "name": "Scoop Net",
+  "attributes": [
+    {
+      "trait_type": "Deception",
+      "display_type": "boost_percentage",
+      "value": 50
+    }
+  ]
+}

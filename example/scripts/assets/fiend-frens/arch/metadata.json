@@ -1,0 +1,25 @@
+{
+  "name": "Arch Fiend",
+  "description": "Arch Fiends have mighty ancestors from the deepest circles of hell. They are comprehensively developed, so no one knows what to expect from them (not even themselves).",
+  "attributes": [
+    {
+      "trait_type": "Kind",
+      "value": "Arch"
+    },
+    {
+      "trait_type": "Rage",
+      "display_type": "number",
+      "value": 3
+    },
+    {
+      "trait_type": "Deception",
+      "display_type": "number",
+      "value": 2
+    },
+    {
+      "trait_type": "Psychic Powers",
+      "display_type": "number",
+      "value": 2
+    }
+  ]
+}

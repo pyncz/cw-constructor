@@ -1,0 +1,10 @@
+{
+  "name": "Swatter",
+  "attributes": [
+    {
+      "trait_type": "Rage",
+      "display_type": "boost_number",
+      "value": 2
+    }
+  ]
+}

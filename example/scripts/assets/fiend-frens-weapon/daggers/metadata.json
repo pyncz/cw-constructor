@@ -1,0 +1,10 @@
+{
+  "name": "Daggers",
+  "attributes": [
+    {
+      "trait_type": "Rage",
+      "display_type": "boost_percentage",
+      "value": 100
+    }
+  ]
+}

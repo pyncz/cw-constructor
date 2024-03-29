@@ -1,0 +1,25 @@
+{
+  "name": "Red Fiend",
+  "description": "Red Fiends radiate nothing but pure rage and hatred. Although some say they used to be quite peaceful creatures before they missed the exit from the first roundabout of hell 666 times.",
+  "attributes": [
+    {
+      "trait_type": "Kind",
+      "value": "Red"
+    },
+    {
+      "trait_type": "Rage",
+      "display_type": "number",
+      "value": 5
+    },
+    {
+      "trait_type": "Deception",
+      "display_type": "number",
+      "value": 1
+    },
+    {
+      "trait_type": "Psychic Powers",
+      "display_type": "number",
+      "value": 1
+    }
+  ]
+}
