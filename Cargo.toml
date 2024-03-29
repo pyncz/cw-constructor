@@ -1,0 +1,14 @@
+[workspace]
+members = ["core", "example/contracts/cw721-fiend-frens"]
+
+[workspace.package]
+version       = "0.1.0"
+edition       = "2021"
+license       = "MIT"
+authors = [
+  "Pau Yankovski <pyncz.dev@gmail.com>"
+]
+repository    = "https://github.com/pyncz/cw-constructor"
+homepage = "https://github.com/pyncz/cw-constructor"
+documentation = "https://github.com/pyncz/cw-constructor"
+rust-version  = "1.68"
