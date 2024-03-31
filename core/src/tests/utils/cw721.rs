@@ -3,7 +3,7 @@ use std::fmt::Debug;
 
 use super::cw721_entry;
 use cosmwasm_std::{Addr, Empty};
-use cw721_base::msg::InstantiateMsg as Cw721InstantiateMsg;
+use cw721_base::InstantiateMsg as Cw721InstantiateMsg;
 use cw_multi_test::{App, Contract, ContractWrapper, Executor};
 use serde::{Deserialize, Serialize};
 

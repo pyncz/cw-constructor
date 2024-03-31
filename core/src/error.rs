@@ -39,6 +39,9 @@ pub enum ContractError {
 
     #[error("Cannot contain tokens racing for the same slot of the base token")]
     TraitTokenRace {},
+
+    #[error("Not equipped!")]
+    NotEquipped {},
 }
 
 pub type ContractResult<T = ()> = Result<T, ContractError>;

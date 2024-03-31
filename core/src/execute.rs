@@ -1,5 +1,5 @@
 use crate::{
-    error::{ContractResponse, ContractResult},
+    error::{ContractError, ContractResponse, ContractResult},
     events::{ACTION, EQUIP_ACTION, EQUIP_EVENT, EQUIP_ON_EVENT, UNEQUIP_ACTION, UNEQUIP_EVENT},
     models::{token::TokenConfig, traits::Trait},
     msg::{EquipMsg, UnequipMsg},
@@ -56,17 +56,23 @@ pub fn equip(msg: EquipMsg, deps: DepsMut, info: MessageInfo) -> ContractRespons
 pub fn unequip(msg: UnequipMsg, deps: DepsMut, info: MessageInfo) -> ContractResponse {
     require_instantiated(&deps.as_ref(), &info)?;
 
-    // To equip traits, the sender must be:
-    // - the trait tokens' owner / approved spender
-    msg.traits
-        .iter()
-        .map(|t| require_sender_cw721_approval(&t.address, &t.token_id, &deps.as_ref(), &info))
-        .collect::<ContractResult>()?;
+    let equipped_traits = TRAITS.load(deps.storage)?;
 
     let traits_to_remove = msg
         .traits
         .iter()
         .map(|t| {
+            // To unequip traits:
+            // - the sender must be the trait tokens' owner / approved spender
+            require_sender_cw721_approval(&t.address, &t.token_id, &deps.as_ref(), &info)?;
+            // - trait must be currently equipped
+            if !equipped_traits
+                .iter()
+                .any(|current_t| current_t.token == *t)
+            {
+                return Err(ContractError::NotEquipped {});
+            }
+
             let address = deps.api.addr_validate(&t.address)?;
             Ok(TokenConfig {
                 address,
@@ -78,11 +84,7 @@ pub fn unequip(msg: UnequipMsg, deps: DepsMut, info: MessageInfo) -> ContractRes
     TRAITS.update(deps.storage, |traits| -> ContractResult<_> {
         let traits = traits
             .into_iter()
-            .filter(|current_t| {
-                !traits_to_remove.iter().any(|t| {
-                    t.address == current_t.token.address && t.token_id == current_t.token.token_id
-                })
-            })
+            .filter(|current_t| !traits_to_remove.contains(&current_t.token))
             .collect();
         Ok(traits)
     })?;
