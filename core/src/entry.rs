@@ -21,7 +21,7 @@ pub fn instantiate(
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn query<
-    TExtension: Serialize + for<'de> Deserialize<'de>,
+    TExtension: Serialize + for<'de> Deserialize<'de> + Clone,
     TTraitExtension: Serialize + for<'de> Deserialize<'de>,
     TMergedExtension: Serialize
         + for<'de> Deserialize<'de>
@@ -39,16 +39,11 @@ pub fn query<
 
         QueryMsg::Tokens(msg) => to_json_binary(&query::tokens(&msg, &deps)?),
 
-        QueryMsg::NftInfo(msg) => to_json_binary(&query::nft_info::<
-            TExtension,
-            TTraitExtension,
-            TMergedExtension,
-        >(&msg, &deps)?),
-
-        QueryMsg::AllNftInfo(msg) => to_json_binary(&query::all_nft_info::<
-            TExtension,
-            TTraitExtension,
-        >(&msg, &deps)?),
+        QueryMsg::Info(msg) => {
+            to_json_binary(
+                &query::info::<TExtension, TTraitExtension, TMergedExtension>(&msg, &deps)?,
+            )
+        }
     }
 }
 

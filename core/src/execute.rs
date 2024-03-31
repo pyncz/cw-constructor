@@ -65,7 +65,9 @@ pub fn unequip(msg: UnequipMsg, deps: DepsMut, info: MessageInfo) -> ContractRes
             // To unequip traits:
             // - the sender must be the trait tokens' owner / approved spender
             require_sender_cw721_approval(&t.address, &t.token_id, &deps.as_ref(), &info)?;
+
             // - trait must be currently equipped
+            // TODO: Or is it better to just skip it silently..?
             if !equipped_traits
                 .iter()
                 .any(|current_t| current_t.token == *t)

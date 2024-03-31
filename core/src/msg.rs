@@ -3,6 +3,7 @@ use crate::models::traits::{TraitResp, TraitWithMetadataResp};
 use crate::models::{config::SlotConfig, token::TokenConfig};
 use cosmwasm_schema::{cw_serde, QueryResponses};
 use cosmwasm_std::{Addr, Empty};
+use cw721::NftInfoResponse;
 
 // Instantiate message
 #[cw_serde]
@@ -28,13 +29,9 @@ pub enum QueryMsg {
     #[returns(TokensResp)]
     Tokens(TokensMsg),
 
-    /// Get *aggregated* metadata of the base token and its applied trait tokens
-    #[returns(NftInfoResp<Empty>)]
-    NftInfo(NftInfoMsg),
-
-    /// Get metadata of the base token and its applied trait tokens *separately*
-    #[returns(AllNftInfoResp<Empty, Empty>)]
-    AllNftInfo(AllNftInfoMsg),
+    /// Get *aggregated* and *separate* metadata of the base token and its applied trait tokens
+    #[returns(InfoResp<Empty, Empty, Empty>)]
+    Info(InfoMsg),
 }
 
 // - ContractInfo
@@ -76,26 +73,16 @@ pub struct TokensResp {
     pub tokens: Vec<String>,
 }
 
-// - NftInfo
+// - Info
 #[cw_serde]
-pub struct NftInfoMsg {
+pub struct InfoMsg {
     pub token_id: String,
 }
 
 #[cw_serde]
-pub struct NftInfoResp<TExtension> {
-    pub info: TokenMetadata<TExtension>,
-}
-
-// - AllNftInfo
-#[cw_serde]
-pub struct AllNftInfoMsg {
-    pub token_id: String,
-}
-
-#[cw_serde]
-pub struct AllNftInfoResp<TExtension, TTraitExtension> {
-    pub info: TokenMetadata<TExtension>,
+pub struct InfoResp<TExtension, TTraitExtension, TMergedExtension> {
+    pub info: NftInfoResponse<TMergedExtension>,
+    pub base_token: TokenMetadata<TExtension>,
     pub traits: Vec<TraitWithMetadataResp<TTraitExtension>>,
 }
 

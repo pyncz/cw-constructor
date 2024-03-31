@@ -5,8 +5,8 @@ use crate::models::config::SlotConfig;
 use crate::models::metadata::TokenMetadata;
 use crate::models::token::TokenConfig;
 use crate::msg::{
-    AllNftInfoMsg, AllNftInfoResp, EquipMsg, ExecuteMsg, InstantiateMsg, NftInfoMsg, NftInfoResp,
-    QueryMsg, TraitsMsg, TraitsResp, UnequipMsg,
+    EquipMsg, ExecuteMsg, InfoMsg, InfoResp, InstantiateMsg, QueryMsg, TraitsMsg, TraitsResp,
+    UnequipMsg,
 };
 use crate::tests::utils::shared::{BASE_TOKEN_ID, TRAIT_TOKEN_ID};
 use cosmwasm_std::Addr;
@@ -402,9 +402,9 @@ fn unequip_approved_trait() {
     assert_eq!(resp, TraitsResp { traits: vec![] });
 }
 
-/// Test `nft_info` after a trait is unequipped
+/// Test `info` after a trait is unequipped
 #[test]
-fn unequipped_nft_info() {
+fn unequipped_info() {
     let mut app = App::default();
     let code = ContractWrapper::new(
         constructor::execute,
@@ -491,11 +491,11 @@ fn unequipped_nft_info() {
     .unwrap();
 
     // Validate response
-    let resp: NftInfoResp<MergedExtension> = app
+    let resp: InfoResp<Extension, TraitExtension, MergedExtension> = app
         .wrap()
         .query_wasm_smart(
             constructor_contract.clone(),
-            &QueryMsg::NftInfo(NftInfoMsg {
+            &QueryMsg::Info(InfoMsg {
                 token_id: BASE_TOKEN_ID.to_string(),
             }),
         )
@@ -503,124 +503,12 @@ fn unequipped_nft_info() {
 
     assert_eq!(
         resp,
-        NftInfoResp {
-            info: TokenMetadata {
-                contract: ContractInfoResponse {
-                    name: "Test NFT".to_string(),
-                    symbol: "BASE".to_string(),
-                },
-                token: NftInfoResponse {
-                    token_uri: None,
-                    extension: MergedExtension { value: 10 }
-                }
-            }
-        }
-    );
-}
-
-/// Test `all_nft_info` after a trait is unequipped
-#[test]
-fn unequipped_all_nft_info() {
-    let mut app = App::default();
-    let code = ContractWrapper::new(
-        constructor::execute,
-        constructor::instantiate,
-        constructor::query::<Extension, TraitExtension, MergedExtension>,
-    );
-    let code_id = app.store_code(Box::new(code));
-
-    // Instantiate cw721 contracts
-    let minter = Addr::unchecked("player");
-    let base_contract = instantiate_cw721::<Extension>(&mut app, &minter, "BASE");
-    let trait_contract = instantiate_cw721::<TraitExtension>(&mut app, &minter, "TRAIT");
-
-    // Mint base token
-    let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
-        token_id: BASE_TOKEN_ID.to_string(),
-        owner: minter.to_string(),
-        token_uri: None,
-        extension: Extension {
-            name: "Collection".to_string(),
-            value: 10,
-        },
-    });
-    app.execute_contract(minter.clone(), base_contract.clone(), &mint_msg, &[])
-        .unwrap();
-
-    // Mint trait token
-    let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
-        token_id: TRAIT_TOKEN_ID.to_string(),
-        owner: minter.to_string(),
-        token_uri: None,
-        extension: TraitExtension { value: 2 },
-    });
-    app.execute_contract(minter.clone(), trait_contract.clone(), &mint_msg, &[])
-        .unwrap();
-
-    // Instantiate constructor contract
-    let constructor_contract = app
-        .instantiate_contract(
-            code_id,
-            Addr::unchecked("owner"),
-            &InstantiateMsg {
-                base_token: base_contract.into(),
-                slots: vec![SlotConfig {
-                    name: "slot".to_string(),
-                    allowed_contracts: vec![trait_contract.to_string()],
-                    allow_multiple: false,
-                }],
-                admins: None,
+        InfoResp {
+            info: NftInfoResponse {
+                token_uri: None,
+                extension: MergedExtension { value: 10 }
             },
-            &[],
-            "Character",
-            None,
-        )
-        .unwrap();
-
-    // Equip trait
-    app.execute_contract(
-        minter.clone(),
-        constructor_contract.clone(),
-        &ExecuteMsg::Equip(EquipMsg {
-            token_id: BASE_TOKEN_ID.to_owned(),
-            traits: vec![TokenConfig {
-                token_id: TRAIT_TOKEN_ID.to_string(),
-                address: trait_contract.to_string(),
-            }],
-        }),
-        &vec![],
-    )
-    .unwrap();
-
-    // Unequip trait
-    app.execute_contract(
-        minter.clone(),
-        constructor_contract.clone(),
-        &ExecuteMsg::Unequip(UnequipMsg {
-            traits: vec![TokenConfig {
-                token_id: TRAIT_TOKEN_ID.to_string(),
-                address: trait_contract.to_string(),
-            }],
-        }),
-        &vec![],
-    )
-    .unwrap();
-
-    // Validate response
-    let resp: AllNftInfoResp<Extension, TraitExtension> = app
-        .wrap()
-        .query_wasm_smart(
-            constructor_contract.clone(),
-            &QueryMsg::AllNftInfo(AllNftInfoMsg {
-                token_id: BASE_TOKEN_ID.to_string(),
-            }),
-        )
-        .unwrap();
-
-    assert_eq!(
-        resp,
-        AllNftInfoResp {
-            info: TokenMetadata {
+            base_token: TokenMetadata {
                 contract: ContractInfoResponse {
                     name: "Test NFT".to_string(),
                     symbol: "BASE".to_string(),
