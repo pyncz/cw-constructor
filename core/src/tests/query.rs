@@ -30,7 +30,7 @@ fn initial_nft_info() {
     let minter = Addr::unchecked("player");
 
     // Instantiate cw721 contracts
-    let base_contract = instantiate_cw721(&mut app, &minter, "BASE");
+    let base_contract = instantiate_cw721::<Extension>(&mut app, &minter, "BASE");
 
     // Mint base token
     let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
@@ -107,7 +107,7 @@ fn initial_all_nft_info() {
     let minter = Addr::unchecked("player");
 
     // Instantiate cw721 contracts
-    let base_contract = instantiate_cw721(&mut app, &minter, "BASE");
+    let base_contract = instantiate_cw721::<Extension>(&mut app, &minter, "BASE");
 
     // Mint base token
     let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
@@ -188,8 +188,8 @@ fn equipped_nft_info() {
     let minter = Addr::unchecked("player");
 
     // Instantiate cw721 contracts
-    let base_contract = instantiate_cw721(&mut app, &minter, "BASE");
-    let trait_contract = instantiate_cw721(&mut app, &minter, "TRAIT");
+    let base_contract = instantiate_cw721::<Extension>(&mut app, &minter, "BASE");
+    let trait_contract = instantiate_cw721::<TraitExtension>(&mut app, &minter, "TRAIT");
 
     // Mint base token
     let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
@@ -291,8 +291,8 @@ fn equipped_all_nft_info() {
     let minter = Addr::unchecked("player");
 
     // Instantiate cw721 contracts
-    let base_contract = instantiate_cw721(&mut app, &minter, "BASE");
-    let trait_contract = instantiate_cw721(&mut app, &minter, "TRAIT");
+    let base_contract = instantiate_cw721::<Extension>(&mut app, &minter, "BASE");
+    let trait_contract = instantiate_cw721::<TraitExtension>(&mut app, &minter, "TRAIT");
 
     // Mint base token
     let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {

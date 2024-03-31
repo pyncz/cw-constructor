@@ -30,8 +30,8 @@ fn equip_allowed_trait() {
     let minter = Addr::unchecked("player");
 
     // Instantiate cw721 contracts
-    let base_contract = instantiate_cw721(&mut app, &minter, "BASE");
-    let trait_contract = instantiate_cw721(&mut app, &minter, "TRAIT");
+    let base_contract = instantiate_cw721::<Extension>(&mut app, &minter, "BASE");
+    let trait_contract = instantiate_cw721::<TraitExtension>(&mut app, &minter, "TRAIT");
 
     // Mint base token
     let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
@@ -131,8 +131,8 @@ fn equip_not_allowed_trait() {
     let minter = Addr::unchecked("player");
 
     // Instantiate cw721 contracts
-    let base_contract = instantiate_cw721(&mut app, &minter, "BASE");
-    let trait_contract = instantiate_cw721(&mut app, &minter, "TRAIT");
+    let base_contract = instantiate_cw721::<Extension>(&mut app, &minter, "BASE");
+    let trait_contract = instantiate_cw721::<TraitExtension>(&mut app, &minter, "TRAIT");
 
     // Mint base token
     let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
@@ -207,10 +207,10 @@ fn equip_not_owned_trait() {
 
     // Instantiate cw721 contracts
     let base_owner = Addr::unchecked("base_owner");
-    let base_contract = instantiate_cw721(&mut app, &base_owner, "BASE");
+    let base_contract = instantiate_cw721::<Extension>(&mut app, &base_owner, "BASE");
 
     let trait_owner = Addr::unchecked("trait_owner");
-    let trait_contract = instantiate_cw721(&mut app, &trait_owner, "TRAIT");
+    let trait_contract = instantiate_cw721::<TraitExtension>(&mut app, &trait_owner, "TRAIT");
 
     // Mint base token
     let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
@@ -285,10 +285,10 @@ fn equip_approved_trait() {
 
     // Instantiate cw721 contracts
     let base_owner = Addr::unchecked("base_owner");
-    let base_contract = instantiate_cw721(&mut app, &base_owner, "BASE");
+    let base_contract = instantiate_cw721::<Extension>(&mut app, &base_owner, "BASE");
 
     let trait_owner = Addr::unchecked("trait_owner");
-    let trait_contract = instantiate_cw721(&mut app, &trait_owner, "TRAIT");
+    let trait_contract = instantiate_cw721::<TraitExtension>(&mut app, &trait_owner, "TRAIT");
 
     // Mint base token
     let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
@@ -403,10 +403,10 @@ fn equip_on_not_owned_token() {
 
     // Instantiate cw721 contracts
     let base_owner = Addr::unchecked("base_owner");
-    let base_contract = instantiate_cw721(&mut app, &base_owner, "BASE");
+    let base_contract = instantiate_cw721::<Extension>(&mut app, &base_owner, "BASE");
 
     let trait_owner = Addr::unchecked("trait_owner");
-    let trait_contract = instantiate_cw721(&mut app, &trait_owner, "TRAIT");
+    let trait_contract = instantiate_cw721::<TraitExtension>(&mut app, &trait_owner, "TRAIT");
 
     // Mint base token
     let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
@@ -481,10 +481,10 @@ fn equip_on_approved_token() {
 
     // Instantiate cw721 contracts
     let base_owner = Addr::unchecked("base_owner");
-    let base_contract = instantiate_cw721(&mut app, &base_owner, "BASE");
+    let base_contract = instantiate_cw721::<Extension>(&mut app, &base_owner, "BASE");
 
     let trait_owner = Addr::unchecked("trait_owner");
-    let trait_contract = instantiate_cw721(&mut app, &trait_owner, "TRAIT");
+    let trait_contract = instantiate_cw721::<TraitExtension>(&mut app, &trait_owner, "TRAIT");
 
     // Mint base token
     let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
