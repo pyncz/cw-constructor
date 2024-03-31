@@ -121,7 +121,7 @@ fn equip_allowed_trait() {
     );
 }
 
-// Test equip trait token not listed as a slot contract
+/// Test equip trait token not listed as a slot contract - should fail
 #[test]
 fn equip_not_allowed_trait() {
     let mut app = App::default();
@@ -197,7 +197,7 @@ fn equip_not_allowed_trait() {
     assert!(resp.is_err());
 }
 
-/// Test equip not owned nor approved trait to owned base token
+/// Test equip not owned nor approved trait to owned base token - should fail
 #[test]
 fn equip_not_owned_trait() {
     let mut app = App::default();
@@ -391,7 +391,7 @@ fn equip_approved_trait() {
     );
 }
 
-/// Test equip a trait on not owned nor approved base token
+/// Test equip a trait on not owned nor approved base token - should fail
 #[test]
 fn equip_on_not_owned_token() {
     let mut app = App::default();
@@ -807,8 +807,434 @@ fn equipped_all_nft_info() {
     );
 }
 
-// TODO:
-// - equip trait even if slot is already taken (should fail)
-// - equip trait even if slot is already taken with `allow_multiple` set (should succeed)
-// - equip trait already equipped on the same token (should fail)
-// - equip trait already equipped on a different token (should fail)
+/// Test equip trait even if slot is already taken - should fail
+#[test]
+fn equip_taken_slot() {
+    let mut app = App::default();
+    let code = ContractWrapper::new(
+        constructor::execute,
+        constructor::instantiate,
+        constructor::query::<Extension, TraitExtension, MergedExtension>,
+    );
+    let code_id = app.store_code(Box::new(code));
+
+    // Instantiate cw721 contracts
+    let minter = Addr::unchecked("player");
+    let base_contract = instantiate_cw721::<Extension>(&mut app, &minter, "BASE");
+    let trait_contract = instantiate_cw721::<TraitExtension>(&mut app, &minter, "TRAIT");
+
+    // Mint base token
+    let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
+        token_id: BASE_TOKEN_ID.to_string(),
+        owner: minter.to_string(),
+        token_uri: None,
+        extension: Extension {
+            name: "Collection".to_string(),
+            value: 10,
+        },
+    });
+    app.execute_contract(minter.clone(), base_contract.clone(), &mint_msg, &[])
+        .unwrap();
+
+    // Mint trait token:
+    // - token_id=1
+    let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
+        token_id: "1".to_string(),
+        owner: minter.to_string(),
+        token_uri: None,
+        extension: TraitExtension { value: 1 },
+    });
+    app.execute_contract(minter.clone(), trait_contract.clone(), &mint_msg, &[])
+        .unwrap();
+    // - token_id=2
+    let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
+        token_id: "2".to_string(),
+        owner: minter.to_string(),
+        token_uri: None,
+        extension: TraitExtension { value: 2 },
+    });
+    app.execute_contract(minter.clone(), trait_contract.clone(), &mint_msg, &[])
+        .unwrap();
+
+    // Instantiate constructor contract
+    let constructor_contract = app
+        .instantiate_contract(
+            code_id,
+            Addr::unchecked("owner"),
+            &InstantiateMsg {
+                base_token: base_contract.into(),
+                slots: vec![SlotConfig {
+                    name: "slot".to_string(),
+                    allowed_contracts: vec![trait_contract.to_string()],
+                    allow_multiple: false,
+                }],
+                admins: None,
+            },
+            &[],
+            "Character",
+            None,
+        )
+        .unwrap();
+
+    // Equip trait
+    app.execute_contract(
+        minter.clone(),
+        constructor_contract.clone(),
+        &ExecuteMsg::Equip(EquipMsg {
+            token_id: BASE_TOKEN_ID.to_owned(),
+            traits: vec![TokenConfig {
+                token_id: "1".to_string(),
+                address: trait_contract.to_string(),
+            }],
+        }),
+        &vec![],
+    )
+    .unwrap();
+
+    // Equip another trait as the same slot
+    let resp = app.execute_contract(
+        minter.clone(),
+        constructor_contract.clone(),
+        &ExecuteMsg::Equip(EquipMsg {
+            token_id: BASE_TOKEN_ID.to_owned(),
+            traits: vec![TokenConfig {
+                token_id: "2".to_string(),
+                address: trait_contract.to_string(),
+            }],
+        }),
+        &vec![],
+    );
+
+    assert!(resp.is_err());
+}
+
+/// Test equip trait even if slot is already taken with `allow_multiple` set (should succeed)
+#[test]
+fn equip_taken_slot_with_multiple_allowed() {
+    let mut app = App::default();
+    let code = ContractWrapper::new(
+        constructor::execute,
+        constructor::instantiate,
+        constructor::query::<Extension, TraitExtension, MergedExtension>,
+    );
+    let code_id = app.store_code(Box::new(code));
+
+    // Instantiate cw721 contracts
+    let minter = Addr::unchecked("player");
+    let base_contract = instantiate_cw721::<Extension>(&mut app, &minter, "BASE");
+    let trait_contract = instantiate_cw721::<TraitExtension>(&mut app, &minter, "TRAIT");
+
+    // Mint base token
+    let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
+        token_id: BASE_TOKEN_ID.to_string(),
+        owner: minter.to_string(),
+        token_uri: None,
+        extension: Extension {
+            name: "Collection".to_string(),
+            value: 10,
+        },
+    });
+    app.execute_contract(minter.clone(), base_contract.clone(), &mint_msg, &[])
+        .unwrap();
+
+    // Mint trait token:
+    // - token_id=1
+    let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
+        token_id: "1".to_string(),
+        owner: minter.to_string(),
+        token_uri: None,
+        extension: TraitExtension { value: 1 },
+    });
+    app.execute_contract(minter.clone(), trait_contract.clone(), &mint_msg, &[])
+        .unwrap();
+    // - token_id=2
+    let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
+        token_id: "2".to_string(),
+        owner: minter.to_string(),
+        token_uri: None,
+        extension: TraitExtension { value: 2 },
+    });
+    app.execute_contract(minter.clone(), trait_contract.clone(), &mint_msg, &[])
+        .unwrap();
+
+    // Instantiate constructor contract
+    let constructor_contract = app
+        .instantiate_contract(
+            code_id,
+            Addr::unchecked("owner"),
+            &InstantiateMsg {
+                base_token: base_contract.into(),
+                slots: vec![SlotConfig {
+                    name: "slot".to_string(),
+                    allowed_contracts: vec![trait_contract.to_string()],
+                    allow_multiple: true,
+                }],
+                admins: None,
+            },
+            &[],
+            "Character",
+            None,
+        )
+        .unwrap();
+
+    // Equip trait
+    app.execute_contract(
+        minter.clone(),
+        constructor_contract.clone(),
+        &ExecuteMsg::Equip(EquipMsg {
+            token_id: BASE_TOKEN_ID.to_owned(),
+            traits: vec![TokenConfig {
+                token_id: "1".to_string(),
+                address: trait_contract.to_string(),
+            }],
+        }),
+        &vec![],
+    )
+    .unwrap();
+
+    // Equip another trait as the same slot
+    app.execute_contract(
+        minter.clone(),
+        constructor_contract.clone(),
+        &ExecuteMsg::Equip(EquipMsg {
+            token_id: BASE_TOKEN_ID.to_owned(),
+            traits: vec![TokenConfig {
+                token_id: "2".to_string(),
+                address: trait_contract.to_string(),
+            }],
+        }),
+        &vec![],
+    )
+    .unwrap();
+
+    // Validate the changes
+    let resp: TraitsResp = app
+        .wrap()
+        .query_wasm_smart(
+            constructor_contract.clone(),
+            &QueryMsg::Traits(TraitsMsg {
+                token_id: Some(BASE_TOKEN_ID.to_string()),
+                slot: None,
+            }),
+        )
+        .unwrap();
+
+    assert_eq!(
+        resp,
+        TraitsResp {
+            traits: vec![
+                TraitResp {
+                    token_id: BASE_TOKEN_ID.to_string(),
+                    token: TokenConfig {
+                        address: Addr::unchecked(trait_contract.clone()),
+                        token_id: "1".to_string(),
+                    },
+                    slot: Some("slot".to_string()),
+                },
+                TraitResp {
+                    token_id: BASE_TOKEN_ID.to_string(),
+                    token: TokenConfig {
+                        address: Addr::unchecked(trait_contract.clone()),
+                        token_id: "2".to_string(),
+                    },
+                    slot: Some("slot".to_string()),
+                }
+            ]
+        }
+    );
+}
+
+/// Test equip trait already equipped on the same token - should fail
+#[test]
+fn equip_equipped_trait_on_same_token() {
+    let mut app = App::default();
+    let code = ContractWrapper::new(
+        constructor::execute,
+        constructor::instantiate,
+        constructor::query::<Extension, TraitExtension, MergedExtension>,
+    );
+    let code_id = app.store_code(Box::new(code));
+
+    // Instantiate cw721 contracts
+    let minter = Addr::unchecked("player");
+    let base_contract = instantiate_cw721::<Extension>(&mut app, &minter, "BASE");
+    let trait_contract = instantiate_cw721::<TraitExtension>(&mut app, &minter, "TRAIT");
+
+    // Mint base token
+    let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
+        token_id: BASE_TOKEN_ID.to_string(),
+        owner: minter.to_string(),
+        token_uri: None,
+        extension: Extension {
+            name: "Collection".to_string(),
+            value: 10,
+        },
+    });
+    app.execute_contract(minter.clone(), base_contract.clone(), &mint_msg, &[])
+        .unwrap();
+
+    // Mint trait token
+    let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
+        token_id: TRAIT_TOKEN_ID.to_string(),
+        owner: minter.to_string(),
+        token_uri: None,
+        extension: TraitExtension { value: 2 },
+    });
+    app.execute_contract(minter.clone(), trait_contract.clone(), &mint_msg, &[])
+        .unwrap();
+
+    // Instantiate constructor contract
+    let constructor_contract = app
+        .instantiate_contract(
+            code_id,
+            Addr::unchecked("owner"),
+            &InstantiateMsg {
+                base_token: base_contract.into(),
+                slots: vec![SlotConfig {
+                    name: "slot".to_string(),
+                    allowed_contracts: vec![trait_contract.to_string()],
+                    allow_multiple: true,
+                }],
+                admins: None,
+            },
+            &[],
+            "Character",
+            None,
+        )
+        .unwrap();
+
+    // Equip trait
+    app.execute_contract(
+        minter.clone(),
+        constructor_contract.clone(),
+        &ExecuteMsg::Equip(EquipMsg {
+            token_id: BASE_TOKEN_ID.to_owned(),
+            traits: vec![TokenConfig {
+                token_id: TRAIT_TOKEN_ID.to_string(),
+                address: trait_contract.to_string(),
+            }],
+        }),
+        &vec![],
+    )
+    .unwrap();
+
+    // Try to equip again
+    let resp = app.execute_contract(
+        minter.clone(),
+        constructor_contract.clone(),
+        &ExecuteMsg::Equip(EquipMsg {
+            token_id: BASE_TOKEN_ID.to_owned(),
+            traits: vec![TokenConfig {
+                token_id: TRAIT_TOKEN_ID.to_string(),
+                address: trait_contract.to_string(),
+            }],
+        }),
+        &vec![],
+    );
+
+    assert!(resp.is_err());
+}
+
+/// Test equip trait already equipped on a different token - should fail
+#[test]
+fn equip_equipped_trait_on_different_token() {
+    let mut app = App::default();
+    let code = ContractWrapper::new(
+        constructor::execute,
+        constructor::instantiate,
+        constructor::query::<Extension, TraitExtension, MergedExtension>,
+    );
+    let code_id = app.store_code(Box::new(code));
+
+    // Instantiate cw721 contracts
+    let minter = Addr::unchecked("player");
+    let base_contract = instantiate_cw721::<Extension>(&mut app, &minter, "BASE");
+    let trait_contract = instantiate_cw721::<TraitExtension>(&mut app, &minter, "TRAIT");
+
+    // Mint base token:
+    // - token_id=1
+    let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
+        token_id: "1".to_string(),
+        owner: minter.to_string(),
+        token_uri: None,
+        extension: Extension {
+            name: "Collection".to_string(),
+            value: 10,
+        },
+    });
+    app.execute_contract(minter.clone(), base_contract.clone(), &mint_msg, &[])
+        .unwrap();
+    // - token_id=2
+    let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
+        token_id: "2".to_string(),
+        owner: minter.to_string(),
+        token_uri: None,
+        extension: Extension {
+            name: "Collection".to_string(),
+            value: 10,
+        },
+    });
+    app.execute_contract(minter.clone(), base_contract.clone(), &mint_msg, &[])
+        .unwrap();
+
+    // Mint trait token
+    let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
+        token_id: TRAIT_TOKEN_ID.to_string(),
+        owner: minter.to_string(),
+        token_uri: None,
+        extension: TraitExtension { value: 2 },
+    });
+    app.execute_contract(minter.clone(), trait_contract.clone(), &mint_msg, &[])
+        .unwrap();
+
+    // Instantiate constructor contract
+    let constructor_contract = app
+        .instantiate_contract(
+            code_id,
+            Addr::unchecked("owner"),
+            &InstantiateMsg {
+                base_token: base_contract.into(),
+                slots: vec![SlotConfig {
+                    name: "slot".to_string(),
+                    allowed_contracts: vec![trait_contract.to_string()],
+                    allow_multiple: true,
+                }],
+                admins: None,
+            },
+            &[],
+            "Character",
+            None,
+        )
+        .unwrap();
+
+    // Equip trait
+    app.execute_contract(
+        minter.clone(),
+        constructor_contract.clone(),
+        &ExecuteMsg::Equip(EquipMsg {
+            token_id: "1".to_owned(),
+            traits: vec![TokenConfig {
+                token_id: TRAIT_TOKEN_ID.to_string(),
+                address: trait_contract.to_string(),
+            }],
+        }),
+        &vec![],
+    )
+    .unwrap();
+
+    // Try to equip again on different base token
+    let resp = app.execute_contract(
+        minter.clone(),
+        constructor_contract.clone(),
+        &ExecuteMsg::Equip(EquipMsg {
+            token_id: "2".to_owned(),
+            traits: vec![TokenConfig {
+                token_id: TRAIT_TOKEN_ID.to_string(),
+                address: trait_contract.to_string(),
+            }],
+        }),
+        &vec![],
+    );
+
+    assert!(resp.is_err());
+}

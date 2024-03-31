@@ -122,7 +122,7 @@ fn unequip_allowed_trait() {
     assert_eq!(resp, TraitsResp { traits: vec![] });
 }
 
-/// Test unequip already not equipped trait
+/// Test unequip already not equipped trait - should fail
 #[test]
 fn unequip_not_equipped_trait() {
     let mut app = App::default();
@@ -197,7 +197,7 @@ fn unequip_not_equipped_trait() {
     assert!(resp.is_err());
 }
 
-/// Test unequip not owned nor approved trait from owned base token
+/// Test unequip not owned nor approved trait from owned base token - should fail
 #[test]
 fn unequip_not_owned_trait() {
     let mut app = App::default();
