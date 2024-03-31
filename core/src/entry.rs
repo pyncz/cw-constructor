@@ -21,7 +21,6 @@ pub fn instantiate(
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn query<
-    // T: Serialize + for<'de> Deserialize<'de>
     TExtension: Serialize + for<'de> Deserialize<'de>,
     TTraitExtension: Serialize + for<'de> Deserialize<'de>,
     TMergedExtension: Serialize

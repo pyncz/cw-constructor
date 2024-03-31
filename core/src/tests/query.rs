@@ -1,6 +1,6 @@
 #![cfg(test)]
 use super::utils::metadata::{Extension, MergedExtension, TraitExtension};
-use crate::contract::{execute, instantiate, query};
+use crate::entry as constructor;
 use crate::models::config::SlotConfig;
 use crate::models::metadata::TokenMetadata;
 use crate::models::token::TokenConfig;
@@ -21,9 +21,9 @@ use cw_multi_test::{App, ContractWrapper, Executor};
 fn initial_nft_info() {
     let mut app = App::default();
     let code = ContractWrapper::new(
-        execute,
-        instantiate,
-        query::<Extension, TraitExtension, MergedExtension>,
+        constructor::execute,
+        constructor::instantiate,
+        constructor::query::<Extension, TraitExtension, MergedExtension>,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -98,9 +98,9 @@ fn initial_nft_info() {
 fn initial_all_nft_info() {
     let mut app = App::default();
     let code = ContractWrapper::new(
-        execute,
-        instantiate,
-        query::<Extension, TraitExtension, MergedExtension>,
+        constructor::execute,
+        constructor::instantiate,
+        constructor::query::<Extension, TraitExtension, MergedExtension>,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -179,9 +179,9 @@ fn initial_all_nft_info() {
 fn equipped_nft_info() {
     let mut app = App::default();
     let code = ContractWrapper::new(
-        execute,
-        instantiate,
-        query::<Extension, TraitExtension, MergedExtension>,
+        constructor::execute,
+        constructor::instantiate,
+        constructor::query::<Extension, TraitExtension, MergedExtension>,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -282,9 +282,9 @@ fn equipped_nft_info() {
 fn equipped_all_nft_info() {
     let mut app = App::default();
     let code = ContractWrapper::new(
-        execute,
-        instantiate,
-        query::<Extension, TraitExtension, MergedExtension>,
+        constructor::execute,
+        constructor::instantiate,
+        constructor::query::<Extension, TraitExtension, MergedExtension>,
     );
     let code_id = app.store_code(Box::new(code));
 

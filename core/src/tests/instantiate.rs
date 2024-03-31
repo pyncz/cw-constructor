@@ -1,6 +1,6 @@
 #![cfg(test)]
 use super::utils::metadata::{Extension, MergedExtension, TraitExtension};
-use crate::contract::{execute, instantiate, query};
+use crate::entry as constructor;
 use crate::msg::{
     ContractInfoMsg, ContractInfoResp, InstantiateMsg, QueryMsg, TraitsMsg, TraitsResp,
 };
@@ -12,9 +12,9 @@ use cw_multi_test::{App, ContractWrapper, Executor};
 fn instantiate_without_admins() {
     let mut app = App::default();
     let code = ContractWrapper::new(
-        execute,
-        instantiate,
-        query::<Extension, TraitExtension, MergedExtension>,
+        constructor::execute,
+        constructor::instantiate,
+        constructor::query::<Extension, TraitExtension, MergedExtension>,
     );
     let code_id = app.store_code(Box::new(code));
     let base_token_unchecked = "base_token".to_string();
@@ -73,9 +73,9 @@ fn instantiate_without_admins() {
 fn instantiate_with_admins() {
     let mut app = App::default();
     let code = ContractWrapper::new(
-        execute,
-        instantiate,
-        query::<Extension, TraitExtension, MergedExtension>,
+        constructor::execute,
+        constructor::instantiate,
+        constructor::query::<Extension, TraitExtension, MergedExtension>,
     );
     let code_id = app.store_code(Box::new(code));
     let base_token_unchecked = "base_token".to_string();

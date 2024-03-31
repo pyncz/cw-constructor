@@ -1,5 +1,5 @@
 #![cfg(test)]
-use crate::contract::{execute, instantiate, query};
+use crate::entry as constructor;
 use crate::models::config::SlotConfig;
 
 use crate::models::token::TokenConfig;
@@ -21,9 +21,9 @@ use super::utils::{
 fn equip_allowed_trait() {
     let mut app = App::default();
     let code = ContractWrapper::new(
-        execute,
-        instantiate,
-        query::<Extension, TraitExtension, MergedExtension>,
+        constructor::execute,
+        constructor::instantiate,
+        constructor::query::<Extension, TraitExtension, MergedExtension>,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -122,9 +122,9 @@ fn equip_allowed_trait() {
 fn equip_not_allowed_trait() {
     let mut app = App::default();
     let code = ContractWrapper::new(
-        execute,
-        instantiate,
-        query::<Extension, TraitExtension, MergedExtension>,
+        constructor::execute,
+        constructor::instantiate,
+        constructor::query::<Extension, TraitExtension, MergedExtension>,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -199,9 +199,9 @@ fn equip_not_allowed_trait() {
 fn equip_not_owned_trait() {
     let mut app = App::default();
     let code = ContractWrapper::new(
-        execute,
-        instantiate,
-        query::<Extension, TraitExtension, MergedExtension>,
+        constructor::execute,
+        constructor::instantiate,
+        constructor::query::<Extension, TraitExtension, MergedExtension>,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -277,9 +277,9 @@ fn equip_not_owned_trait() {
 fn equip_approved_trait() {
     let mut app = App::default();
     let code = ContractWrapper::new(
-        execute,
-        instantiate,
-        query::<Extension, TraitExtension, MergedExtension>,
+        constructor::execute,
+        constructor::instantiate,
+        constructor::query::<Extension, TraitExtension, MergedExtension>,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -395,9 +395,9 @@ fn equip_approved_trait() {
 fn equip_on_not_owned_token() {
     let mut app = App::default();
     let code = ContractWrapper::new(
-        execute,
-        instantiate,
-        query::<Extension, TraitExtension, MergedExtension>,
+        constructor::execute,
+        constructor::instantiate,
+        constructor::query::<Extension, TraitExtension, MergedExtension>,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -473,9 +473,9 @@ fn equip_on_not_owned_token() {
 fn equip_on_approved_token() {
     let mut app = App::default();
     let code = ContractWrapper::new(
-        execute,
-        instantiate,
-        query::<Extension, TraitExtension, MergedExtension>,
+        constructor::execute,
+        constructor::instantiate,
+        constructor::query::<Extension, TraitExtension, MergedExtension>,
     );
     let code_id = app.store_code(Box::new(code));
 
