@@ -7,6 +7,14 @@
       "value": "Green"
     },
     {
+      "trait_type": "Body Color",
+      "value": "#C6FF7D"
+    },
+    {
+      "trait_type": "Background Color",
+      "value": "#B6FFC2"
+    },
+    {
       "trait_type": "Rage",
       "display_type": "number",
       "value": 1
