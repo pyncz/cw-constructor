@@ -93,7 +93,7 @@ pub fn tokens(msg: &TokensMsg, deps: &Deps) -> StdResult<TokensResp> {
 pub fn info<
     TExtension: for<'de> Deserialize<'de> + Clone,
     TTraitExtension: for<'de> Deserialize<'de>,
-    TMergedExtension: MergeWithTraitExtension<TTraitExtension> + From<TExtension>,
+    TMergedExtension: MergeWithTraitExtension<TTraitExtension, TExtension> + From<TExtension>,
 >(
     msg: &InfoMsg,
     deps: &Deps,
@@ -128,7 +128,7 @@ pub fn info<
         base_token_info.token.extension.clone().into(),
         |mut acc, t| {
             // Aggregate the initial base token's metadata with the trait metadata
-            acc.merge(&t.info.token.extension);
+            acc.merge(&t.info.token.extension, &base_token_info.token.extension);
             acc
         },
     );
