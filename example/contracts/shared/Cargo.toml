@@ -1,0 +1,21 @@
+[package]
+name = "cw-fiend-frens-shared"
+description = "Shared types and utils for Fiend Frens contracts"
+authors       = { workspace = true }
+version       = { workspace = true }
+edition       = { workspace = true }
+license       = { workspace = true }
+repository    = { workspace = true }
+homepage      = { workspace = true }
+documentation = { workspace = true }
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+library = []
+
+[dependencies]
+cosmwasm-schema = "1.1.4"
+cosmwasm-std = "1.1.4"
+cw-constructor = {path = "../../../core"}
