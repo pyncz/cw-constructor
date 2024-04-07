@@ -38,7 +38,7 @@ pub enum Attribute {
 #[cw_serde]
 pub struct Extension {
     pub name: String,
-    // pub image: String,
+    pub image: String,
     pub attributes: Vec<Attribute>,
 }
 
@@ -72,7 +72,7 @@ impl From<&Attribute> for MergedAttribute {
 #[cw_serde]
 pub struct MergedExtension {
     pub name: String,
-    // pub images: Vec<String>,
+    pub images: Vec<String>,
     pub attributes: Vec<MergedAttribute>,
 }
 
@@ -86,7 +86,7 @@ impl From<&Extension> for MergedExtension {
 
         MergedExtension {
             name: value.name.clone(),
-            // images: vec![value.image],
+            images: vec![value.image.clone()],
             attributes,
         }
     }
@@ -123,7 +123,7 @@ impl TraitAttribute {
 
 #[cw_serde]
 pub struct TraitExtension {
-    // pub image: String,
+    pub image: Option<String>,
     pub attributes: Vec<TraitAttribute>,
 }
 
@@ -195,6 +195,13 @@ impl MergeWithTraitExtension<TraitExtension> for MergedExtension {
                     true => base_attr.value.checked_sub(diff).unwrap_or(CwDecimal::MIN),
                     false => base_attr.value.checked_add(diff).unwrap_or(CwDecimal::MAX),
                 };
+            }
+        });
+
+        // Append traits' images to the result image list
+        extensions.iter().for_each(|t| {
+            if let Some(image) = &t.image {
+                self.images.push(image.clone());
             }
         });
     }
