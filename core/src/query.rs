@@ -93,7 +93,7 @@ pub fn tokens(msg: &TokensMsg, deps: &Deps) -> StdResult<TokensResp> {
 pub fn info<
     TExtension: for<'de> Deserialize<'de> + Clone,
     TTraitExtension: for<'de> Deserialize<'de>,
-    TMergedExtension: MergeWithTraitExtension<TTraitExtension, TExtension> + From<TExtension>,
+    TMergedExtension: MergeWithTraitExtension<TTraitExtension> + From<TExtension>,
 >(
     msg: &InfoMsg,
     deps: &Deps,
@@ -124,13 +124,12 @@ pub fn info<
         })
         .collect::<StdResult<Vec<TraitWithMetadataResp<TTraitExtension>>>>()?;
 
-    let merged_extension: TMergedExtension = traits_info.iter().fold(
-        base_token_info.token.extension.clone().into(),
-        |mut acc, t| {
-            // Aggregate the initial base token's metadata with the trait metadata
-            acc.merge(&t.info.token.extension, &base_token_info.token.extension);
-            acc
-        },
+    let mut merged_extension: TMergedExtension = base_token_info.token.extension.clone().into();
+    merged_extension.merge(
+        traits_info
+            .iter()
+            .map(|t| &t.info.token.extension)
+            .collect(),
     );
 
     Ok(InfoResp {

@@ -25,8 +25,8 @@ pub struct TraitExtension {
     pub value: u128,
 }
 
-impl MergeWithTraitExtension<TraitExtension, Extension> for MergedExtension {
-    fn merge(&mut self, extension: &TraitExtension, _original_extension: &Extension) {
-        self.value = self.value + extension.value;
+impl MergeWithTraitExtension<TraitExtension> for MergedExtension {
+    fn merge(&mut self, extensions: Vec<&TraitExtension>) {
+        self.value = self.value + extensions.iter().map(|t| t.value).sum::<u128>();
     }
 }

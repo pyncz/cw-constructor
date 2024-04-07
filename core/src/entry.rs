@@ -25,7 +25,7 @@ pub fn query<
     TTraitExtension: Serialize + for<'de> Deserialize<'de>,
     TMergedExtension: Serialize
         + for<'de> Deserialize<'de>
-        + MergeWithTraitExtension<TTraitExtension, TExtension>
+        + MergeWithTraitExtension<TTraitExtension>
         + From<TExtension>,
 >(
     deps: Deps,

@@ -1,8 +1,8 @@
 use cosmwasm_schema::cw_serde;
 use cw721::{ContractInfoResponse, NftInfoResponse};
 
-pub trait MergeWithTraitExtension<TTraitExtension, TExtension> {
-    fn merge(&mut self, extension: &TTraitExtension, original_extension: &TExtension);
+pub trait MergeWithTraitExtension<TTraitExtension> {
+    fn merge(&mut self, extensions: Vec<&TTraitExtension>);
 }
 
 #[cw_serde]
