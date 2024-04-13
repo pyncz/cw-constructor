@@ -76,8 +76,8 @@ pub struct MergedExtension {
     pub attributes: Vec<MergedAttribute>,
 }
 
-impl From<&Extension> for MergedExtension {
-    fn from(value: &Extension) -> Self {
+impl From<Extension> for MergedExtension {
+    fn from(value: Extension) -> Self {
         let attributes: Vec<MergedAttribute> = value
             .attributes
             .iter()
@@ -85,8 +85,8 @@ impl From<&Extension> for MergedExtension {
             .collect();
 
         MergedExtension {
-            name: value.name.clone(),
-            images: vec![value.image.clone()],
+            name: value.name,
+            images: vec![value.image],
             attributes,
         }
     }

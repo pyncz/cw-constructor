@@ -20,7 +20,7 @@ fn keep_string_attributes() {
             value: "Blue".to_string(),
         })],
     };
-    let mut ext: MergedExtension = base.into();
+    let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
@@ -51,7 +51,7 @@ fn ignore_unknown_attributes() {
             value: "Blue".to_string(),
         })],
     };
-    let mut ext: MergedExtension = base.into();
+    let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
@@ -88,7 +88,7 @@ fn boost_number_positive() {
             value: 3,
         })],
     };
-    let mut ext: MergedExtension = base.into();
+    let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
@@ -125,7 +125,7 @@ fn boost_number_positive_multiple() {
             value: 3,
         })],
     };
-    let mut ext: MergedExtension = base.into();
+    let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
@@ -169,7 +169,7 @@ fn boost_number_negative() {
             value: 3,
         })],
     };
-    let mut ext: MergedExtension = base.into();
+    let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
@@ -206,7 +206,7 @@ fn boost_number_negative_floor() {
             value: 3,
         })],
     };
-    let mut ext: MergedExtension = base.into();
+    let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
@@ -244,7 +244,7 @@ fn boost_number_order() {
         })],
     };
 
-    let mut ext1: MergedExtension = base.into();
+    let mut ext1: MergedExtension = base.clone().into();
     ext1.merge(vec![&TraitExtension {
         image: None,
         attributes: vec![
@@ -261,7 +261,7 @@ fn boost_number_order() {
         ],
     }]);
 
-    let mut ext2: MergedExtension = base.into();
+    let mut ext2: MergedExtension = base.clone().into();
     ext2.merge(vec![&TraitExtension {
         image: None,
         attributes: vec![
@@ -294,7 +294,7 @@ fn boost_percentage_positive() {
             value: 4,
         })],
     };
-    let mut ext: MergedExtension = base.into();
+    let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
@@ -331,7 +331,7 @@ fn boost_percentage_positive_multiple() {
             value: 4,
         })],
     };
-    let mut ext: MergedExtension = base.into();
+    let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
@@ -375,7 +375,7 @@ fn boost_percentage_positive_lt_100() {
             value: 4,
         })],
     };
-    let mut ext: MergedExtension = base.into();
+    let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
@@ -412,7 +412,7 @@ fn boost_percentage_negative() {
             value: 4,
         })],
     };
-    let mut ext: MergedExtension = base.into();
+    let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
@@ -449,7 +449,7 @@ fn boost_percentage_negative_floor() {
             value: 4,
         })],
     };
-    let mut ext: MergedExtension = base.into();
+    let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
@@ -487,7 +487,7 @@ fn boost_percentage_order() {
         })],
     };
 
-    let mut ext1: MergedExtension = base.into();
+    let mut ext1: MergedExtension = base.clone().into();
     ext1.merge(vec![&TraitExtension {
         image: None,
         attributes: vec![
@@ -504,7 +504,7 @@ fn boost_percentage_order() {
         ],
     }]);
 
-    let mut ext2: MergedExtension = base.into();
+    let mut ext2: MergedExtension = base.clone().into();
     ext2.merge(vec![&TraitExtension {
         image: None,
         attributes: vec![
@@ -539,7 +539,7 @@ fn boost_combined() {
         })],
     };
 
-    let mut ext: MergedExtension = base.into();
+    let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
@@ -590,7 +590,7 @@ fn accept_multiple_attributes() {
             }),
         ],
     };
-    let mut ext: MergedExtension = base.into();
+    let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
@@ -637,7 +637,7 @@ fn aggregate_images() {
         image: "image".to_string(),
         attributes: vec![],
     };
-    let mut ext: MergedExtension = base.into();
+    let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: Some("trait-image".to_string()),
@@ -662,7 +662,7 @@ fn aggregate_images_multiple() {
         image: "image".to_string(),
         attributes: vec![],
     };
-    let mut ext: MergedExtension = base.into();
+    let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![
         &TraitExtension {

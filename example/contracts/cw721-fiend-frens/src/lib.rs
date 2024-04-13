@@ -11,14 +11,14 @@ pub type ExecuteMsg = cw721_base::ExecuteMsg<Extension, Empty>;
 pub type InstantiateMsg = cw721_base::InstantiateMsg;
 pub type QueryMsg = cw721_base::QueryMsg<Empty>;
 
-#[cfg(not(feature = "library"))]
 pub mod entry {
     use super::*;
 
+    #[cfg(not(feature = "library"))]
     use cosmwasm_std::entry_point;
     use cosmwasm_std::{Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult};
 
-    #[entry_point]
+    #[cfg_attr(not(feature = "library"), entry_point)]
     pub fn instantiate(
         deps: DepsMut,
         env: Env,
@@ -29,7 +29,7 @@ pub mod entry {
         Cw721MetadataContract::default().instantiate(deps, env, info, msg)
     }
 
-    #[entry_point]
+    #[cfg_attr(not(feature = "library"), entry_point)]
     pub fn execute(
         deps: DepsMut,
         env: Env,
@@ -39,7 +39,7 @@ pub mod entry {
         Cw721MetadataContract::default().execute(deps, env, info, msg)
     }
 
-    #[entry_point]
+    #[cfg_attr(not(feature = "library"), entry_point)]
     pub fn query(deps: Deps, env: Env, msg: QueryMsg) -> StdResult<Binary> {
         Cw721MetadataContract::default().query(deps, env, msg)
     }
