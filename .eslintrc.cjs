@@ -19,6 +19,7 @@ module.exports = {
       },
     ],
     'eslint-comments/no-unlimited-disable': 'off',
+    '@typescript-eslint/semi': 'off',
     '@typescript-eslint/brace-style': 'off',
     '@typescript-eslint/consistent-type-imports': 'warn',
     '@typescript-eslint/space-before-function-paren': 'off',
@@ -36,6 +37,7 @@ module.exports = {
     'no-control-regex': 'off',
     'no-console': 'warn',
     'arrow-parens': ['error', 'always'],
+    'semi': ['error', 'always'],
     'brace-style': [
       'error',
       '1tbs',
@@ -53,4 +55,4 @@ module.exports = {
       },
     ],
   },
-}
+};

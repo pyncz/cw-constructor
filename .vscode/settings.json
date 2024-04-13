@@ -1,5 +1,7 @@
 {
   "files.associations": {
-    "**/.cargo/config": "toml"
-  }
+    "**/.cargo/config": "toml",
+    ".env.*": "properties"
+  },
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint"
 }
