@@ -1,6 +1,6 @@
 [workspace]
 members = ["core", "example/contracts/*"]
-exclude = ["example/contracts/cw-minter", "example/contracts/cw721-fiend-frens-horns", "example/contracts/cw721-fiend-frens-weapon", "example/contracts/cw721-fiend-frens-wings"]
+exclude = ["example/contracts/cw-minter"]
 
 [workspace.package]
 version       = "0.1.0"
