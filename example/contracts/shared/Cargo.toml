@@ -12,10 +12,7 @@ documentation = { workspace = true }
 [lib]
 crate-type = ["cdylib", "rlib"]
 
-[features]
-library = []
-
 [dependencies]
 cosmwasm-schema = "1.1.4"
 cosmwasm-std = "1.1.4"
-cw-constructor = {path = "../../../core"}
+cw-constructor = { path = "../../../core" }
