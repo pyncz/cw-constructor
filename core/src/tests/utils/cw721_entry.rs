@@ -1,4 +1,3 @@
-use cosmwasm_std::entry_point;
 use cosmwasm_std::Empty;
 use cosmwasm_std::{Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult};
 pub use cw721_base::{
@@ -9,7 +8,6 @@ use serde::{Deserialize, Serialize};
 type Contract<'a, T> = Cw721Contract<'a, T, Empty>;
 
 #[allow(dead_code)]
-#[cfg_attr(not(feature = "library"), entry_point)]
 pub fn instantiate<T: Serialize + for<'de> Deserialize<'de> + Clone>(
     deps: DepsMut,
     env: Env,
@@ -20,7 +18,6 @@ pub fn instantiate<T: Serialize + for<'de> Deserialize<'de> + Clone>(
 }
 
 #[allow(dead_code)]
-#[cfg_attr(not(feature = "library"), entry_point)]
 pub fn execute<T: Serialize + for<'de> Deserialize<'de> + Clone>(
     deps: DepsMut,
     env: Env,
@@ -31,7 +28,6 @@ pub fn execute<T: Serialize + for<'de> Deserialize<'de> + Clone>(
 }
 
 #[allow(dead_code)]
-#[cfg_attr(not(feature = "library"), entry_point)]
 pub fn query<T: Serialize + for<'de> Deserialize<'de> + Clone>(
     deps: Deps,
     env: Env,

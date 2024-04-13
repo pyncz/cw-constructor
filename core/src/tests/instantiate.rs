@@ -1,6 +1,6 @@
 #![cfg(test)]
 use super::utils::metadata::{Extension, MergedExtension, TraitExtension};
-use crate::entry as constructor;
+use crate::contract as constructor;
 use crate::models::config::SlotConfig;
 use crate::models::metadata::TokenMetadata;
 use crate::msg::{

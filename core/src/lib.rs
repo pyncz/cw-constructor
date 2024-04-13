@@ -1,6 +1,6 @@
 mod utils;
 
-pub mod entry;
+pub mod contract;
 pub mod error;
 pub mod events;
 pub mod models;

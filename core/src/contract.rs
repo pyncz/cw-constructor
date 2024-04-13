@@ -4,12 +4,9 @@ use crate::instantiate;
 use crate::models::metadata::MergeWithTraitExtension;
 use crate::msg::{ExecuteMsg, InstantiateMsg, QueryMsg};
 use crate::query;
-use cosmwasm_std::{
-    entry_point, to_json_binary, Binary, Deps, DepsMut, Env, MessageInfo, StdResult,
-};
+use cosmwasm_std::{to_json_binary, Binary, Deps, DepsMut, Env, MessageInfo, StdResult};
 use serde::{Deserialize, Serialize};
 
-#[cfg_attr(not(feature = "library"), entry_point)]
 pub fn instantiate(
     deps: DepsMut,
     _env: Env,
@@ -19,7 +16,6 @@ pub fn instantiate(
     instantiate::init(msg, deps)
 }
 
-#[cfg_attr(not(feature = "library"), entry_point)]
 pub fn query<
     TExtension: Serialize + for<'de> Deserialize<'de> + Clone,
     TTraitExtension: Serialize + for<'de> Deserialize<'de>,
@@ -47,8 +43,6 @@ pub fn query<
     }
 }
 
-#[allow(dead_code)]
-#[cfg_attr(not(feature = "library"), entry_point)]
 pub fn execute(deps: DepsMut, _env: Env, info: MessageInfo, msg: ExecuteMsg) -> ContractResponse {
     match msg {
         ExecuteMsg::Equip(msg) => execute::equip(msg, deps, info),
