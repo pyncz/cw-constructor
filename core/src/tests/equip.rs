@@ -1,13 +1,12 @@
 #![cfg(test)]
-use crate::contract as constructor;
 use crate::models::config::SlotConfig;
-
 use crate::models::metadata::TokenMetadata;
 use crate::models::token::TokenConfig;
 use crate::models::traits::{TraitResp, TraitWithMetadataResp};
 use crate::msg::{
     EquipMsg, ExecuteMsg, InfoMsg, InfoResp, InstantiateMsg, QueryMsg, TraitsMsg, TraitsResp,
 };
+use crate::tests::utils::entry as constructor;
 use crate::tests::utils::shared::{BASE_TOKEN_ID, TRAIT_TOKEN_ID};
 use cosmwasm_std::Addr;
 use cw721::{ContractInfoResponse, Cw721ExecuteMsg, NftInfoResponse};
@@ -26,7 +25,7 @@ fn equip_allowed_trait() {
     let code = ContractWrapper::new(
         constructor::execute,
         constructor::instantiate,
-        constructor::query::<Extension, TraitExtension, MergedExtension>,
+        constructor::query,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -127,7 +126,7 @@ fn equip_not_allowed_trait() {
     let code = ContractWrapper::new(
         constructor::execute,
         constructor::instantiate,
-        constructor::query::<Extension, TraitExtension, MergedExtension>,
+        constructor::query,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -203,7 +202,7 @@ fn equip_not_owned_trait() {
     let code = ContractWrapper::new(
         constructor::execute,
         constructor::instantiate,
-        constructor::query::<Extension, TraitExtension, MergedExtension>,
+        constructor::query,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -280,7 +279,7 @@ fn equip_approved_trait() {
     let code = ContractWrapper::new(
         constructor::execute,
         constructor::instantiate,
-        constructor::query::<Extension, TraitExtension, MergedExtension>,
+        constructor::query,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -397,7 +396,7 @@ fn equip_on_not_owned_token() {
     let code = ContractWrapper::new(
         constructor::execute,
         constructor::instantiate,
-        constructor::query::<Extension, TraitExtension, MergedExtension>,
+        constructor::query,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -475,7 +474,7 @@ fn equip_on_approved_token() {
     let code = ContractWrapper::new(
         constructor::execute,
         constructor::instantiate,
-        constructor::query::<Extension, TraitExtension, MergedExtension>,
+        constructor::query,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -588,7 +587,7 @@ fn equipped_info() {
     let code = ContractWrapper::new(
         constructor::execute,
         constructor::instantiate,
-        constructor::query::<Extension, TraitExtension, MergedExtension>,
+        constructor::query,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -715,7 +714,7 @@ fn equip_taken_slot() {
     let code = ContractWrapper::new(
         constructor::execute,
         constructor::instantiate,
-        constructor::query::<Extension, TraitExtension, MergedExtension>,
+        constructor::query,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -816,7 +815,7 @@ fn equip_taken_slot_with_multiple_allowed() {
     let code = ContractWrapper::new(
         constructor::execute,
         constructor::instantiate,
-        constructor::query::<Extension, TraitExtension, MergedExtension>,
+        constructor::query,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -952,7 +951,7 @@ fn equip_equipped_trait_on_same_token() {
     let code = ContractWrapper::new(
         constructor::execute,
         constructor::instantiate,
-        constructor::query::<Extension, TraitExtension, MergedExtension>,
+        constructor::query,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -1043,7 +1042,7 @@ fn equip_equipped_trait_on_different_token() {
     let code = ContractWrapper::new(
         constructor::execute,
         constructor::instantiate,
-        constructor::query::<Extension, TraitExtension, MergedExtension>,
+        constructor::query,
     );
     let code_id = app.store_code(Box::new(code));
 

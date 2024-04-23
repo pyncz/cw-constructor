@@ -1,4 +1,4 @@
-use cw_constructor::contract as ConstructorContract;
+use cw_constructor::contract::Contract as ConstructorContract;
 use cw_constructor::error::ContractResponse;
 use cw_constructor::msg::{ExecuteMsg, InstantiateMsg, QueryMsg};
 use cw_fiend_frens_shared::metadata::{Extension, MergedExtension, TraitExtension};
@@ -6,6 +6,8 @@ use cw_fiend_frens_shared::metadata::{Extension, MergedExtension, TraitExtension
 // Version info for migration
 const CONTRACT_NAME: &str = "fiend-frens-constructor";
 const CONTRACT_VERSION: &str = env!("CARGO_PKG_VERSION");
+
+type Contract<'a> = ConstructorContract<'a, Extension, TraitExtension, MergedExtension>;
 
 pub mod entry {
     use super::*;
@@ -22,7 +24,9 @@ pub mod entry {
         msg: InstantiateMsg,
     ) -> ContractResponse {
         cw2::set_contract_version(deps.storage, CONTRACT_NAME, CONTRACT_VERSION)?;
-        ConstructorContract::instantiate(deps, env, info, msg)
+
+        let constructor = Contract::default();
+        constructor.instantiate(deps, env, info, msg)
     }
 
     #[cfg_attr(not(feature = "library"), entry_point)]
@@ -32,11 +36,13 @@ pub mod entry {
         info: MessageInfo,
         msg: ExecuteMsg,
     ) -> ContractResponse {
-        ConstructorContract::execute(deps, env, info, msg)
+        let constructor = Contract::default();
+        constructor.execute(deps, env, info, msg)
     }
 
     #[cfg_attr(not(feature = "library"), entry_point)]
     pub fn query(deps: Deps, env: Env, msg: QueryMsg) -> StdResult<Binary> {
-        ConstructorContract::query::<Extension, TraitExtension, MergedExtension>(deps, env, msg)
+        let constructor = Contract::default();
+        constructor.query(deps, env, msg)
     }
 }

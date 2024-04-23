@@ -2,7 +2,9 @@ use crate::models::metadata::TokenMetadata;
 use crate::models::traits::{TraitResp, TraitWithMetadataResp};
 use crate::models::{config::SlotConfig, token::TokenConfig};
 use cosmwasm_schema::{cw_serde, QueryResponses};
-use cosmwasm_std::{Addr, Empty};
+use cosmwasm_std::Addr;
+#[allow(unused_imports)] // Allow for using in InfoResp<...> generics
+use cosmwasm_std::Empty;
 use cw721::NftInfoResponse;
 
 // Instantiate message

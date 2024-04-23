@@ -3,5 +3,6 @@
     "**/.cargo/config": "toml",
     ".env.*": "properties"
   },
-  "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "rust-analyzer.check.command": "clippy"
 }

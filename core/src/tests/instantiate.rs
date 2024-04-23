@@ -1,6 +1,4 @@
 #![cfg(test)]
-use super::utils::metadata::{Extension, MergedExtension, TraitExtension};
-use crate::contract as constructor;
 use crate::models::config::SlotConfig;
 use crate::models::metadata::TokenMetadata;
 use crate::msg::{
@@ -8,11 +6,14 @@ use crate::msg::{
     TraitsResp,
 };
 use crate::tests::utils::cw721::instantiate_cw721;
+use crate::tests::utils::entry as constructor;
 use crate::tests::utils::shared::BASE_TOKEN_ID;
 use cosmwasm_std::Addr;
 use cw721::{ContractInfoResponse, NftInfoResponse};
 use cw721_base::{ExecuteMsg as Cw721BaseExecuteMsg, MintMsg};
 use cw_multi_test::{App, ContractWrapper, Executor};
+
+use super::utils::metadata::{Extension, MergedExtension, TraitExtension};
 
 /// Test if instantiates correctly with no admins
 #[test]
@@ -21,7 +22,7 @@ fn instantiate_without_admins() {
     let code = ContractWrapper::new(
         constructor::execute,
         constructor::instantiate,
-        constructor::query::<Extension, TraitExtension, MergedExtension>,
+        constructor::query,
     );
     let code_id = app.store_code(Box::new(code));
     let base_token_unchecked = "base_token".to_string();
@@ -82,7 +83,7 @@ fn instantiate_with_admins() {
     let code = ContractWrapper::new(
         constructor::execute,
         constructor::instantiate,
-        constructor::query::<Extension, TraitExtension, MergedExtension>,
+        constructor::query,
     );
     let code_id = app.store_code(Box::new(code));
     let base_token_unchecked = "base_token".to_string();
@@ -128,7 +129,7 @@ fn initial_info() {
     let code = ContractWrapper::new(
         constructor::execute,
         constructor::instantiate,
-        constructor::query::<Extension, TraitExtension, MergedExtension>,
+        constructor::query,
     );
     let code_id = app.store_code(Box::new(code));
 

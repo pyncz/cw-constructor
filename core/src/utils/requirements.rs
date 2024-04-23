@@ -1,29 +1,30 @@
 use super::queries::cw721_owner_of;
+use crate::contract::Contract;
 use crate::error::{ContractError, ContractResult};
-use crate::state::CONFIG;
 use cosmwasm_std::{Deps, MessageInfo};
 
-#[allow(dead_code)]
-pub fn require_instantiated(deps: &Deps, _info: &MessageInfo) -> ContractResult {
-    let config = CONFIG.may_load(deps.storage)?;
-    if config.is_none() {
-        return Err(ContractError::NotInstantiated {});
+impl<'a, TExtension, TTraitExtension, TMergedExtension>
+    Contract<'a, TExtension, TTraitExtension, TMergedExtension>
+{
+    pub fn require_instantiated(&self, deps: &Deps, _info: &MessageInfo) -> ContractResult {
+        let config = self.config.may_load(deps.storage)?;
+        if config.is_none() {
+            return Err(ContractError::NotInstantiated {});
+        }
+        Ok(())
     }
-    Ok(())
+
+    pub fn require_admin(&self, deps: &Deps, info: &MessageInfo) -> ContractResult {
+        let config = self.config.load(deps.storage)?;
+        if !config.admins.contains(&info.sender) {
+            return Err(ContractError::NotAdmin {
+                sender: info.sender.to_owned(),
+            });
+        }
+        Ok(())
+    }
 }
 
-#[allow(dead_code)]
-pub fn require_admin(deps: &Deps, info: &MessageInfo) -> ContractResult {
-    let config = CONFIG.load(deps.storage)?;
-    if !config.admins.contains(&info.sender) {
-        return Err(ContractError::NotAdmin {
-            sender: info.sender.to_owned(),
-        });
-    }
-    Ok(())
-}
-
-#[allow(dead_code)]
 pub fn require_sender(addresses: &Vec<String>, _deps: &Deps, info: &MessageInfo) -> ContractResult {
     if !addresses.contains(&info.sender.to_string()) {
         return Err(ContractError::Unauthorized {
@@ -33,7 +34,6 @@ pub fn require_sender(addresses: &Vec<String>, _deps: &Deps, info: &MessageInfo)
     Ok(())
 }
 
-#[allow(dead_code)]
 pub fn require_sender_cw721_approval<A: ToString>(
     address: A,
     token_id: &String,

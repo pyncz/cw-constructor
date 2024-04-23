@@ -1,13 +1,12 @@
 #![cfg(test)]
-use crate::contract as constructor;
 use crate::models::config::SlotConfig;
-
 use crate::models::metadata::TokenMetadata;
 use crate::models::token::TokenConfig;
 use crate::msg::{
     EquipMsg, ExecuteMsg, InfoMsg, InfoResp, InstantiateMsg, QueryMsg, TraitsMsg, TraitsResp,
     UnequipMsg,
 };
+use crate::tests::utils::entry as constructor;
 use crate::tests::utils::shared::{BASE_TOKEN_ID, TRAIT_TOKEN_ID};
 use cosmwasm_std::Addr;
 use cw721::{ContractInfoResponse, Cw721ExecuteMsg, NftInfoResponse};
@@ -26,7 +25,7 @@ fn unequip_allowed_trait() {
     let code = ContractWrapper::new(
         constructor::execute,
         constructor::instantiate,
-        constructor::query::<Extension, TraitExtension, MergedExtension>,
+        constructor::query,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -129,7 +128,7 @@ fn unequip_not_equipped_trait() {
     let code = ContractWrapper::new(
         constructor::execute,
         constructor::instantiate,
-        constructor::query::<Extension, TraitExtension, MergedExtension>,
+        constructor::query,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -204,7 +203,7 @@ fn unequip_not_owned_trait() {
     let code = ContractWrapper::new(
         constructor::execute,
         constructor::instantiate,
-        constructor::query::<Extension, TraitExtension, MergedExtension>,
+        constructor::query,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -295,7 +294,7 @@ fn unequip_approved_trait() {
     let code = ContractWrapper::new(
         constructor::execute,
         constructor::instantiate,
-        constructor::query::<Extension, TraitExtension, MergedExtension>,
+        constructor::query,
     );
     let code_id = app.store_code(Box::new(code));
 
@@ -409,7 +408,7 @@ fn unequipped_info() {
     let code = ContractWrapper::new(
         constructor::execute,
         constructor::instantiate,
-        constructor::query::<Extension, TraitExtension, MergedExtension>,
+        constructor::query,
     );
     let code_id = app.store_code(Box::new(code));
 
