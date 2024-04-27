@@ -31,13 +31,7 @@ where
         _msg: &ContractInfoMsg,
         deps: &Deps,
     ) -> StdResult<ContractInfoResp> {
-        let config = self.config.load(deps.storage)?;
-
-        Ok(ContractInfoResp {
-            base_token: config.base_token,
-            slots: config.slots,
-            admins: config.admins,
-        })
+        self.config.load(deps.storage)
     }
 
     /// List trait tokens featured in the contract

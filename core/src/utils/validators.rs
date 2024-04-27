@@ -160,7 +160,7 @@ pub fn validate_slot_configs(
         .collect()
 }
 
-pub fn validate_config(input: &ContractInfo<String>, deps: &Deps) -> ContractResult<ContractInfo> {
+pub fn parse_config(input: &ContractInfo<String>, deps: &Deps) -> ContractResult<ContractInfo> {
     // Validate admin addresses
     let admins: StdResult<Vec<_>> = input
         .admins

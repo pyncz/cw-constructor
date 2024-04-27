@@ -1,19 +1,14 @@
+use crate::models::config::ContractInfo;
 use crate::models::metadata::TokenMetadata;
+use crate::models::token::TokenConfig;
 use crate::models::traits::{TraitResp, TraitWithMetadataResp};
-use crate::models::{config::SlotConfig, token::TokenConfig};
 use cosmwasm_schema::{cw_serde, QueryResponses};
-use cosmwasm_std::Addr;
 #[allow(unused_imports)] // Allow for using in InfoResp<...> generics
 use cosmwasm_std::Empty;
 use cw721::NftInfoResponse;
 
 // Instantiate message
-#[cw_serde]
-pub struct InstantiateMsg {
-    pub base_token: String,
-    pub slots: Vec<SlotConfig<String>>,
-    pub admins: Option<Vec<String>>,
-}
+pub type InstantiateMsg = ContractInfo<String>;
 
 // Query messages
 #[cw_serde]
@@ -40,12 +35,7 @@ pub enum QueryMsg {
 #[cw_serde]
 pub struct ContractInfoMsg {}
 
-#[cw_serde]
-pub struct ContractInfoResp {
-    pub base_token: Addr,
-    pub slots: Vec<SlotConfig>,
-    pub admins: Vec<Addr>,
-}
+pub type ContractInfoResp = ContractInfo;
 
 // - Traits
 #[cw_serde]

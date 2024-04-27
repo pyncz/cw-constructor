@@ -35,7 +35,7 @@ fn instantiate_without_admins() {
             &InstantiateMsg {
                 base_token: base_token_unchecked.to_owned(),
                 slots: vec![],
-                admins: None,
+                admins: vec![],
             },
             &[],
             "Contract 1",
@@ -96,7 +96,7 @@ fn instantiate_with_admins() {
             &InstantiateMsg {
                 base_token: base_token_unchecked,
                 slots: vec![],
-                admins: Some(vec!["admin1".to_owned(), "admin2".to_owned()]),
+                admins: vec!["admin1".to_owned(), "admin2".to_owned()],
             },
             &[],
             "Contract 2",
@@ -162,7 +162,7 @@ fn initial_info() {
                     allowed_contracts: vec![],
                     allow_multiple: false,
                 }],
-                admins: None,
+                admins: vec![],
             },
             &[],
             "Character",
