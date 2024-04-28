@@ -10,12 +10,12 @@ pub struct TokenConfig<A: Into<String> = Addr> {
     pub token_id: String,
 }
 
-impl<T> Into<String> for TokenConfig<T>
+impl<T> From<TokenConfig<T>> for String
 where
     T: Into<String> + Display,
 {
-    fn into(self) -> String {
-        format!("{}:{}", self.address, self.token_id)
+    fn from(value: TokenConfig<T>) -> Self {
+        format!("{}:{}", value.address, value.token_id)
     }
 }
 

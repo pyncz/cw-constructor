@@ -5,9 +5,9 @@ use super::cw721_entry;
 use cosmwasm_std::{Addr, Empty};
 use cw721_base::InstantiateMsg as Cw721InstantiateMsg;
 use cw_multi_test::{App, Contract, ContractWrapper, Executor};
-use serde::{Deserialize, Serialize};
+use serde::{de::DeserializeOwned, Serialize};
 
-pub fn create_cw721<T: Serialize + for<'de> Deserialize<'de> + Clone + Debug + 'static>(
+pub fn create_cw721<T: Serialize + DeserializeOwned + Clone + Debug + 'static>(
 ) -> Box<dyn Contract<Empty>> {
     let contract = ContractWrapper::new(
         cw721_entry::execute::<T>,
@@ -17,7 +17,7 @@ pub fn create_cw721<T: Serialize + for<'de> Deserialize<'de> + Clone + Debug + '
     Box::new(contract)
 }
 
-pub fn instantiate_cw721<T: Serialize + for<'de> Deserialize<'de> + Clone + Debug + 'static>(
+pub fn instantiate_cw721<T: Serialize + DeserializeOwned + Clone + Debug + 'static>(
     router: &mut App,
     minter: &Addr,
     symbol: &str,

@@ -5,7 +5,8 @@ use crate::msg::{ExecuteMsg, InstantiateMsg, QueryMsg};
 use cosmwasm_std::to_json_binary;
 use cosmwasm_std::{Binary, Deps, DepsMut, Env, MessageInfo, StdResult};
 use cw_storage_plus::Item;
-use serde::{Deserialize, Serialize};
+use serde::de::DeserializeOwned;
+use serde::Serialize;
 use std::marker::PhantomData;
 
 pub struct Contract<'a, TExtension, TTraitExtension, TMergedExtension> {
@@ -19,12 +20,10 @@ pub struct Contract<'a, TExtension, TTraitExtension, TMergedExtension> {
 impl<'a, TExtension, TTraitExtension, TMergedExtension>
     Contract<'a, TExtension, TTraitExtension, TMergedExtension>
 where
-    TExtension: Serialize + for<'de> Deserialize<'de> + Clone,
-    TTraitExtension: Serialize + for<'de> Deserialize<'de>,
-    TMergedExtension: Serialize
-        + for<'de> Deserialize<'de>
-        + MergeWithTraitExtension<TTraitExtension>
-        + From<TExtension>,
+    TExtension: Serialize + DeserializeOwned + Clone,
+    TTraitExtension: Serialize + DeserializeOwned,
+    TMergedExtension:
+        Serialize + DeserializeOwned + MergeWithTraitExtension<TTraitExtension> + From<TExtension>,
 {
     pub fn instantiate(
         &self,

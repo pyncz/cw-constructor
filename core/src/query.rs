@@ -13,17 +13,15 @@ use crate::{
 use cosmwasm_std::{Deps, StdResult};
 use cw721::NftInfoResponse;
 use itertools::Itertools;
-use serde::{Deserialize, Serialize};
+use serde::{de::DeserializeOwned, Serialize};
 
 impl<'a, TExtension, TTraitExtension, TMergedExtension>
     Contract<'a, TExtension, TTraitExtension, TMergedExtension>
 where
-    TExtension: Serialize + for<'de> Deserialize<'de> + Clone,
-    TTraitExtension: Serialize + for<'de> Deserialize<'de>,
-    TMergedExtension: Serialize
-        + for<'de> Deserialize<'de>
-        + MergeWithTraitExtension<TTraitExtension>
-        + From<TExtension>,
+    TExtension: Serialize + DeserializeOwned + Clone,
+    TTraitExtension: Serialize + DeserializeOwned,
+    TMergedExtension:
+        Serialize + DeserializeOwned + MergeWithTraitExtension<TTraitExtension> + From<TExtension>,
 {
     /// Get contract configuration, including `base_token`, `admins` and trait slots' setup
     pub fn contract_info(

@@ -3,12 +3,13 @@ use cosmwasm_std::{Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult}
 pub use cw721_base::{
     ContractError, Cw721Contract, ExecuteMsg, InstantiateMsg, MintMsg, MinterResponse, QueryMsg,
 };
-use serde::{Deserialize, Serialize};
+use serde::de::DeserializeOwned;
+use serde::Serialize;
 
 type Contract<'a, T> = Cw721Contract<'a, T, Empty>;
 
 #[allow(dead_code)]
-pub fn instantiate<T: Serialize + for<'de> Deserialize<'de> + Clone>(
+pub fn instantiate<T: Serialize + DeserializeOwned + Clone>(
     deps: DepsMut,
     env: Env,
     info: MessageInfo,
@@ -18,7 +19,7 @@ pub fn instantiate<T: Serialize + for<'de> Deserialize<'de> + Clone>(
 }
 
 #[allow(dead_code)]
-pub fn execute<T: Serialize + for<'de> Deserialize<'de> + Clone>(
+pub fn execute<T: Serialize + DeserializeOwned + Clone>(
     deps: DepsMut,
     env: Env,
     info: MessageInfo,
@@ -28,7 +29,7 @@ pub fn execute<T: Serialize + for<'de> Deserialize<'de> + Clone>(
 }
 
 #[allow(dead_code)]
-pub fn query<T: Serialize + for<'de> Deserialize<'de> + Clone>(
+pub fn query<T: Serialize + DeserializeOwned + Clone>(
     deps: Deps,
     env: Env,
     msg: QueryMsg,

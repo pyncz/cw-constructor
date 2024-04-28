@@ -1,7 +1,7 @@
 use cosmwasm_std::{to_json_binary, Deps, QueryRequest, StdResult, WasmQuery};
 use cw721::{ContractInfoResponse, NftInfoResponse, OwnerOfResponse};
 use cw721_base::QueryMsg as Cw721QueryMsg;
-use serde::{de::DeserializeOwned, Deserialize, Serialize};
+use serde::{de::DeserializeOwned, Serialize};
 
 use crate::models::metadata::TokenMetadata;
 
@@ -37,7 +37,7 @@ pub fn cw721_contract_info(address: &String, deps: &Deps) -> StdResult<ContractI
     query_smart(address, &Cw721QueryMsg::ContractInfo {}, deps)
 }
 
-pub fn cw721_nft_info<T: for<'de> Deserialize<'de>>(
+pub fn cw721_nft_info<T: DeserializeOwned>(
     address: &String,
     token_id: &String,
     deps: &Deps,
@@ -51,7 +51,7 @@ pub fn cw721_nft_info<T: for<'de> Deserialize<'de>>(
     )
 }
 
-pub fn cw721_info<T: for<'de> Deserialize<'de>>(
+pub fn cw721_info<T: DeserializeOwned>(
     address: &String,
     token_id: &String,
     deps: &Deps,
