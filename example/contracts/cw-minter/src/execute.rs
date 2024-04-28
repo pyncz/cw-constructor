@@ -3,7 +3,7 @@ use crate::{
     error::{ContractError, ContractResponse},
     events::{ACTION, MINTED_TOKEN_ID_EVENT, MINTED_TOKEN_OWNER_EVENT, MINT_ACTION},
     msg::MintMsg,
-    utils::{get_weighted_option::get_weighted_option, validators::validate_funds},
+    utils::{get_weighted_option::get_weighted_option, rand::rand, validators::validate_funds},
 };
 use cosmwasm_std::{to_json_binary, DepsMut, Env, MessageInfo, Response, WasmMsg};
 use cw721_base::MintMsg as Cw721MintMsg;
@@ -43,7 +43,9 @@ where
         self.mint_count.save(deps.storage, &new_mint_count)?;
 
         // Get the extension
-        let rand = 1; // FIXME: get random number
+        // FIXME: get *random* number, not just hash
+        // @see https://docs.nois.network/dapp_devs/contract_implementation.html
+        let rand = rand(env.block.height, env.block.time.nanos(), new_mint_count);
         let extension = get_weighted_option(rand, &config.extensions).clone();
 
         // Mint the token

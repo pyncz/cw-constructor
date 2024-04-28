@@ -1,16 +1,17 @@
 use crate::models::weights::WeightedOption;
 
 /// Returns option based on value and options' weights
-pub fn get_weighted_option<T>(mut value: u16, options: &Vec<WeightedOption<T>>) -> &T {
+pub fn get_weighted_option<T>(mut value: u64, options: &Vec<WeightedOption<T>>) -> &T {
     // Value within total weight, [1..total_weight]
-    let total_weight = options.iter().fold(0, |acc, o| acc + o.weight);
+    let total_weight = options.iter().fold(0, |acc, o| acc + u64::from(o.weight));
     value = (value % total_weight) + 1;
 
     for o in options {
-        if o.weight >= value {
+        let weight = u64::from(o.weight);
+        if weight >= value {
             return &o.value;
         }
-        value -= o.weight;
+        value -= weight;
     }
 
     &options[0].value
