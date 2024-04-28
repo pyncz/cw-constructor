@@ -5,12 +5,18 @@ use crate::events::{
 };
 use crate::msg::InstantiateMsg;
 use crate::utils::validators::parse_config;
-use cosmwasm_std::{Attribute, DepsMut, Response};
+use cosmwasm_std::{Attribute, DepsMut, Env, MessageInfo, Response};
 
 impl<'a, TExtension, TTraitExtension, TMergedExtension>
     Contract<'a, TExtension, TTraitExtension, TMergedExtension>
 {
-    pub fn _instantiate(&self, msg: InstantiateMsg, deps: DepsMut) -> ContractResponse {
+    pub fn _instantiate(
+        &self,
+        deps: DepsMut,
+        _env: Env,
+        _info: MessageInfo,
+        msg: InstantiateMsg,
+    ) -> ContractResponse {
         let config = parse_config(&msg, &deps.as_ref())?;
 
         // Init state

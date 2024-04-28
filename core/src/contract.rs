@@ -28,11 +28,11 @@ where
     pub fn instantiate(
         &self,
         deps: DepsMut,
-        _env: Env,
-        _info: MessageInfo,
+        env: Env,
+        info: MessageInfo,
         msg: InstantiateMsg,
     ) -> ContractResponse {
-        self._instantiate(msg, deps)
+        self._instantiate(deps, env, info, msg)
     }
 
     pub fn query(&self, deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
@@ -47,13 +47,13 @@ where
     pub fn execute(
         &self,
         deps: DepsMut,
-        _env: Env,
+        env: Env,
         info: MessageInfo,
         msg: ExecuteMsg,
     ) -> ContractResponse {
         match msg {
-            ExecuteMsg::Equip(msg) => self.equip(msg, deps, info),
-            ExecuteMsg::Unequip(msg) => self.unequip(msg, deps, info),
+            ExecuteMsg::Equip(msg) => self.equip(deps, env, info, msg),
+            ExecuteMsg::Unequip(msg) => self.unequip(deps, env, info, msg),
         }
     }
 }

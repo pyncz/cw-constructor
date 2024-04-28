@@ -6,13 +6,19 @@ use crate::{
     msg::{EquipMsg, UnequipMsg},
     utils::requirements::require_sender_cw721_approval,
 };
-use cosmwasm_std::{Attribute, DepsMut, MessageInfo, Response};
+use cosmwasm_std::{Attribute, DepsMut, Env, MessageInfo, Response};
 
 impl<'a, TExtension, TTraitExtension, TMergedExtension>
     Contract<'a, TExtension, TTraitExtension, TMergedExtension>
 {
     /// Add provided tokens as traits
-    pub fn equip(&self, msg: EquipMsg, deps: DepsMut, info: MessageInfo) -> ContractResponse {
+    pub fn equip(
+        &self,
+        deps: DepsMut,
+        _env: Env,
+        info: MessageInfo,
+        msg: EquipMsg,
+    ) -> ContractResponse {
         self.require_instantiated(&deps.as_ref(), &info)?;
 
         let config = self.config.load(deps.storage)?;
@@ -54,7 +60,13 @@ impl<'a, TExtension, TTraitExtension, TMergedExtension>
     }
 
     /// Remove provided tokens as traits
-    pub fn unequip(&self, msg: UnequipMsg, deps: DepsMut, info: MessageInfo) -> ContractResponse {
+    pub fn unequip(
+        &self,
+        deps: DepsMut,
+        _env: Env,
+        info: MessageInfo,
+        msg: UnequipMsg,
+    ) -> ContractResponse {
         self.require_instantiated(&deps.as_ref(), &info)?;
 
         let equipped_traits = self.traits.load(deps.storage)?;

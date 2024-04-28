@@ -5,7 +5,7 @@ use crate::{
     msg::MintMsg,
     utils::{get_weighted_option::get_weighted_option, validators::validate_funds},
 };
-use cosmwasm_std::{to_json_binary, DepsMut, MessageInfo, Response, WasmMsg};
+use cosmwasm_std::{to_json_binary, DepsMut, Env, MessageInfo, Response, WasmMsg};
 use cw721_base::MintMsg as Cw721MintMsg;
 use serde::{de::DeserializeOwned, Serialize};
 
@@ -14,7 +14,13 @@ where
     TExtension: Serialize + DeserializeOwned + Clone,
 {
     /// Mint a token
-    pub fn mint(&self, _msg: MintMsg, deps: DepsMut, info: MessageInfo) -> ContractResponse {
+    pub fn mint(
+        &self,
+        deps: DepsMut,
+        env: Env,
+        info: MessageInfo,
+        _msg: MintMsg,
+    ) -> ContractResponse {
         self.require_instantiated(&deps.as_ref(), &info)?;
 
         let config = self.config.load(deps.storage)?;
