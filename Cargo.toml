@@ -1,6 +1,5 @@
 [workspace]
 members = ["core", "example/contracts/*"]
-exclude = ["example/contracts/cw-minter"]
 
 [workspace.package]
 version       = "0.1.0"
