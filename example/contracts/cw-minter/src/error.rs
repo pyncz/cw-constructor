@@ -1,4 +1,4 @@
-use cosmwasm_std::{Response, StdError};
+use cosmwasm_std::{Addr, Response, StdError};
 use thiserror::Error;
 
 #[derive(Error, Debug, PartialEq)]
@@ -6,8 +6,20 @@ pub enum ContractError {
     #[error("{0}")]
     Std(#[from] StdError),
 
+    #[error("Unauthorized! {sender} is not contract admin")]
+    NotAdmin { sender: Addr },
+
     #[error("Not instantiated!")]
     NotInstantiated {},
+
+    #[error("No cw721 contract set!")]
+    NoCw721ContractSet {},
+
+    #[error("At least one possible Extension option must be provided!")]
+    NoExtensionProvided {},
+
+    #[error("A cw721 contract or at least one admin address must be provided!")]
+    NoAdminOrCw721ContractProvided {},
 
     #[error("Invalid value! Supply cannot be {supply}")]
     InvalidSupply { supply: u32 },

@@ -36,9 +36,11 @@ where
                 &price.amount.to_string(),
             ));
         }
+        if let Some(cw721) = msg.cw721 {
+            attrs.push(Attribute::new(CW721_SET_EVENT, &cw721));
+        }
         Ok(Response::new()
             .add_attribute(ACTION, INSTANTIATE_ACTION)
-            .add_attribute(CW721_SET_EVENT, &msg.cw721)
             .add_attributes(attrs))
     }
 }

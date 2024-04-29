@@ -43,6 +43,9 @@ where
     ) -> ContractResponse {
         match msg {
             ExecuteMsg::Mint(msg) => self.mint(deps, env, info, msg),
+
+            // Admin actions
+            ExecuteMsg::SetCw721(msg) => self.set_cw721(deps, env, info, msg),
         }
     }
 }

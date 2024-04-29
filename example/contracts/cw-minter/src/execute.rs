@@ -1,9 +1,15 @@
 use crate::{
     contract::Contract,
     error::{ContractError, ContractResponse},
-    events::{ACTION, MINTED_TOKEN_ID_EVENT, MINTED_TOKEN_OWNER_EVENT, MINT_ACTION},
-    msg::MintMsg,
-    utils::{get_weighted_option::get_weighted_option, rand::rand, validators::validate_funds},
+    events::{
+        ACTION, CW721_SET_EVENT, MINTED_TOKEN_ID_EVENT, MINTED_TOKEN_OWNER_EVENT, MINT_ACTION,
+    },
+    msg::{MintMsg, SetCw721Msg},
+    utils::{
+        get_weighted_option::get_weighted_option,
+        rand::rand,
+        validators::{parse_address, validate_funds},
+    },
 };
 use cosmwasm_std::{to_json_binary, DepsMut, Env, MessageInfo, Response, WasmMsg};
 use cw721_base::MintMsg as Cw721MintMsg;
@@ -21,9 +27,9 @@ where
         info: MessageInfo,
         _msg: MintMsg,
     ) -> ContractResponse {
-        self.require_instantiated(&deps.as_ref(), &info)?;
+        let config = self.require_instantiated(&deps.as_ref(), &info)?;
+        let cw721 = config.cw721.ok_or(ContractError::NoCw721ContractSet {})?;
 
-        let config = self.config.load(deps.storage)?;
         let mint_count = self.mint_count.load(deps.storage)?;
 
         // If supply is set, check current amount of minted tokens against it
@@ -57,7 +63,7 @@ where
             extension,
         };
         let mint_resp = WasmMsg::Execute {
-            contract_addr: config.cw721.into(),
+            contract_addr: cw721.into(),
             msg: to_json_binary(&mint_msg)?,
             funds: vec![],
         };
@@ -67,5 +73,24 @@ where
             .add_attribute(MINTED_TOKEN_ID_EVENT, token_id)
             .add_attribute(MINTED_TOKEN_OWNER_EVENT, info.sender.to_string())
             .add_message(mint_resp))
+    }
+
+    /// Set cw721 contract
+    pub fn set_cw721(
+        &self,
+        deps: DepsMut,
+        _env: Env,
+        info: MessageInfo,
+        msg: SetCw721Msg,
+    ) -> ContractResponse {
+        let mut config = self.require_instantiated(&deps.as_ref(), &info)?;
+        self.require_admin(&deps.as_ref(), &info)?;
+
+        let cw721 = parse_address(&msg.address, &deps.as_ref())?;
+
+        config.cw721 = Some(cw721.clone());
+        self.config.save(deps.storage, &config)?;
+
+        Ok(Response::new().add_attribute(CW721_SET_EVENT, cw721))
     }
 }
