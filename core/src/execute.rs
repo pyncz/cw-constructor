@@ -4,7 +4,6 @@ use crate::{
     events::{ACTION, EQUIP_ACTION, EQUIP_EVENT, EQUIP_ON_EVENT, UNEQUIP_ACTION, UNEQUIP_EVENT},
     models::{token::TokenConfig, traits::Trait},
     msg::{EquipMsg, UnequipMsg},
-    utils::requirements::require_sender_cw721_approval,
 };
 use cosmwasm_std::{Attribute, DepsMut, Env, MessageInfo, Response};
 
@@ -19,18 +18,23 @@ impl<'a, TExtension, TTraitExtension, TMergedExtension>
         info: MessageInfo,
         msg: EquipMsg,
     ) -> ContractResponse {
-        self.require_instantiated(&deps.as_ref(), &info)?;
-
-        let config = self.config.load(deps.storage)?;
+        let config = self.require_instantiated(&deps.as_ref(), &info)?;
 
         // To equip traits, the sender must be:
         // - the base token's owner / approved spender
-        require_sender_cw721_approval(&config.base_token, &msg.token_id, &deps.as_ref(), &info)?;
+        self.require_sender_cw721_approval(
+            &config.base_token,
+            &msg.token_id,
+            &deps.as_ref(),
+            &info,
+        )?;
 
         // - the trait tokens' owner / approved spender
         msg.traits
             .iter()
-            .map(|t| require_sender_cw721_approval(&t.address, &t.token_id, &deps.as_ref(), &info))
+            .map(|t| {
+                self.require_sender_cw721_approval(&t.address, &t.token_id, &deps.as_ref(), &info)
+            })
             .collect::<ContractResult>()?;
 
         let input: Vec<_> = msg
@@ -77,7 +81,7 @@ impl<'a, TExtension, TTraitExtension, TMergedExtension>
             .map(|t| {
                 // To unequip traits:
                 // - the sender must be the trait tokens' owner / approved spender
-                require_sender_cw721_approval(&t.address, &t.token_id, &deps.as_ref(), &info)?;
+                self.require_sender_cw721_approval(&t.address, &t.token_id, &deps.as_ref(), &info)?;
 
                 // - trait must be currently equipped
                 // TODO: Or is it better to just skip it silently..?

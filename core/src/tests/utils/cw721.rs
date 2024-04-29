@@ -28,9 +28,8 @@ pub fn instantiate_cw721<T: Serialize + DeserializeOwned + Clone + Debug + 'stat
         symbol: symbol.to_string(),
         minter: minter.into(),
     };
-    let address = router
-        .instantiate_contract(cw721_id, minter.clone(), &msg, &[], "cw721", None)
-        .unwrap();
 
-    address
+    router
+        .instantiate_contract(cw721_id, minter.clone(), &msg, &[], "cw721", None)
+        .unwrap()
 }

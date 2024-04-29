@@ -6,10 +6,10 @@ pub enum ContractError {
     #[error("{0}")]
     Std(#[from] StdError),
 
-    #[error("{sender} is not contract admin")]
+    #[error("Unauthorized! {sender} is not contract admin")]
     NotAdmin { sender: Addr },
 
-    #[error("{sender} is not authorized for this action")]
+    #[error("Unauthorized! {sender} is not authorized for this action")]
     Unauthorized { sender: Addr },
 
     #[error("This token is already applied as a trait")]
