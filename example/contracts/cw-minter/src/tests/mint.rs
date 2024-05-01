@@ -1,18 +1,22 @@
 #![cfg(test)]
+use std::collections::HashMap;
+
 use super::utils::{init::init_minter, shared::USER};
 use crate::{
+    models::config::ExtensionsConfig,
     msg::{ExecuteMsg, MintMsg},
-    tests::utils::init::init_cw721_with_minter,
+    tests::utils::{init::init_cw721_with_minter, metadata::Extension},
 };
 use cosmwasm_std::{coins, Addr, Coin, Uint128};
-use cw721::{Cw721ExecuteMsg, Cw721QueryMsg, NumTokensResponse, TokensResponse};
+use cw721::{Cw721ExecuteMsg, Cw721QueryMsg, NftInfoResponse, NumTokensResponse, TokensResponse};
 use cw_multi_test::{App, Executor};
 
 /// Test base mint with no funds required
 #[test]
 fn mint() {
     let mut app = App::default();
-    let (minter_contract, cw721_contract) = init_cw721_with_minter(&mut app, None, None);
+    let (minter_contract, cw721_contract) =
+        init_cw721_with_minter(&mut app, None, None, None, None);
 
     // Mint
     let user = Addr::unchecked(USER);
@@ -49,7 +53,7 @@ fn mint() {
 #[test]
 fn mint_without_cw721_set() {
     let mut app = App::default();
-    let minter_contract = init_minter(&mut app, None, None);
+    let minter_contract = init_minter(&mut app, None, None, None, None);
 
     // Mint
     let user = Addr::unchecked(USER);
@@ -62,7 +66,8 @@ fn mint_without_cw721_set() {
 #[test]
 fn mint_multiple() {
     let mut app = App::default();
-    let (minter_contract, cw721_contract) = init_cw721_with_minter(&mut app, None, None);
+    let (minter_contract, cw721_contract) =
+        init_cw721_with_minter(&mut app, None, None, None, None);
 
     // Mint two and check if the token_ids are sequential
     let user = Addr::unchecked(USER);
@@ -122,7 +127,8 @@ fn mint_with_required_funds() {
         amount: Uint128::new(5),
         denom: "gold".to_string(),
     };
-    let (minter_contract, _) = init_cw721_with_minter(&mut app, Some(price.clone()), None);
+    let (minter_contract, _) =
+        init_cw721_with_minter(&mut app, Some(price.clone()), None, None, None);
 
     // Mint
     let user = Addr::unchecked(USER);
@@ -167,6 +173,8 @@ fn mint_with_required_funds_empty() {
             denom: "gold".to_string(),
         }),
         None,
+        None,
+        None,
     );
 
     // Mint
@@ -192,6 +200,8 @@ fn mint_with_required_funds_insufficient() {
             amount: Uint128::new(5),
             denom: "gold".to_string(),
         }),
+        None,
+        None,
         None,
     );
 
@@ -226,6 +236,8 @@ fn mint_with_separated_funds() {
             amount: Uint128::new(5),
             denom: "gold".to_string(),
         }),
+        None,
+        None,
         None,
     );
 
@@ -274,13 +286,12 @@ fn mint_with_separated_funds() {
 fn mint_out_supply() {
     let mut app = App::default();
     let supply = 5;
-    let (minter_contract, _) = init_cw721_with_minter(&mut app, None, Some(supply));
+    let (minter_contract, _) = init_cw721_with_minter(&mut app, None, Some(supply), None, None);
 
     // Mint supply
     let user = Addr::unchecked(USER);
     let mint_msg = ExecuteMsg::Mint(MintMsg {});
-    for i in 0..supply {
-        println!("{}", i);
+    for _ in 0..supply {
         app.execute_contract(user.clone(), minter_contract.clone(), &mint_msg, &[])
             .unwrap();
     }
@@ -295,7 +306,8 @@ fn mint_out_supply() {
 fn mint_out_supply_with_burn() {
     let mut app = App::default();
     let supply = 5;
-    let (minter_contract, cw721_contract) = init_cw721_with_minter(&mut app, None, Some(supply));
+    let (minter_contract, cw721_contract) =
+        init_cw721_with_minter(&mut app, None, Some(supply), None, None);
 
     // Mint supply
     let user = Addr::unchecked(USER);
@@ -314,4 +326,55 @@ fn mint_out_supply_with_burn() {
     // Try to mint (supply + 1)
     let resp = app.execute_contract(user, minter_contract, &mint_msg, &[]);
     assert!(resp.is_err());
+}
+
+/// Test having different extension options used
+#[test]
+fn mint_different_extensions() {
+    let mut app = App::default();
+    let extensions = vec![
+        ExtensionsConfig {
+            weight: 1,
+            value: Extension { option: 1 },
+        },
+        ExtensionsConfig {
+            weight: 1,
+            value: Extension { option: 2 },
+        },
+        ExtensionsConfig {
+            weight: 1,
+            value: Extension { option: 3 },
+        },
+    ];
+    let (minter_contract, cw721_contract) =
+        init_cw721_with_minter(&mut app, None, None, Some(extensions.clone()), None);
+
+    let user = Addr::unchecked(USER);
+    let mint_msg = ExecuteMsg::Mint(MintMsg {});
+
+    let mut counters =
+        HashMap::<u32, u32>::from_iter(extensions.iter().map(|e| (e.value.option, 0)));
+    for token_id in 1..=100 {
+        // Mint a token
+        app.execute_contract(user.clone(), minter_contract.clone(), &mint_msg, &[])
+            .unwrap();
+        // Query and count minted extension
+        let resp: NftInfoResponse<Extension> = app
+            .wrap()
+            .query_wasm_smart(
+                &cw721_contract,
+                &Cw721QueryMsg::NftInfo {
+                    token_id: token_id.to_string(),
+                },
+            )
+            .unwrap();
+
+        // Update count of specific type of the extension
+        if let Some(count) = counters.get_mut(&resp.extension.option) {
+            *count += 1;
+        }
+    }
+
+    // Expect for all the types of the extention to be featured at least once
+    assert!(counters.values().all(|c| *c > 0));
 }

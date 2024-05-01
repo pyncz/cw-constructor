@@ -1,5 +1,6 @@
 use crate::models::config::ContractInfo;
 use cosmwasm_schema::{cw_serde, QueryResponses};
+#[allow(unused_imports)] // Allow for using in ContractInfoResp<...> generics
 use cosmwasm_std::Empty;
 
 // Instantiate message

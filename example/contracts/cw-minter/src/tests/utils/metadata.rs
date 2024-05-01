@@ -1,3 +1,7 @@
-use cosmwasm_std::Empty;
+use cosmwasm_schema::cw_serde;
 
-pub type Extension = Empty;
+#[cw_serde]
+#[derive(Default)]
+pub struct Extension {
+    pub option: u32,
+}

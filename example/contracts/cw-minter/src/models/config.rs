@@ -4,8 +4,17 @@ use cosmwasm_std::{Addr, Coin};
 
 pub type ExtensionsConfig<TExtension> = WeightedOption<TExtension>;
 
+impl<TExtension: Default> Default for ExtensionsConfig<TExtension> {
+    fn default() -> Self {
+        Self {
+            value: TExtension::default(),
+            weight: 1,
+        }
+    }
+}
+
 #[cw_serde]
-pub struct ContractInfo<TExtension: Clone, A: Into<String> = Addr> {
+pub struct ContractInfo<TExtension, A: Into<String> = Addr> {
     /// NFT contract to mint tokens of
     pub cw721: Option<A>,
 

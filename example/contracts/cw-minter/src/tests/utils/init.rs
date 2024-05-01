@@ -1,15 +1,21 @@
 #![cfg(test)]
-use super::{cw721::instantiate_cw721, entry::InstantiateMsg, metadata::Extension, shared::ADMIN};
+use super::{cw721::instantiate_cw721, metadata::Extension, shared::ADMIN};
 use crate::{
     models::config::ExtensionsConfig,
-    msg::{ExecuteMsg, SetCw721Msg},
+    msg::{ExecuteMsg, InstantiateMsg, SetCw721Msg},
     tests::utils::entry as minter,
 };
 use cosmwasm_std::{Addr, Coin};
 use cw_multi_test::{App, ContractWrapper, Executor};
 
 /// Instantiate minter contract
-pub fn init_minter(app: &mut App, price: Option<Coin>, supply: Option<u32>) -> Addr {
+pub fn init_minter(
+    app: &mut App,
+    price: Option<Coin>,
+    supply: Option<u32>,
+    extensions: Option<Vec<ExtensionsConfig<Extension>>>,
+    admins: Option<Vec<String>>,
+) -> Addr {
     let code = ContractWrapper::new(minter::execute, minter::instantiate, minter::query);
     let code_id = app.store_code(Box::new(code));
 
@@ -19,11 +25,8 @@ pub fn init_minter(app: &mut App, price: Option<Coin>, supply: Option<u32>) -> A
         &InstantiateMsg {
             supply,
             price,
-            extensions: vec![ExtensionsConfig {
-                value: Extension {},
-                weight: 1,
-            }],
-            admins: vec![ADMIN.to_string()],
+            extensions: extensions.unwrap_or(vec![ExtensionsConfig::default()]),
+            admins: admins.unwrap_or(vec![ADMIN.to_string()]),
             cw721: None,
         },
         &[],
@@ -38,9 +41,11 @@ pub fn init_cw721_with_minter(
     app: &mut App,
     price: Option<Coin>,
     supply: Option<u32>,
+    extensions: Option<Vec<ExtensionsConfig<Extension>>>,
+    admins: Option<Vec<String>>,
 ) -> (Addr, Addr) {
     // Instantiate minter contract
-    let minter_contract = init_minter(app, price, supply);
+    let minter_contract = init_minter(app, price, supply, extensions, admins);
 
     // Instantiate cw721 contracts
     let cw721_contract = instantiate_cw721::<Extension>(app, &minter_contract, "CW721");

@@ -1,6 +1,10 @@
 #![cfg(test)]
 use super::utils::{entry::InstantiateMsg, metadata::Extension, shared::ADMIN};
-use crate::{models::config::ExtensionsConfig, tests::utils::entry as minter};
+use crate::{
+    models::config::ExtensionsConfig,
+    msg::{ContractInfoMsg, ContractInfoResp, QueryMsg},
+    tests::utils::entry as minter,
+};
 use cosmwasm_std::Addr;
 use cw_multi_test::{App, ContractWrapper, Executor};
 
@@ -12,24 +16,45 @@ fn instantiate_with_admins() {
     let code = ContractWrapper::new(minter::execute, minter::instantiate, minter::query);
     let code_id = app.store_code(Box::new(code));
 
-    app.instantiate_contract(
-        code_id,
-        Addr::unchecked("owner"),
-        &InstantiateMsg {
+    let address = app
+        .instantiate_contract(
+            code_id,
+            Addr::unchecked("owner"),
+            &InstantiateMsg {
+                supply: None,
+                price: None,
+                extensions: vec![ExtensionsConfig {
+                    value: Extension::default(),
+                    weight: 1,
+                }],
+                admins: vec![ADMIN.to_string()],
+                cw721: None,
+            },
+            &[],
+            "Minter",
+            None,
+        )
+        .unwrap();
+
+    // Validate contract info
+    let info: ContractInfoResp<Extension> = app
+        .wrap()
+        .query_wasm_smart(address, &QueryMsg::ContractInfo(ContractInfoMsg {}))
+        .unwrap();
+
+    assert_eq!(
+        info,
+        ContractInfoResp {
             supply: None,
             price: None,
             extensions: vec![ExtensionsConfig {
-                value: Extension {},
+                value: Extension::default(),
                 weight: 1,
             }],
-            admins: vec![ADMIN.to_string()],
+            admins: vec![Addr::unchecked(ADMIN)],
             cw721: None,
-        },
-        &[],
-        "Minter",
-        None,
-    )
-    .unwrap();
+        }
+    );
 }
 
 /// Test if instantiates correctly with no admins but cw721 set
@@ -47,7 +72,7 @@ fn instantiate_with_cw721() {
             supply: None,
             price: None,
             extensions: vec![ExtensionsConfig {
-                value: Extension {},
+                value: Extension::default(),
                 weight: 1,
             }],
             admins: vec![],
@@ -100,7 +125,7 @@ fn instantiate_with_no_cw721_nor_admins() {
             supply: None,
             price: None,
             extensions: vec![ExtensionsConfig {
-                value: Extension {},
+                value: Extension::default(),
                 weight: 1,
             }],
             admins: vec![],
@@ -128,7 +153,7 @@ fn instantiate_with_invalid_addresses() {
             supply: None,
             price: None,
             extensions: vec![ExtensionsConfig {
-                value: Extension {},
+                value: Extension::default(),
                 weight: 1,
             }],
             admins: vec!["".to_string()],

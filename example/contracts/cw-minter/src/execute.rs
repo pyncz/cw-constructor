@@ -49,7 +49,7 @@ where
         self.mint_count.save(deps.storage, &new_mint_count)?;
 
         // Get the extension
-        // FIXME: get *random* number, not just hash
+        // TODO: get *random* number, not just hash
         // @see https://docs.nois.network/dapp_devs/contract_implementation.html
         let rand = rand(env.block.height, env.block.time.nanos(), new_mint_count);
         let extension = get_weighted_option(rand, &config.extensions).clone();
