@@ -88,7 +88,7 @@ fn equip_allowed_trait() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     )
     .unwrap();
 
@@ -96,7 +96,7 @@ fn equip_allowed_trait() {
     let resp: TraitsResp = app
         .wrap()
         .query_wasm_smart(
-            constructor_contract.clone(),
+            &constructor_contract,
             &QueryMsg::Traits(TraitsMsg {
                 token_id: Some(BASE_TOKEN_ID.to_string()),
                 slot: None,
@@ -189,7 +189,7 @@ fn equip_not_allowed_trait() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     );
 
     assert!(resp.is_err());
@@ -266,7 +266,7 @@ fn equip_not_owned_trait() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     );
 
     assert!(resp.is_err());
@@ -358,7 +358,7 @@ fn equip_approved_trait() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     )
     .unwrap();
 
@@ -366,7 +366,7 @@ fn equip_approved_trait() {
     let resp: TraitsResp = app
         .wrap()
         .query_wasm_smart(
-            constructor_contract.clone(),
+            &constructor_contract,
             &QueryMsg::Traits(TraitsMsg {
                 token_id: Some(BASE_TOKEN_ID.to_string()),
                 slot: None,
@@ -461,7 +461,7 @@ fn equip_on_not_owned_token() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     );
 
     assert!(resp.is_err());
@@ -549,7 +549,7 @@ fn equip_on_approved_token() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     )
     .unwrap();
 
@@ -557,7 +557,7 @@ fn equip_on_approved_token() {
     let resp: TraitsResp = app
         .wrap()
         .query_wasm_smart(
-            constructor_contract.clone(),
+            &constructor_contract,
             &QueryMsg::Traits(TraitsMsg {
                 token_id: Some(BASE_TOKEN_ID.to_string()),
                 slot: None,
@@ -650,7 +650,7 @@ fn equipped_info() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     )
     .unwrap();
 
@@ -658,7 +658,7 @@ fn equipped_info() {
     let resp: InfoResp<Extension, TraitExtension, MergedExtension> = app
         .wrap()
         .query_wasm_smart(
-            constructor_contract.clone(),
+            &constructor_contract,
             &QueryMsg::Info(InfoMsg {
                 token_id: BASE_TOKEN_ID.to_string(),
             }),
@@ -787,7 +787,7 @@ fn equip_taken_slot() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     )
     .unwrap();
 
@@ -802,7 +802,7 @@ fn equip_taken_slot() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     );
 
     assert!(resp.is_err());
@@ -888,7 +888,7 @@ fn equip_taken_slot_with_multiple_allowed() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     )
     .unwrap();
 
@@ -903,7 +903,7 @@ fn equip_taken_slot_with_multiple_allowed() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     )
     .unwrap();
 
@@ -911,7 +911,7 @@ fn equip_taken_slot_with_multiple_allowed() {
     let resp: TraitsResp = app
         .wrap()
         .query_wasm_smart(
-            constructor_contract.clone(),
+            &constructor_contract,
             &QueryMsg::Traits(TraitsMsg {
                 token_id: Some(BASE_TOKEN_ID.to_string()),
                 slot: None,
@@ -1014,7 +1014,7 @@ fn equip_equipped_trait_on_same_token() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     )
     .unwrap();
 
@@ -1029,7 +1029,7 @@ fn equip_equipped_trait_on_same_token() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     );
 
     assert!(resp.is_err());
@@ -1118,7 +1118,7 @@ fn equip_equipped_trait_on_different_token() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     )
     .unwrap();
 
@@ -1133,7 +1133,7 @@ fn equip_equipped_trait_on_different_token() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     );
 
     assert!(resp.is_err());

@@ -33,7 +33,7 @@ fn instantiate_without_admins() {
             code_id,
             Addr::unchecked("owner"),
             &InstantiateMsg {
-                base_token: base_token_unchecked.to_owned(),
+                base_token: base_token_unchecked,
                 slots: vec![],
                 admins: vec![],
             },
@@ -47,7 +47,7 @@ fn instantiate_without_admins() {
     let info: ContractInfoResp = app
         .wrap()
         .query_wasm_smart(
-            contract_address.clone(),
+            &contract_address,
             &QueryMsg::ContractInfo(ContractInfoMsg {}),
         )
         .unwrap();
@@ -55,7 +55,7 @@ fn instantiate_without_admins() {
     assert_eq!(
         info,
         ContractInfoResp {
-            base_token: base_token.to_owned(),
+            base_token,
             slots: vec![],
             admins: vec![]
         }
@@ -65,7 +65,7 @@ fn instantiate_without_admins() {
     let traits: TraitsResp = app
         .wrap()
         .query_wasm_smart(
-            contract_address.clone(),
+            &contract_address,
             &QueryMsg::Traits(TraitsMsg {
                 slot: None,
                 token_id: None,
@@ -174,7 +174,7 @@ fn initial_info() {
     let resp: InfoResp<Extension, TraitExtension, MergedExtension> = app
         .wrap()
         .query_wasm_smart(
-            constructor_contract.clone(),
+            constructor_contract,
             &QueryMsg::Info(InfoMsg {
                 token_id: BASE_TOKEN_ID.to_string(),
             }),

@@ -88,7 +88,7 @@ fn unequip_allowed_trait() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     )
     .unwrap();
 
@@ -102,7 +102,7 @@ fn unequip_allowed_trait() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     )
     .unwrap();
 
@@ -110,7 +110,7 @@ fn unequip_allowed_trait() {
     let resp: TraitsResp = app
         .wrap()
         .query_wasm_smart(
-            constructor_contract.clone(),
+            &constructor_contract,
             &QueryMsg::Traits(TraitsMsg {
                 token_id: Some(BASE_TOKEN_ID.to_string()),
                 slot: None,
@@ -190,7 +190,7 @@ fn unequip_not_equipped_trait() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     );
 
     assert!(resp.is_err());
@@ -266,7 +266,7 @@ fn unequip_not_owned_trait() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     )
     .unwrap();
 
@@ -281,7 +281,7 @@ fn unequip_not_owned_trait() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     );
 
     assert!(resp.is_err());
@@ -357,7 +357,7 @@ fn unequip_approved_trait() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     )
     .unwrap();
 
@@ -382,7 +382,7 @@ fn unequip_approved_trait() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     )
     .unwrap();
 
@@ -390,7 +390,7 @@ fn unequip_approved_trait() {
     let resp: TraitsResp = app
         .wrap()
         .query_wasm_smart(
-            constructor_contract.clone(),
+            &constructor_contract,
             &QueryMsg::Traits(TraitsMsg {
                 token_id: Some(BASE_TOKEN_ID.to_string()),
                 slot: None,
@@ -471,7 +471,7 @@ fn unequipped_info() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     )
     .unwrap();
 
@@ -485,7 +485,7 @@ fn unequipped_info() {
                 address: trait_contract.to_string(),
             }],
         }),
-        &vec![],
+        &[],
     )
     .unwrap();
 
@@ -493,7 +493,7 @@ fn unequipped_info() {
     let resp: InfoResp<Extension, TraitExtension, MergedExtension> = app
         .wrap()
         .query_wasm_smart(
-            constructor_contract.clone(),
+            &constructor_contract,
             &QueryMsg::Info(InfoMsg {
                 token_id: BASE_TOKEN_ID.to_string(),
             }),
