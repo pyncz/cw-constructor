@@ -9,3 +9,5 @@ pub mod msg;
 mod execute;
 mod instantiate;
 mod query;
+
+mod tests;
