@@ -12,7 +12,7 @@ use crate::{
     },
 };
 use cosmwasm_std::{to_json_binary, DepsMut, Env, MessageInfo, Response, WasmMsg};
-use cw721_base::MintMsg as Cw721MintMsg;
+use cw721_base::{ExecuteMsg as Cw721ExecuteMsg, MintMsg as Cw721MintMsg};
 use serde::{de::DeserializeOwned, Serialize};
 
 impl<'a, TExtension> Contract<'a, TExtension>
@@ -56,12 +56,12 @@ where
 
         // Mint the token
         let token_id = new_mint_count.to_string();
-        let mint_msg = Cw721MintMsg::<TExtension> {
+        let mint_msg = Cw721ExecuteMsg::Mint(Cw721MintMsg::<TExtension> {
             token_id: token_id.clone(),
             owner: info.sender.clone().into(),
             token_uri: None,
             extension,
-        };
+        });
         let mint_resp = WasmMsg::Execute {
             contract_addr: cw721.into(),
             msg: to_json_binary(&mint_msg)?,
