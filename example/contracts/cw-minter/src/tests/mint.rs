@@ -1,57 +1,12 @@
 #![cfg(test)]
-use super::utils::{
-    cw721::instantiate_cw721,
-    entry::InstantiateMsg,
-    metadata::Extension,
-    shared::{ADMIN, USER},
-};
+use super::utils::{init::init_minter, shared::USER};
 use crate::{
-    models::config::ExtensionsConfig,
-    msg::{ExecuteMsg, MintMsg, SetCw721Msg},
-    tests::utils::entry as minter,
+    msg::{ExecuteMsg, MintMsg},
+    tests::utils::init::init_cw721_with_minter,
 };
 use cosmwasm_std::{coins, Addr, Coin, Uint128};
 use cw721::{Cw721ExecuteMsg, Cw721QueryMsg, NumTokensResponse, TokensResponse};
-use cw_multi_test::{App, ContractWrapper, Executor};
-
-fn init_cw721_with_minter(app: &mut App, price: Option<Coin>, supply: Option<u32>) -> (Addr, Addr) {
-    let code = ContractWrapper::new(minter::execute, minter::instantiate, minter::query);
-    let code_id = app.store_code(Box::new(code));
-
-    // Instantiate minter contract
-    let minter_contract = app
-        .instantiate_contract(
-            code_id,
-            Addr::unchecked("owner"),
-            &InstantiateMsg {
-                supply,
-                price,
-                extensions: vec![ExtensionsConfig {
-                    value: Extension {},
-                    weight: 1,
-                }],
-                admins: vec![ADMIN.to_string()],
-                cw721: None,
-            },
-            &[],
-            "Minter",
-            None,
-        )
-        .unwrap();
-
-    // Instantiate cw721 contracts
-    let cw721_contract = instantiate_cw721::<Extension>(app, &minter_contract, "CW721");
-
-    // Set cw721 for minter contract
-    let admin = Addr::unchecked(ADMIN);
-    let update_msg = ExecuteMsg::SetCw721(SetCw721Msg {
-        address: cw721_contract.clone().into(),
-    });
-    app.execute_contract(admin, minter_contract.clone(), &update_msg, &[])
-        .unwrap();
-
-    (minter_contract, cw721_contract)
-}
+use cw_multi_test::{App, Executor};
 
 /// Test base mint with no funds required
 #[test]
@@ -88,6 +43,19 @@ fn mint() {
             tokens: vec!["1".to_string()]
         }
     );
+}
+
+/// Test behaviour with no cw721 address set
+#[test]
+fn mint_without_cw721_set() {
+    let mut app = App::default();
+    let minter_contract = init_minter(&mut app, None, None);
+
+    // Mint
+    let user = Addr::unchecked(USER);
+    let mint_msg = ExecuteMsg::Mint(MintMsg {});
+    let resp = app.execute_contract(user, minter_contract, &mint_msg, &[]);
+    assert!(resp.is_err());
 }
 
 /// Test minting multiple items
@@ -332,8 +300,7 @@ fn mint_out_supply_with_burn() {
     // Mint supply
     let user = Addr::unchecked(USER);
     let mint_msg = ExecuteMsg::Mint(MintMsg {});
-    for i in 0..supply {
-        println!("{}", i);
+    for _ in 0..supply {
         app.execute_contract(user.clone(), minter_contract.clone(), &mint_msg, &[])
             .unwrap();
     }
