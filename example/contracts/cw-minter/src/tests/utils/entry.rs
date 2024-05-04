@@ -1,11 +1,11 @@
 use super::metadata::Extension;
-use crate::contract::Contract as MinterContract;
+use crate::contract::Contract as BaseContract;
 use crate::error::ContractResponse;
-use crate::msg::{ExecuteMsg, InstantiateMsg as MinterInstantiateMsg, QueryMsg};
+use crate::msg::{ExecuteMsg, InstantiateMsg as BaseInstantiateMsg, QueryMsg};
 use cosmwasm_std::{Binary, Deps, DepsMut, Env, MessageInfo, StdResult};
 
-pub type Contract<'a> = MinterContract<'a, Extension>;
-pub type InstantiateMsg = MinterInstantiateMsg<Extension>;
+pub type Contract<'a> = BaseContract<'a, Extension>;
+pub type InstantiateMsg = BaseInstantiateMsg<Extension>;
 
 #[allow(dead_code)]
 pub fn instantiate(

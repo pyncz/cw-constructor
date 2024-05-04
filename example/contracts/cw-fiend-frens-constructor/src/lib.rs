@@ -25,8 +25,8 @@ pub mod entry {
     ) -> ContractResponse {
         cw2::set_contract_version(deps.storage, CONTRACT_NAME, CONTRACT_VERSION)?;
 
-        let constructor = Contract::default();
-        constructor.instantiate(deps, env, info, msg)
+        let contract = Contract::default();
+        contract.instantiate(deps, env, info, msg)
     }
 
     #[cfg_attr(not(feature = "library"), entry_point)]
@@ -36,13 +36,13 @@ pub mod entry {
         info: MessageInfo,
         msg: ExecuteMsg,
     ) -> ContractResponse {
-        let constructor = Contract::default();
-        constructor.execute(deps, env, info, msg)
+        let contract = Contract::default();
+        contract.execute(deps, env, info, msg)
     }
 
     #[cfg_attr(not(feature = "library"), entry_point)]
     pub fn query(deps: Deps, env: Env, msg: QueryMsg) -> StdResult<Binary> {
-        let constructor = Contract::default();
-        constructor.query(deps, env, msg)
+        let contract = Contract::default();
+        contract.query(deps, env, msg)
     }
 }
