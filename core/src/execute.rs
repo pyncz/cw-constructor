@@ -23,19 +23,16 @@ impl<'a, TExtension, TTraitExtension, TMergedExtension>
         // To equip traits, the sender must be:
         // - the base token's owner / approved spender
         self.require_sender_cw721_approval(
-            &config.base_token,
+            config.base_token,
             &msg.token_id,
             &deps.as_ref(),
             &info,
         )?;
 
         // - the trait tokens' owner / approved spender
-        msg.traits
-            .iter()
-            .map(|t| {
-                self.require_sender_cw721_approval(&t.address, &t.token_id, &deps.as_ref(), &info)
-            })
-            .collect::<ContractResult>()?;
+        msg.traits.iter().try_for_each(|t| {
+            self.require_sender_cw721_approval(&t.address, &t.token_id, &deps.as_ref(), &info)
+        })?;
 
         let input: Vec<_> = msg
             .traits

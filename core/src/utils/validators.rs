@@ -69,10 +69,7 @@ impl<'a, TExtension, TTraitExtension, TMergedExtension>
             .iter()
             .any(|t| address == t.token.address && *token_id == t.token.token_id)
         {
-            return Err(ContractError::TraitTokenAlreadyApplied {
-                address,
-                token_id: token_id.to_owned(),
-            });
+            return Err(ContractError::TraitTokenAlreadyApplied { address, token_id });
         }
 
         Ok(parsed_trait)
@@ -80,7 +77,7 @@ impl<'a, TExtension, TTraitExtension, TMergedExtension>
 
     pub fn validate_traits(
         &self,
-        input: &Vec<Trait<String>>,
+        input: &[Trait<String>],
         deps: &Deps,
     ) -> ContractResult<Vec<Trait>> {
         // Validate traits' data against the current state
@@ -140,7 +137,7 @@ pub fn validate_slot_config(input: &SlotConfig<String>, deps: &Deps) -> Contract
 }
 
 pub fn validate_slot_configs(
-    input: &Vec<SlotConfig<String>>,
+    input: &[SlotConfig<String>],
     deps: &Deps,
 ) -> ContractResult<Vec<SlotConfig>> {
     // Validate uniqueness of the slot names

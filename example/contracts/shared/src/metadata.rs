@@ -78,11 +78,8 @@ pub struct MergedExtension {
 
 impl From<Extension> for MergedExtension {
     fn from(value: Extension) -> Self {
-        let attributes: Vec<MergedAttribute> = value
-            .attributes
-            .iter()
-            .map(|a| MergedAttribute::from(a))
-            .collect();
+        let attributes: Vec<MergedAttribute> =
+            value.attributes.iter().map(MergedAttribute::from).collect();
 
         MergedExtension {
             name: value.name,
@@ -166,7 +163,7 @@ impl MergeWithTraitExtension<TraitExtension> for MergedExtension {
                 let mut diff =
                     CwDecimal::from_str(number_diff.abs().to_string().as_str()).unwrap_or_default();
                 // - percentage
-                let coeff = CwDecimal::percent(percentage_diff.abs() as u64);
+                let coeff = CwDecimal::percent(percentage_diff.unsigned_abs());
 
                 if let Ok(p_diff) = coeff.checked_mul(initial_value) {
                     if percentage_diff < 0 && number_diff < 0
@@ -185,7 +182,7 @@ impl MergeWithTraitExtension<TraitExtension> for MergedExtension {
                             negative = !negative;
                         } else {
                             // Decrease diff
-                            diff = diff - p_diff;
+                            diff -= p_diff;
                         }
                     }
                 }

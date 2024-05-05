@@ -28,7 +28,7 @@ impl<'a, TExtension, TTraitExtension, TMergedExtension>
 
     pub fn require_sender(
         &self,
-        addresses: &Vec<String>,
+        addresses: &[String],
         _deps: &Deps,
         info: &MessageInfo,
     ) -> ContractResult {
@@ -47,7 +47,7 @@ impl<'a, TExtension, TTraitExtension, TMergedExtension>
         deps: &Deps,
         info: &MessageInfo,
     ) -> ContractResult {
-        let owner_of_res = cw721_owner_of(&address.to_string(), &token_id, &deps)?;
+        let owner_of_res = cw721_owner_of(&address.to_string(), token_id, deps)?;
         let mut spenders: Vec<_> = owner_of_res
             .approvals
             .into_iter()

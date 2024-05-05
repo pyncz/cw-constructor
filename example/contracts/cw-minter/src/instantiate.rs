@@ -33,11 +33,11 @@ where
             attrs.push(Attribute::new(MINT_PRICE_DENOM_EVENT, &price.denom));
             attrs.push(Attribute::new(
                 MINT_PRICE_AMOUNT_SET_EVENT,
-                &price.amount.to_string(),
+                price.amount.to_string(),
             ));
         }
         if let Some(cw721) = msg.cw721 {
-            attrs.push(Attribute::new(CW721_SET_EVENT, &cw721));
+            attrs.push(Attribute::new(CW721_SET_EVENT, cw721));
         }
         Ok(Response::new()
             .add_attribute(ACTION, INSTANTIATE_ACTION)
