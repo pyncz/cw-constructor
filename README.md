@@ -57,3 +57,17 @@ sh ./scripts/optimize.sh
 ```sh
 sh ./scripts/schema.sh
 ```
+
+### Store built wasm code
+```sh
+ACCOUNT=dev CHAIN_ID=constantine-3 GAS_ADJUSTMENT=1.4 DRY_RUN=1 sh ./scripts/store.sh target/wasm32-unknown-unknown/release/cw721_fiend_frens_trait.wasm
+```
+
+...where the arguments are:
+| arg | description  | default |
+| - | - | - |
+| `$1` | `wasm` file to store onchain | - |
+| `$ACCOUNT` | `archwayd` account's name / address to use as the sender | - |
+| `$CHAIN_ID` | chain ID, e.g. `archway-1`, `constantine-3` or `titus-3` | `constantine-3` |
+| `$GAS_ADJUSTMENT` | gas adjustment coefficient | `1.4` |
+| `$DRY_RUN` | `1` if dry-run store tx without broadcasting it, `0` otherwise (make sure to provide *address* instead of account *name* in `$ACCOUNT` for dry-run!) | `0` |
