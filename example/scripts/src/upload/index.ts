@@ -9,6 +9,7 @@ import { consola } from 'consola';
 import { requireEnv } from '../utils';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const rootPath = resolve(__dirname, '../..');
 
 // Load env
 const { parsed: env } = loadEnv();
@@ -22,7 +23,7 @@ const pinata = new PinataSdk({ pinataApiKey: PINATA_API_KEY, pinataSecretApiKey:
 try {
   consola.start('Uploading images to IPFS...');
 
-  const assetsPath = resolve(__dirname, '../../assets');
+  const assetsPath = `${rootPath}/assets`;
   const dirs = fs.readdirSync(assetsPath);
   for (const collection of dirs) {
     consola.info({ message: `Processing ${collection}`, level: 1 });

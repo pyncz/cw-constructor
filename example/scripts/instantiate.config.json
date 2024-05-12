@@ -1,0 +1,362 @@
+{
+  "fiend-frens-minter": {
+    "code_id": "2548",
+    "address": null,
+    "admin": {
+      "$var": "sender"
+    },
+    "msg": {
+      "cw721": null,
+      "supply": 1000,
+      "price": {
+        "amount": "10000000000000000000",
+        "denom": {
+          "$var": "denom"
+        }
+      },
+      "extensions": [
+        {
+          "weight": 1,
+          "value": {
+            "$json": "./assets/fiend-frens/arch/metadata.json"
+          }
+        },
+        {
+          "weight": 3,
+          "value": {
+            "$json": "./assets/fiend-frens/blue/metadata.json"
+          }
+        },
+        {
+          "weight": 3,
+          "value": {
+            "$json": "./assets/fiend-frens/green/metadata.json"
+          }
+        },
+        {
+          "weight": 3,
+          "value": {
+            "$json": "./assets/fiend-frens/red/metadata.json"
+          }
+        }
+      ],
+      "admins": [
+        {
+          "$var": "sender"
+        }
+      ]
+    }
+  },
+  "fiend-frens": {
+    "code_id": "2549",
+    "address": null,
+    "admin": {
+      "$var": "sender"
+    },
+    "msg": {
+      "name": "Fiend Frens",
+      "symbol": "FIENDS",
+      "minter": {
+        "$ref": "fiend-frens-minter.address"
+      }
+    },
+    "after": {
+      "contract": {
+        "$ref": "fiend-frens-minter.address"
+      },
+      "msg": {
+        "set_cw721": {
+          "address": {
+            "$ref": "fiend-frens.address"
+          }
+        }
+      }
+    }
+  },
+  "fiend-frens-horns-minter": {
+    "code_id": "2543",
+    "address": null,
+    "admin": {
+      "$var": "sender"
+    },
+    "msg": {
+      "cw721": null,
+      "supply": 10000,
+      "price": {
+        "amount": "1000000000000000000",
+        "denom": {
+          "$var": "denom"
+        }
+      },
+      "extensions": [
+        {
+          "weight": 1,
+          "value": {
+            "$json": "./assets/fiend-frens-horns/basic/metadata.json"
+          }
+        },
+        {
+          "weight": 1,
+          "value": {
+            "$json": "./assets/fiend-frens-horns/curly/metadata.json"
+          }
+        },
+        {
+          "weight": 1,
+          "value": {
+            "$json": "./assets/fiend-frens-horns/hearts/metadata.json"
+          }
+        },
+        {
+          "weight": 1,
+          "value": {
+            "$json": "./assets/fiend-frens-horns/sharp/metadata.json"
+          }
+        }
+      ],
+      "admins": [
+        {
+          "$var": "sender"
+        }
+      ]
+    }
+  },
+  "fiend-frens-horns": {
+    "code_id": "2540",
+    "address": null,
+    "admin": {
+      "$var": "sender"
+    },
+    "msg": {
+      "name": "Fiend Frens Horns",
+      "symbol": "FIENDHORNS",
+      "minter": {
+        "$ref": "fiend-frens-horns-minter.address"
+      }
+    },
+    "after": {
+      "contract": {
+        "$ref": "fiend-frens-horns-minter.address"
+      },
+      "msg": {
+        "set_cw721": {
+          "address": {
+            "$ref": "fiend-frens-horns.address"
+          }
+        }
+      }
+    }
+  },
+  "fiend-frens-weapon-minter": {
+    "code_id": "2543",
+    "address": null,
+    "admin": {
+      "$var": "sender"
+    },
+    "msg": {
+      "cw721": null,
+      "supply": 10000,
+      "price": {
+        "amount": "1000000000000000000",
+        "denom": {
+          "$var": "denom"
+        }
+      },
+      "extensions": [
+        {
+          "weight": 1,
+          "value": {
+            "$json": "./assets/fiend-frens-weapon/baloon/metadata.json"
+          }
+        },
+        {
+          "weight": 1,
+          "value": {
+            "$json": "./assets/fiend-frens-weapon/cutlery/metadata.json"
+          }
+        },
+        {
+          "weight": 1,
+          "value": {
+            "$json": "./assets/fiend-frens-weapon/daggers/metadata.json"
+          }
+        },
+        {
+          "weight": 1,
+          "value": {
+            "$json": "./assets/fiend-frens-weapon/magic-stick/metadata.json"
+          }
+        },
+        {
+          "weight": 1,
+          "value": {
+            "$json": "./assets/fiend-frens-weapon/marshmallow-stick/metadata.json"
+          }
+        },
+        {
+          "weight": 1,
+          "value": {
+            "$json": "./assets/fiend-frens-weapon/scoop-net/metadata.json"
+          }
+        },
+        {
+          "weight": 1,
+          "value": {
+            "$json": "./assets/fiend-frens-weapon/swatter/metadata.json"
+          }
+        }
+      ],
+      "admins": [
+        {
+          "$var": "sender"
+        }
+      ]
+    }
+  },
+  "fiend-frens-weapon": {
+    "code_id": "2540",
+    "address": null,
+    "admin": {
+      "$var": "sender"
+    },
+    "msg": {
+      "name": "Fiend Frens Weapon",
+      "symbol": "FIENDWEAPON",
+      "minter": {
+        "$ref": "fiend-frens-weapon-minter.address"
+      }
+    },
+    "after": {
+      "contract": {
+        "$ref": "fiend-frens-weapon-minter.address"
+      },
+      "msg": {
+        "set_cw721": {
+          "address": {
+            "$ref": "fiend-frens-weapon.address"
+          }
+        }
+      }
+    }
+  },
+  "fiend-frens-wings-minter": {
+    "code_id": "2543",
+    "address": null,
+    "admin": {
+      "$var": "sender"
+    },
+    "msg": {
+      "cw721": null,
+      "supply": 10000,
+      "price": {
+        "amount": "1000000000000000000",
+        "denom": {
+          "$var": "denom"
+        }
+      },
+      "extensions": [
+        {
+          "weight": 1,
+          "value": {
+            "$json": "./assets/fiend-frens-wings/butterfly/metadata.json"
+          }
+        },
+        {
+          "weight": 1,
+          "value": {
+            "$json": "./assets/fiend-frens-wings/feather/metadata.json"
+          }
+        },
+        {
+          "weight": 1,
+          "value": {
+            "$json": "./assets/fiend-frens-wings/gargoyle/metadata.json"
+          }
+        },
+        {
+          "weight": 1,
+          "value": {
+            "$json": "./assets/fiend-frens-wings/membranous/metadata.json"
+          }
+        }
+      ],
+      "admins": [
+        {
+          "$var": "sender"
+        }
+      ]
+    }
+  },
+  "fiend-frens-wings": {
+    "code_id": "2540",
+    "address": null,
+    "admin": {
+      "$var": "sender"
+    },
+    "msg": {
+      "name": "Fiend Frens Wings",
+      "symbol": "FIENDWINGS",
+      "minter": {
+        "$ref": "fiend-frens-wings-minter.address"
+      }
+    },
+    "after": {
+      "contract": {
+        "$ref": "fiend-frens-wings-minter.address"
+      },
+      "msg": {
+        "set_cw721": {
+          "address": {
+            "$ref": "fiend-frens-wings.address"
+          }
+        }
+      }
+    }
+  },
+  "fiend-frens-constructor": {
+    "code_id": "2550",
+    "address": null,
+    "admin": {
+      "$var": "sender"
+    },
+    "msg": {
+      "base_token": {
+        "$ref": "fiend-frens.address"
+      },
+      "slots": [
+        {
+          "name": "horns",
+          "allowed_contracts": [
+            {
+              "$ref": "fiend-frens-horns.address"
+            }
+          ],
+          "allow_multiple": false
+        },
+        {
+          "name": "weapon",
+          "allowed_contracts": [
+            {
+              "$ref": "fiend-frens-weapon.address"
+            }
+          ],
+          "allow_multiple": false
+        },
+        {
+          "name": "wings",
+          "allowed_contracts": [
+            {
+              "$ref": "fiend-frens-wings.address"
+            }
+          ],
+          "allow_multiple": false
+        }
+      ],
+      "admins": [
+        {
+          "$var": "sender"
+        }
+      ]
+    }
+  }
+}

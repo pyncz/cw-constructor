@@ -4,13 +4,17 @@
   "description": "Scripts to upload NFTs' assets on IPFS, instantiate example contracts etc",
   "type": "module",
   "scripts": {
-    "upload": "esno ./src/upload/index.ts"
+    "upload": "esno ./src/upload/index.ts",
+    "instantiate": "esno ./src/instantiate/index.ts"
   },
   "devDependencies": {
+    "@archwayhq/arch3.js": "^0.7.0",
+    "@cosmjs/proto-signing": "^0.32.3",
     "@pinata/sdk": "^2.1.0",
     "@types/node": "^20.12.7",
     "consola": "^3.2.3",
     "dotenv": "^16.4.5",
-    "esno": "^4.7.0"
+    "esno": "^4.7.0",
+    "ofetch": "^1.3.4"
   }
 }
