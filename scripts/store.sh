@@ -13,12 +13,15 @@ fi
 
 ## optional vars
 : "${CHAIN_ID:='constantine-3'}";
-if [ CHAIN_ID == 'archway-1' ]; then 
+if [ $CHAIN_ID == 'archway-1' ]; then 
     RPC='https://rpc.mainnet.archway.io:443';
-elif [ CHAIN_ID == 'titus-2' ]; then
+elif [ $CHAIN_ID == 'titus-2' ]; then
     RPC='https://rpc.titus.archway.io:443';
-else
+elif [ $CHAIN_ID == 'constantine-3' ]; then
     RPC='https://rpc.constantine.archway.io:443';
+else
+  echo "Invalid CHAIN_ID!";
+  exit 1;
 fi
 
 : "${GAS_ADJUSTMENT:=1.4}";
