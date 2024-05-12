@@ -8,6 +8,7 @@ use crate::metadata::{
 };
 use cosmwasm_std::Decimal as CwDecimal;
 use cw_constructor::models::metadata::MergeWithTraitExtension;
+use serde_json::{json, to_string};
 
 /// Test if keeps not-numeric attributes
 #[test]
@@ -39,7 +40,26 @@ fn keep_string_attributes() {
                 value: "Blue".to_string(),
             })],
         }
-    )
+    );
+
+    let serialized_ext = to_string(&ext).unwrap();
+    assert_eq!(
+        serialized_ext,
+        json!({
+            "name": "Gregg",
+            "description": "Gregg loves oranges",
+            "images": [
+                "image"
+            ],
+            "attributes": [
+                {
+                    "trait_type": "Kind",
+                    "value": "Blue"
+                }
+            ]
+        })
+        .to_string()
+    );
 }
 
 /// Test if ignores attributes not featured in the original extension
@@ -76,7 +96,26 @@ fn ignore_unknown_attributes() {
                 value: "Blue".to_string(),
             })],
         }
-    )
+    );
+
+    let serialized_ext = to_string(&ext).unwrap();
+    assert_eq!(
+        serialized_ext,
+        json!({
+            "name": "Gregg",
+            "description": "Gregg loves oranges",
+            "images": [
+                "image"
+            ],
+            "attributes": [
+                {
+                    "trait_type": "Kind",
+                    "value": "Blue"
+                }
+            ]
+        })
+        .to_string()
+    );
 }
 
 // BoostNumber attributes
@@ -116,7 +155,27 @@ fn boost_number_positive() {
                 value: CwDecimal::from_str("5").unwrap(),
             })],
         }
-    )
+    );
+
+    let serialized_ext = to_string(&ext).unwrap();
+    assert_eq!(
+        serialized_ext,
+        json!({
+            "name": "Gregg",
+            "description": "Gregg loves oranges",
+            "images": [
+                "image"
+            ],
+            "attributes": [
+                {
+                    "trait_type": "Rage",
+                    "display_type": "decimal",
+                    "value": "5"
+                }
+            ]
+        })
+        .to_string()
+    );
 }
 
 /// Test adding multiple numeric attributes
@@ -162,7 +221,27 @@ fn boost_number_positive_multiple() {
                 value: CwDecimal::from_str("6").unwrap(),
             })],
         }
-    )
+    );
+
+    let serialized_ext = to_string(&ext).unwrap();
+    assert_eq!(
+        serialized_ext,
+        json!({
+            "name": "Gregg",
+            "description": "Gregg loves oranges",
+            "images": [
+                "image"
+            ],
+            "attributes": [
+                {
+                    "trait_type": "Rage",
+                    "display_type": "decimal",
+                    "value": "6"
+                }
+            ]
+        })
+        .to_string()
+    );
 }
 
 /// Test adding a negative numeric attribute
@@ -201,7 +280,27 @@ fn boost_number_negative() {
                 value: CwDecimal::from_str("1").unwrap(),
             })],
         }
-    )
+    );
+
+    let serialized_ext = to_string(&ext).unwrap();
+    assert_eq!(
+        serialized_ext,
+        json!({
+            "name": "Gregg",
+            "description": "Gregg loves oranges",
+            "images": [
+                "image"
+            ],
+            "attributes": [
+                {
+                    "trait_type": "Rage",
+                    "display_type": "decimal",
+                    "value": "1"
+                }
+            ]
+        })
+        .to_string()
+    );
 }
 
 /// Test adding a negative numeric attribute resulting in at least 0
@@ -240,7 +339,27 @@ fn boost_number_negative_floor() {
                 value: CwDecimal::from_str("0").unwrap(),
             })],
         }
-    )
+    );
+
+    let serialized_ext = to_string(&ext).unwrap();
+    assert_eq!(
+        serialized_ext,
+        json!({
+            "name": "Gregg",
+            "description": "Gregg loves oranges",
+            "images": [
+                "image"
+            ],
+            "attributes": [
+                {
+                    "trait_type": "Rage",
+                    "display_type": "decimal",
+                    "value": "0"
+                }
+            ]
+        })
+        .to_string()
+    );
 }
 
 /// Test getting the same result for different numeric trait attributes' order
@@ -292,6 +411,26 @@ fn boost_number_order() {
     }]);
 
     assert_eq!(ext1, ext2);
+
+    let serialized_ext = to_string(&ext1).unwrap();
+    assert_eq!(
+        serialized_ext,
+        json!({
+            "name": "Gregg",
+            "description": "Gregg loves oranges",
+            "images": [
+                "image"
+            ],
+            "attributes": [
+                {
+                    "trait_type": "Rage",
+                    "display_type": "decimal",
+                    "value": "1"
+                }
+            ]
+        })
+        .to_string()
+    );
 }
 
 // BoostPercentage attributes
@@ -331,7 +470,27 @@ fn boost_percentage_positive() {
                 value: CwDecimal::from_str("6").unwrap(),
             })],
         }
-    )
+    );
+
+    let serialized_ext = to_string(&ext).unwrap();
+    assert_eq!(
+        serialized_ext,
+        json!({
+            "name": "Gregg",
+            "description": "Gregg loves oranges",
+            "images": [
+                "image"
+            ],
+            "attributes": [
+                {
+                    "trait_type": "Rage",
+                    "display_type": "decimal",
+                    "value": "6"
+                }
+            ]
+        })
+        .to_string()
+    );
 }
 
 /// Test adding multiple percentage attributes
@@ -377,7 +536,27 @@ fn boost_percentage_positive_multiple() {
                 value: CwDecimal::from_str("7").unwrap(),
             })],
         }
-    )
+    );
+
+    let serialized_ext = to_string(&ext).unwrap();
+    assert_eq!(
+        serialized_ext,
+        json!({
+            "name": "Gregg",
+            "description": "Gregg loves oranges",
+            "images": [
+                "image"
+            ],
+            "attributes": [
+                {
+                    "trait_type": "Rage",
+                    "display_type": "decimal",
+                    "value": "7"
+                }
+            ]
+        })
+        .to_string()
+    );
 }
 
 /// Test adding a percentage attribute boosting more than 100%
@@ -416,7 +595,27 @@ fn boost_percentage_positive_lt_100() {
                 value: CwDecimal::from_str("8.04").unwrap(),
             })],
         }
-    )
+    );
+
+    let serialized_ext = to_string(&ext).unwrap();
+    assert_eq!(
+        serialized_ext,
+        json!({
+            "name": "Gregg",
+            "description": "Gregg loves oranges",
+            "images": [
+                "image"
+            ],
+            "attributes": [
+                {
+                    "trait_type": "Rage",
+                    "display_type": "decimal",
+                    "value": "8.04"
+                }
+            ]
+        })
+        .to_string()
+    );
 }
 
 /// Test adding a negative percentage attribute
@@ -455,7 +654,27 @@ fn boost_percentage_negative() {
                 value: CwDecimal::from_str("2").unwrap(),
             })],
         }
-    )
+    );
+
+    let serialized_ext = to_string(&ext).unwrap();
+    assert_eq!(
+        serialized_ext,
+        json!({
+            "name": "Gregg",
+            "description": "Gregg loves oranges",
+            "images": [
+                "image"
+            ],
+            "attributes": [
+                {
+                    "trait_type": "Rage",
+                    "display_type": "decimal",
+                    "value": "2"
+                }
+            ]
+        })
+        .to_string()
+    );
 }
 
 /// Test adding a percentage numeric attribute resulting in at least 0
@@ -494,7 +713,27 @@ fn boost_percentage_negative_floor() {
                 value: CwDecimal::from_str("0").unwrap(),
             })],
         }
-    )
+    );
+
+    let serialized_ext = to_string(&ext).unwrap();
+    assert_eq!(
+        serialized_ext,
+        json!({
+            "name": "Gregg",
+            "description": "Gregg loves oranges",
+            "images": [
+                "image"
+            ],
+            "attributes": [
+                {
+                    "trait_type": "Rage",
+                    "display_type": "decimal",
+                    "value": "0"
+                }
+            ]
+        })
+        .to_string()
+    );
 }
 
 /// Test getting the same result for different percentage trait attributes' order
@@ -546,6 +785,26 @@ fn boost_percentage_order() {
     }]);
 
     assert_eq!(ext1, ext2);
+
+    let serialized_ext = to_string(&ext1).unwrap();
+    assert_eq!(
+        serialized_ext,
+        json!({
+            "name": "Gregg",
+            "description": "Gregg loves oranges",
+            "images": [
+                "image"
+            ],
+            "attributes": [
+                {
+                    "trait_type": "Rage",
+                    "display_type": "decimal",
+                    "value": "4"
+                }
+            ]
+        })
+        .to_string()
+    );
 }
 
 // BoostPercentage attributes
@@ -594,7 +853,27 @@ fn boost_combined() {
                 value: CwDecimal::from_str("10").unwrap(),
             })],
         }
-    )
+    );
+
+    let serialized_ext = to_string(&ext).unwrap();
+    assert_eq!(
+        serialized_ext,
+        json!({
+            "name": "Gregg",
+            "description": "Gregg loves oranges",
+            "images": [
+                "image"
+            ],
+            "attributes": [
+                {
+                    "trait_type": "Rage",
+                    "display_type": "decimal",
+                    "value": "10"
+                }
+            ]
+        })
+        .to_string()
+    );
 }
 
 /// Test if processes multiple different attributes
@@ -654,7 +933,32 @@ fn accept_multiple_attributes() {
                 })
             ],
         }
-    )
+    );
+
+    let serialized_ext = to_string(&ext).unwrap();
+    assert_eq!(
+        serialized_ext,
+        json!({
+            "name": "Gregg",
+            "description": "Gregg loves oranges",
+            "images": [
+                "image"
+            ],
+            "attributes": [
+                {
+                    "trait_type": "Rage",
+                    "display_type": "decimal",
+                    "value": "6"
+                },
+                {
+                    "trait_type": "Deception",
+                    "display_type": "decimal",
+                    "value": "3"
+                }
+            ]
+        })
+        .to_string()
+    );
 }
 
 /// Test basic aggregation of traits' images
@@ -681,7 +985,22 @@ fn aggregate_images() {
             images: vec!["image".to_string(), "trait-image".to_string()],
             attributes: vec![],
         }
-    )
+    );
+
+    let serialized_ext = to_string(&ext).unwrap();
+    assert_eq!(
+        serialized_ext,
+        json!({
+            "name": "Gregg",
+            "description": "Gregg loves oranges",
+            "images": [
+                "image",
+                "trait-image"
+            ],
+            "attributes": []
+        })
+        .to_string()
+    );
 }
 
 /// Test aggregation of multiple optional traits' images
@@ -722,5 +1041,21 @@ fn aggregate_images_multiple() {
             ],
             attributes: vec![],
         }
-    )
+    );
+
+    let serialized_ext = to_string(&ext).unwrap();
+    assert_eq!(
+        serialized_ext,
+        json!({
+            "name": "Gregg",
+            "description": "Gregg loves oranges",
+            "images": [
+                "image",
+                "trait-image-1",
+                "trait-image-2"
+            ],
+            "attributes": []
+        })
+        .to_string()
+    );
 }
