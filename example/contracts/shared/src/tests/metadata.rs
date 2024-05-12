@@ -14,6 +14,7 @@ use cw_constructor::models::metadata::MergeWithTraitExtension;
 fn keep_string_attributes() {
     let base = &Extension {
         name: "Gregg".to_string(),
+        description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
         attributes: vec![Attribute::String(StringAttribute {
             trait_type: "Kind".to_string(),
@@ -31,6 +32,7 @@ fn keep_string_attributes() {
         ext,
         MergedExtension {
             name: "Gregg".to_string(),
+            description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute::String(StringAttribute {
                 trait_type: "Kind".to_string(),
@@ -45,6 +47,7 @@ fn keep_string_attributes() {
 fn ignore_unknown_attributes() {
     let base = &Extension {
         name: "Gregg".to_string(),
+        description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
         attributes: vec![Attribute::String(StringAttribute {
             trait_type: "Kind".to_string(),
@@ -66,6 +69,7 @@ fn ignore_unknown_attributes() {
         ext,
         MergedExtension {
             name: "Gregg".to_string(),
+            description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute::String(StringAttribute {
                 trait_type: "Kind".to_string(),
@@ -81,6 +85,7 @@ fn ignore_unknown_attributes() {
 fn boost_number_positive() {
     let base = &Extension {
         name: "Gregg".to_string(),
+        description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
         attributes: vec![Attribute::Number(NumberAttribute {
             trait_type: "Rage".to_string(),
@@ -103,6 +108,7 @@ fn boost_number_positive() {
         ext,
         MergedExtension {
             name: "Gregg".to_string(),
+            description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute::Decimal(DecimalAttribute {
                 trait_type: "Rage".to_string(),
@@ -118,6 +124,7 @@ fn boost_number_positive() {
 fn boost_number_positive_multiple() {
     let base = &Extension {
         name: "Gregg".to_string(),
+        description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
         attributes: vec![Attribute::Number(NumberAttribute {
             trait_type: "Rage".to_string(),
@@ -147,6 +154,7 @@ fn boost_number_positive_multiple() {
         ext,
         MergedExtension {
             name: "Gregg".to_string(),
+            description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute::Decimal(DecimalAttribute {
                 trait_type: "Rage".to_string(),
@@ -162,6 +170,7 @@ fn boost_number_positive_multiple() {
 fn boost_number_negative() {
     let base = &Extension {
         name: "Gregg".to_string(),
+        description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
         attributes: vec![Attribute::Number(NumberAttribute {
             trait_type: "Rage".to_string(),
@@ -184,6 +193,7 @@ fn boost_number_negative() {
         ext,
         MergedExtension {
             name: "Gregg".to_string(),
+            description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute::Decimal(DecimalAttribute {
                 trait_type: "Rage".to_string(),
@@ -199,6 +209,7 @@ fn boost_number_negative() {
 fn boost_number_negative_floor() {
     let base = &Extension {
         name: "Gregg".to_string(),
+        description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
         attributes: vec![Attribute::Number(NumberAttribute {
             trait_type: "Rage".to_string(),
@@ -221,6 +232,7 @@ fn boost_number_negative_floor() {
         ext,
         MergedExtension {
             name: "Gregg".to_string(),
+            description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute::Decimal(DecimalAttribute {
                 trait_type: "Rage".to_string(),
@@ -236,6 +248,7 @@ fn boost_number_negative_floor() {
 fn boost_number_order() {
     let base = &Extension {
         name: "Gregg".to_string(),
+        description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
         attributes: vec![Attribute::Number(NumberAttribute {
             trait_type: "Rage".to_string(),
@@ -287,6 +300,7 @@ fn boost_number_order() {
 fn boost_percentage_positive() {
     let base = &Extension {
         name: "Gregg".to_string(),
+        description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
         attributes: vec![Attribute::Number(NumberAttribute {
             trait_type: "Rage".to_string(),
@@ -309,6 +323,7 @@ fn boost_percentage_positive() {
         ext,
         MergedExtension {
             name: "Gregg".to_string(),
+            description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute::Decimal(DecimalAttribute {
                 trait_type: "Rage".to_string(),
@@ -324,6 +339,7 @@ fn boost_percentage_positive() {
 fn boost_percentage_positive_multiple() {
     let base = &Extension {
         name: "Gregg".to_string(),
+        description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
         attributes: vec![Attribute::Number(NumberAttribute {
             trait_type: "Rage".to_string(),
@@ -353,6 +369,7 @@ fn boost_percentage_positive_multiple() {
         ext,
         MergedExtension {
             name: "Gregg".to_string(),
+            description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute::Decimal(DecimalAttribute {
                 trait_type: "Rage".to_string(),
@@ -368,6 +385,7 @@ fn boost_percentage_positive_multiple() {
 fn boost_percentage_positive_lt_100() {
     let base = &Extension {
         name: "Gregg".to_string(),
+        description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
         attributes: vec![Attribute::Number(NumberAttribute {
             trait_type: "Rage".to_string(),
@@ -390,6 +408,7 @@ fn boost_percentage_positive_lt_100() {
         ext,
         MergedExtension {
             name: "Gregg".to_string(),
+            description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute::Decimal(DecimalAttribute {
                 trait_type: "Rage".to_string(),
@@ -405,6 +424,7 @@ fn boost_percentage_positive_lt_100() {
 fn boost_percentage_negative() {
     let base = &Extension {
         name: "Gregg".to_string(),
+        description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
         attributes: vec![Attribute::Number(NumberAttribute {
             trait_type: "Rage".to_string(),
@@ -427,6 +447,7 @@ fn boost_percentage_negative() {
         ext,
         MergedExtension {
             name: "Gregg".to_string(),
+            description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute::Decimal(DecimalAttribute {
                 trait_type: "Rage".to_string(),
@@ -442,6 +463,7 @@ fn boost_percentage_negative() {
 fn boost_percentage_negative_floor() {
     let base = &Extension {
         name: "Gregg".to_string(),
+        description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
         attributes: vec![Attribute::Number(NumberAttribute {
             trait_type: "Rage".to_string(),
@@ -464,6 +486,7 @@ fn boost_percentage_negative_floor() {
         ext,
         MergedExtension {
             name: "Gregg".to_string(),
+            description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute::Decimal(DecimalAttribute {
                 trait_type: "Rage".to_string(),
@@ -479,6 +502,7 @@ fn boost_percentage_negative_floor() {
 fn boost_percentage_order() {
     let base = &Extension {
         name: "Gregg".to_string(),
+        description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
         attributes: vec![Attribute::Number(NumberAttribute {
             trait_type: "Rage".to_string(),
@@ -531,6 +555,7 @@ fn boost_percentage_order() {
 fn boost_combined() {
     let base = &Extension {
         name: "Gregg".to_string(),
+        description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
         attributes: vec![Attribute::Number(NumberAttribute {
             trait_type: "Rage".to_string(),
@@ -561,6 +586,7 @@ fn boost_combined() {
         ext,
         MergedExtension {
             name: "Gregg".to_string(),
+            description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute::Decimal(DecimalAttribute {
                 trait_type: "Rage".to_string(),
@@ -576,6 +602,7 @@ fn boost_combined() {
 fn accept_multiple_attributes() {
     let base = &Extension {
         name: "Gregg".to_string(),
+        description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
         attributes: vec![
             Attribute::Number(NumberAttribute {
@@ -612,6 +639,7 @@ fn accept_multiple_attributes() {
         ext,
         MergedExtension {
             name: "Gregg".to_string(),
+            description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
             attributes: vec![
                 MergedAttribute::Decimal(DecimalAttribute {
@@ -634,6 +662,7 @@ fn accept_multiple_attributes() {
 fn aggregate_images() {
     let base = &Extension {
         name: "Gregg".to_string(),
+        description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
         attributes: vec![],
     };
@@ -648,6 +677,7 @@ fn aggregate_images() {
         ext,
         MergedExtension {
             name: "Gregg".to_string(),
+            description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string(), "trait-image".to_string()],
             attributes: vec![],
         }
@@ -659,6 +689,7 @@ fn aggregate_images() {
 fn aggregate_images_multiple() {
     let base = &Extension {
         name: "Gregg".to_string(),
+        description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
         attributes: vec![],
     };
@@ -683,6 +714,7 @@ fn aggregate_images_multiple() {
         ext,
         MergedExtension {
             name: "Gregg".to_string(),
+            description: "Gregg loves oranges".to_string(),
             images: vec![
                 "image".to_string(),
                 "trait-image-1".to_string(),

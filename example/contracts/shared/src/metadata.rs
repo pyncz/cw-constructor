@@ -38,6 +38,7 @@ pub enum Attribute {
 #[cw_serde]
 pub struct Extension {
     pub name: String,
+    pub description: String,
     pub image: String,
     pub attributes: Vec<Attribute>,
 }
@@ -72,6 +73,7 @@ impl From<&Attribute> for MergedAttribute {
 #[cw_serde]
 pub struct MergedExtension {
     pub name: String,
+    pub description: String,
     pub images: Vec<String>,
     pub attributes: Vec<MergedAttribute>,
 }
@@ -83,6 +85,7 @@ impl From<Extension> for MergedExtension {
 
         MergedExtension {
             name: value.name,
+            description: value.description,
             images: vec![value.image],
             attributes,
         }
