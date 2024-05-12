@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 import { config as loadEnv } from 'dotenv';
 import PinataSdk from '@pinata/sdk';
 import { consola } from 'consola';
-import { requireEnv } from './utils';
+import { requireEnv } from '../utils';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -15,14 +15,14 @@ const { parsed: env } = loadEnv();
 const PINATA_API_KEY = requireEnv('PINATA_API_KEY', env);
 const PINATA_API_SECRET = requireEnv('PINATA_API_SECRET', env);
 
+// Run script
 let count = 0;
 const pinata = new PinataSdk({ pinataApiKey: PINATA_API_KEY, pinataSecretApiKey: PINATA_API_SECRET });
 
-// Run script
 try {
   consola.start('Uploading images to IPFS...');
 
-  const assetsPath = resolve(__dirname, '../assets');
+  const assetsPath = resolve(__dirname, '../../assets');
   const dirs = fs.readdirSync(assetsPath);
   for (const collection of dirs) {
     consola.info({ message: `Processing ${collection}`, level: 1 });

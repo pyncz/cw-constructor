@@ -30,7 +30,7 @@ Fiend Frens demo collection, that uses `cw-constructor` contract.
 - [`cw-fiend-frens-constructor`](./example/contracts/cw-fiend-frens-constructor) - Constructor contract to manage applied trait NFTs
 
 ### Helpers
-- [🚀 `scripts`](./example/scripts) - Scripts to upload on IPFS / deploy example NFTs
+- [🚀 `scripts`](./example/scripts) - Scripts to upload assets on IPFS / instantiate example contracts etc
 
 ### Client
 - [🖥️ `client`](./example/client) - Frontend to view / equip / unequip traits

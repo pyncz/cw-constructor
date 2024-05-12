@@ -1,11 +1,10 @@
 {
   "name": "fiend-frens-scripts",
   "version": "0.1.0",
-  "description": "Scripts to upload NFTs' assets on IPFS, deploy example contracts etc",
+  "description": "Scripts to upload NFTs' assets on IPFS, instantiate example contracts etc",
   "type": "module",
   "scripts": {
-    "upload": "esno ./src/upload.ts",
-    "deploy": "esno ./src/deploy.ts"
+    "upload": "esno ./src/upload/index.ts"
   },
   "devDependencies": {
     "@pinata/sdk": "^2.1.0",
