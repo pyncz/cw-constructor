@@ -1,12 +1,8 @@
 #![cfg(test)]
-use std::str::FromStr;
-
 use crate::metadata::{
-    Attribute, DecimalAttribute, DecimalDisplayType, Extension, MergedAttribute, MergedExtension,
-    NumberAttribute, NumberDisplayType, StringAttribute, TraitAttribute, TraitExtension,
-    TraitNumberAttribute, TraitNumberAttributeDisplayType,
+    Attribute, DisplayType, Extension, MergedAttribute, MergedDisplayType, MergedExtension,
+    TraitAttribute, TraitDisplayType, TraitExtension,
 };
-use cosmwasm_std::Decimal as CwDecimal;
 use cw_constructor::models::metadata::MergeWithTraitExtension;
 use serde_json::{json, to_string};
 
@@ -17,10 +13,11 @@ fn keep_string_attributes() {
         name: "Gregg".to_string(),
         description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
-        attributes: vec![Attribute::String(StringAttribute {
+        attributes: vec![Attribute {
             trait_type: "Kind".to_string(),
+            display_type: None,
             value: "Blue".to_string(),
-        })],
+        }],
     };
     let mut ext: MergedExtension = base.clone().into();
 
@@ -35,10 +32,11 @@ fn keep_string_attributes() {
             name: "Gregg".to_string(),
             description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
-            attributes: vec![MergedAttribute::String(StringAttribute {
+            attributes: vec![MergedAttribute {
                 trait_type: "Kind".to_string(),
+                display_type: None,
                 value: "Blue".to_string(),
-            })],
+            }],
         }
     );
 
@@ -54,6 +52,7 @@ fn keep_string_attributes() {
             "attributes": [
                 {
                     "trait_type": "Kind",
+                    "display_type": null,
                     "value": "Blue"
                 }
             ]
@@ -69,20 +68,21 @@ fn ignore_unknown_attributes() {
         name: "Gregg".to_string(),
         description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
-        attributes: vec![Attribute::String(StringAttribute {
+        attributes: vec![Attribute {
             trait_type: "Kind".to_string(),
+            display_type: None,
             value: "Blue".to_string(),
-        })],
+        }],
     };
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
-        attributes: vec![TraitAttribute::Number(TraitNumberAttribute {
+        attributes: vec![TraitAttribute {
             trait_type: "Rage".to_string(),
-            display_type: TraitNumberAttributeDisplayType::BoostNumber,
-            value: 2,
-        })],
+            display_type: Some(TraitDisplayType::BoostNumber),
+            value: "2".to_string(),
+        }],
     }]);
 
     assert_eq!(
@@ -91,10 +91,11 @@ fn ignore_unknown_attributes() {
             name: "Gregg".to_string(),
             description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
-            attributes: vec![MergedAttribute::String(StringAttribute {
+            attributes: vec![MergedAttribute {
                 trait_type: "Kind".to_string(),
+                display_type: None,
                 value: "Blue".to_string(),
-            })],
+            }],
         }
     );
 
@@ -110,6 +111,7 @@ fn ignore_unknown_attributes() {
             "attributes": [
                 {
                     "trait_type": "Kind",
+                    "display_type": null,
                     "value": "Blue"
                 }
             ]
@@ -126,21 +128,21 @@ fn boost_number_positive() {
         name: "Gregg".to_string(),
         description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
-        attributes: vec![Attribute::Number(NumberAttribute {
+        attributes: vec![Attribute {
             trait_type: "Rage".to_string(),
-            display_type: NumberDisplayType::Number,
-            value: 3,
-        })],
+            display_type: Some(DisplayType::Number),
+            value: "3".to_string(),
+        }],
     };
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
-        attributes: vec![TraitAttribute::Number(TraitNumberAttribute {
+        attributes: vec![TraitAttribute {
             trait_type: "Rage".to_string(),
-            display_type: TraitNumberAttributeDisplayType::BoostNumber,
-            value: 2,
-        })],
+            display_type: Some(TraitDisplayType::BoostNumber),
+            value: "2".to_string(),
+        }],
     }]);
 
     assert_eq!(
@@ -149,11 +151,11 @@ fn boost_number_positive() {
             name: "Gregg".to_string(),
             description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
-            attributes: vec![MergedAttribute::Decimal(DecimalAttribute {
+            attributes: vec![MergedAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: DecimalDisplayType::Decimal,
-                value: CwDecimal::from_str("5").unwrap(),
-            })],
+                display_type: Some(MergedDisplayType::Decimal),
+                value: "5".to_string(),
+            }],
         }
     );
 
@@ -185,27 +187,27 @@ fn boost_number_positive_multiple() {
         name: "Gregg".to_string(),
         description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
-        attributes: vec![Attribute::Number(NumberAttribute {
+        attributes: vec![Attribute {
             trait_type: "Rage".to_string(),
-            display_type: NumberDisplayType::Number,
-            value: 3,
-        })],
+            display_type: Some(DisplayType::Number),
+            value: "3".to_string(),
+        }],
     };
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
         attributes: vec![
-            TraitAttribute::Number(TraitNumberAttribute {
+            TraitAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: TraitNumberAttributeDisplayType::BoostNumber,
-                value: 2,
-            }),
-            TraitAttribute::Number(TraitNumberAttribute {
+                display_type: Some(TraitDisplayType::BoostNumber),
+                value: "2".to_string(),
+            },
+            TraitAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: TraitNumberAttributeDisplayType::BoostNumber,
-                value: 1,
-            }),
+                display_type: Some(TraitDisplayType::BoostNumber),
+                value: "1".to_string(),
+            },
         ],
     }]);
 
@@ -215,11 +217,11 @@ fn boost_number_positive_multiple() {
             name: "Gregg".to_string(),
             description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
-            attributes: vec![MergedAttribute::Decimal(DecimalAttribute {
+            attributes: vec![MergedAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: DecimalDisplayType::Decimal,
-                value: CwDecimal::from_str("6").unwrap(),
-            })],
+                display_type: Some(MergedDisplayType::Decimal),
+                value: "6".to_string(),
+            }],
         }
     );
 
@@ -251,21 +253,21 @@ fn boost_number_negative() {
         name: "Gregg".to_string(),
         description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
-        attributes: vec![Attribute::Number(NumberAttribute {
+        attributes: vec![Attribute {
             trait_type: "Rage".to_string(),
-            display_type: NumberDisplayType::Number,
-            value: 3,
-        })],
+            display_type: Some(DisplayType::Number),
+            value: "3".to_string(),
+        }],
     };
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
-        attributes: vec![TraitAttribute::Number(TraitNumberAttribute {
+        attributes: vec![TraitAttribute {
             trait_type: "Rage".to_string(),
-            display_type: TraitNumberAttributeDisplayType::BoostNumber,
-            value: -2,
-        })],
+            display_type: Some(TraitDisplayType::BoostNumber),
+            value: "-2".to_string(),
+        }],
     }]);
 
     assert_eq!(
@@ -274,11 +276,11 @@ fn boost_number_negative() {
             name: "Gregg".to_string(),
             description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
-            attributes: vec![MergedAttribute::Decimal(DecimalAttribute {
+            attributes: vec![MergedAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: DecimalDisplayType::Decimal,
-                value: CwDecimal::from_str("1").unwrap(),
-            })],
+                display_type: Some(MergedDisplayType::Decimal),
+                value: "1".to_string(),
+            }],
         }
     );
 
@@ -310,21 +312,21 @@ fn boost_number_negative_floor() {
         name: "Gregg".to_string(),
         description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
-        attributes: vec![Attribute::Number(NumberAttribute {
+        attributes: vec![Attribute {
             trait_type: "Rage".to_string(),
-            display_type: NumberDisplayType::Number,
-            value: 3,
-        })],
+            display_type: Some(DisplayType::Number),
+            value: "3".to_string(),
+        }],
     };
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
-        attributes: vec![TraitAttribute::Number(TraitNumberAttribute {
+        attributes: vec![TraitAttribute {
             trait_type: "Rage".to_string(),
-            display_type: TraitNumberAttributeDisplayType::BoostNumber,
-            value: -4,
-        })],
+            display_type: Some(TraitDisplayType::BoostNumber),
+            value: "-4".to_string(),
+        }],
     }]);
 
     assert_eq!(
@@ -333,11 +335,11 @@ fn boost_number_negative_floor() {
             name: "Gregg".to_string(),
             description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
-            attributes: vec![MergedAttribute::Decimal(DecimalAttribute {
+            attributes: vec![MergedAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: DecimalDisplayType::Decimal,
-                value: CwDecimal::from_str("0").unwrap(),
-            })],
+                display_type: Some(MergedDisplayType::Decimal),
+                value: "0".to_string(),
+            }],
         }
     );
 
@@ -369,27 +371,27 @@ fn boost_number_order() {
         name: "Gregg".to_string(),
         description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
-        attributes: vec![Attribute::Number(NumberAttribute {
+        attributes: vec![Attribute {
             trait_type: "Rage".to_string(),
-            display_type: NumberDisplayType::Number,
-            value: 3,
-        })],
+            display_type: Some(DisplayType::Number),
+            value: "3".to_string(),
+        }],
     };
 
     let mut ext1: MergedExtension = base.clone().into();
     ext1.merge(vec![&TraitExtension {
         image: None,
         attributes: vec![
-            TraitAttribute::Number(TraitNumberAttribute {
+            TraitAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: TraitNumberAttributeDisplayType::BoostNumber,
-                value: -4,
-            }),
-            TraitAttribute::Number(TraitNumberAttribute {
+                display_type: Some(TraitDisplayType::BoostNumber),
+                value: "-4".to_string(),
+            },
+            TraitAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: TraitNumberAttributeDisplayType::BoostNumber,
-                value: 2,
-            }),
+                display_type: Some(TraitDisplayType::BoostNumber),
+                value: "2".to_string(),
+            },
         ],
     }]);
 
@@ -397,16 +399,16 @@ fn boost_number_order() {
     ext2.merge(vec![&TraitExtension {
         image: None,
         attributes: vec![
-            TraitAttribute::Number(TraitNumberAttribute {
+            TraitAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: TraitNumberAttributeDisplayType::BoostNumber,
-                value: 2,
-            }),
-            TraitAttribute::Number(TraitNumberAttribute {
+                display_type: Some(TraitDisplayType::BoostNumber),
+                value: "2".to_string(),
+            },
+            TraitAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: TraitNumberAttributeDisplayType::BoostNumber,
-                value: -4,
-            }),
+                display_type: Some(TraitDisplayType::BoostNumber),
+                value: "-4".to_string(),
+            },
         ],
     }]);
 
@@ -441,21 +443,21 @@ fn boost_percentage_positive() {
         name: "Gregg".to_string(),
         description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
-        attributes: vec![Attribute::Number(NumberAttribute {
+        attributes: vec![Attribute {
             trait_type: "Rage".to_string(),
-            display_type: NumberDisplayType::Number,
-            value: 4,
-        })],
+            display_type: Some(DisplayType::Number),
+            value: "4".to_string(),
+        }],
     };
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
-        attributes: vec![TraitAttribute::Number(TraitNumberAttribute {
+        attributes: vec![TraitAttribute {
             trait_type: "Rage".to_string(),
-            display_type: TraitNumberAttributeDisplayType::BoostPercentage,
-            value: 50,
-        })],
+            display_type: Some(TraitDisplayType::BoostPercentage),
+            value: "50".to_string(),
+        }],
     }]);
 
     assert_eq!(
@@ -464,11 +466,11 @@ fn boost_percentage_positive() {
             name: "Gregg".to_string(),
             description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
-            attributes: vec![MergedAttribute::Decimal(DecimalAttribute {
+            attributes: vec![MergedAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: DecimalDisplayType::Decimal,
-                value: CwDecimal::from_str("6").unwrap(),
-            })],
+                display_type: Some(MergedDisplayType::Decimal),
+                value: "6".to_string(),
+            }],
         }
     );
 
@@ -500,27 +502,27 @@ fn boost_percentage_positive_multiple() {
         name: "Gregg".to_string(),
         description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
-        attributes: vec![Attribute::Number(NumberAttribute {
+        attributes: vec![Attribute {
             trait_type: "Rage".to_string(),
-            display_type: NumberDisplayType::Number,
-            value: 4,
-        })],
+            display_type: Some(DisplayType::Number),
+            value: "4".to_string(),
+        }],
     };
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
         attributes: vec![
-            TraitAttribute::Number(TraitNumberAttribute {
+            TraitAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: TraitNumberAttributeDisplayType::BoostPercentage,
-                value: 50,
-            }),
-            TraitAttribute::Number(TraitNumberAttribute {
+                display_type: Some(TraitDisplayType::BoostPercentage),
+                value: "50".to_string(),
+            },
+            TraitAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: TraitNumberAttributeDisplayType::BoostPercentage,
-                value: 25,
-            }),
+                display_type: Some(TraitDisplayType::BoostPercentage),
+                value: "25".to_string(),
+            },
         ],
     }]);
 
@@ -530,11 +532,11 @@ fn boost_percentage_positive_multiple() {
             name: "Gregg".to_string(),
             description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
-            attributes: vec![MergedAttribute::Decimal(DecimalAttribute {
+            attributes: vec![MergedAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: DecimalDisplayType::Decimal,
-                value: CwDecimal::from_str("7").unwrap(),
-            })],
+                display_type: Some(MergedDisplayType::Decimal),
+                value: "7".to_string(),
+            }],
         }
     );
 
@@ -566,21 +568,21 @@ fn boost_percentage_positive_lt_100() {
         name: "Gregg".to_string(),
         description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
-        attributes: vec![Attribute::Number(NumberAttribute {
+        attributes: vec![Attribute {
             trait_type: "Rage".to_string(),
-            display_type: NumberDisplayType::Number,
-            value: 4,
-        })],
+            display_type: Some(DisplayType::Number),
+            value: "4".to_string(),
+        }],
     };
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
-        attributes: vec![TraitAttribute::Number(TraitNumberAttribute {
+        attributes: vec![TraitAttribute {
             trait_type: "Rage".to_string(),
-            display_type: TraitNumberAttributeDisplayType::BoostPercentage,
-            value: 101,
-        })],
+            display_type: Some(TraitDisplayType::BoostPercentage),
+            value: "101".to_string(),
+        }],
     }]);
 
     assert_eq!(
@@ -589,11 +591,11 @@ fn boost_percentage_positive_lt_100() {
             name: "Gregg".to_string(),
             description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
-            attributes: vec![MergedAttribute::Decimal(DecimalAttribute {
+            attributes: vec![MergedAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: DecimalDisplayType::Decimal,
-                value: CwDecimal::from_str("8.04").unwrap(),
-            })],
+                display_type: Some(MergedDisplayType::Decimal),
+                value: "8.04".to_string(),
+            }],
         }
     );
 
@@ -625,21 +627,21 @@ fn boost_percentage_negative() {
         name: "Gregg".to_string(),
         description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
-        attributes: vec![Attribute::Number(NumberAttribute {
+        attributes: vec![Attribute {
             trait_type: "Rage".to_string(),
-            display_type: NumberDisplayType::Number,
-            value: 4,
-        })],
+            display_type: Some(DisplayType::Number),
+            value: "4".to_string(),
+        }],
     };
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
-        attributes: vec![TraitAttribute::Number(TraitNumberAttribute {
+        attributes: vec![TraitAttribute {
             trait_type: "Rage".to_string(),
-            display_type: TraitNumberAttributeDisplayType::BoostPercentage,
-            value: -50,
-        })],
+            display_type: Some(TraitDisplayType::BoostPercentage),
+            value: "-50".to_string(),
+        }],
     }]);
 
     assert_eq!(
@@ -648,11 +650,11 @@ fn boost_percentage_negative() {
             name: "Gregg".to_string(),
             description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
-            attributes: vec![MergedAttribute::Decimal(DecimalAttribute {
+            attributes: vec![MergedAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: DecimalDisplayType::Decimal,
-                value: CwDecimal::from_str("2").unwrap(),
-            })],
+                display_type: Some(MergedDisplayType::Decimal),
+                value: "2".to_string(),
+            }],
         }
     );
 
@@ -684,21 +686,21 @@ fn boost_percentage_negative_floor() {
         name: "Gregg".to_string(),
         description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
-        attributes: vec![Attribute::Number(NumberAttribute {
+        attributes: vec![Attribute {
             trait_type: "Rage".to_string(),
-            display_type: NumberDisplayType::Number,
-            value: 4,
-        })],
+            display_type: Some(DisplayType::Number),
+            value: "4".to_string(),
+        }],
     };
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
         image: None,
-        attributes: vec![TraitAttribute::Number(TraitNumberAttribute {
+        attributes: vec![TraitAttribute {
             trait_type: "Rage".to_string(),
-            display_type: TraitNumberAttributeDisplayType::BoostPercentage,
-            value: -150,
-        })],
+            display_type: Some(TraitDisplayType::BoostPercentage),
+            value: "-150".to_string(),
+        }],
     }]);
 
     assert_eq!(
@@ -707,11 +709,11 @@ fn boost_percentage_negative_floor() {
             name: "Gregg".to_string(),
             description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
-            attributes: vec![MergedAttribute::Decimal(DecimalAttribute {
+            attributes: vec![MergedAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: DecimalDisplayType::Decimal,
-                value: CwDecimal::from_str("0").unwrap(),
-            })],
+                display_type: Some(MergedDisplayType::Decimal),
+                value: "0".to_string(),
+            }],
         }
     );
 
@@ -743,27 +745,27 @@ fn boost_percentage_order() {
         name: "Gregg".to_string(),
         description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
-        attributes: vec![Attribute::Number(NumberAttribute {
+        attributes: vec![Attribute {
             trait_type: "Rage".to_string(),
-            display_type: NumberDisplayType::Number,
-            value: 4,
-        })],
+            display_type: Some(DisplayType::Number),
+            value: "4".to_string(),
+        }],
     };
 
     let mut ext1: MergedExtension = base.clone().into();
     ext1.merge(vec![&TraitExtension {
         image: None,
         attributes: vec![
-            TraitAttribute::Number(TraitNumberAttribute {
+            TraitAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: TraitNumberAttributeDisplayType::BoostPercentage,
-                value: -200,
-            }),
-            TraitAttribute::Number(TraitNumberAttribute {
+                display_type: Some(TraitDisplayType::BoostPercentage),
+                value: "-200".to_string(),
+            },
+            TraitAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: TraitNumberAttributeDisplayType::BoostPercentage,
-                value: 200,
-            }),
+                display_type: Some(TraitDisplayType::BoostPercentage),
+                value: "200".to_string(),
+            },
         ],
     }]);
 
@@ -771,16 +773,16 @@ fn boost_percentage_order() {
     ext2.merge(vec![&TraitExtension {
         image: None,
         attributes: vec![
-            TraitAttribute::Number(TraitNumberAttribute {
+            TraitAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: TraitNumberAttributeDisplayType::BoostPercentage,
-                value: 200,
-            }),
-            TraitAttribute::Number(TraitNumberAttribute {
+                display_type: Some(TraitDisplayType::BoostPercentage),
+                value: "200".to_string(),
+            },
+            TraitAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: TraitNumberAttributeDisplayType::BoostPercentage,
-                value: -200,
-            }),
+                display_type: Some(TraitDisplayType::BoostPercentage),
+                value: "-200".to_string(),
+            },
         ],
     }]);
 
@@ -816,11 +818,11 @@ fn boost_combined() {
         name: "Gregg".to_string(),
         description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
-        attributes: vec![Attribute::Number(NumberAttribute {
+        attributes: vec![Attribute {
             trait_type: "Rage".to_string(),
-            display_type: NumberDisplayType::Number,
-            value: 4,
-        })],
+            display_type: Some(DisplayType::Number),
+            value: "4".to_string(),
+        }],
     };
 
     let mut ext: MergedExtension = base.clone().into();
@@ -828,16 +830,16 @@ fn boost_combined() {
     ext.merge(vec![&TraitExtension {
         image: None,
         attributes: vec![
-            TraitAttribute::Number(TraitNumberAttribute {
+            TraitAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: TraitNumberAttributeDisplayType::BoostNumber,
-                value: 2,
-            }),
-            TraitAttribute::Number(TraitNumberAttribute {
+                display_type: Some(TraitDisplayType::BoostNumber),
+                value: "2".to_string(),
+            },
+            TraitAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: TraitNumberAttributeDisplayType::BoostPercentage,
-                value: 100,
-            }),
+                display_type: Some(TraitDisplayType::BoostPercentage),
+                value: "100".to_string(),
+            },
         ],
     }]);
 
@@ -847,11 +849,11 @@ fn boost_combined() {
             name: "Gregg".to_string(),
             description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
-            attributes: vec![MergedAttribute::Decimal(DecimalAttribute {
+            attributes: vec![MergedAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: DecimalDisplayType::Decimal,
-                value: CwDecimal::from_str("10").unwrap(),
-            })],
+                display_type: Some(MergedDisplayType::Decimal),
+                value: "10".to_string(),
+            }],
         }
     );
 
@@ -884,16 +886,16 @@ fn accept_multiple_attributes() {
         description: "Gregg loves oranges".to_string(),
         image: "image".to_string(),
         attributes: vec![
-            Attribute::Number(NumberAttribute {
+            Attribute {
                 trait_type: "Rage".to_string(),
-                display_type: NumberDisplayType::Number,
-                value: 4,
-            }),
-            Attribute::Number(NumberAttribute {
+                display_type: Some(DisplayType::Number),
+                value: "4".to_string(),
+            },
+            Attribute {
                 trait_type: "Deception".to_string(),
-                display_type: NumberDisplayType::Number,
-                value: 2,
-            }),
+                display_type: Some(DisplayType::Number),
+                value: "2".to_string(),
+            },
         ],
     };
     let mut ext: MergedExtension = base.clone().into();
@@ -901,16 +903,16 @@ fn accept_multiple_attributes() {
     ext.merge(vec![&TraitExtension {
         image: None,
         attributes: vec![
-            TraitAttribute::Number(TraitNumberAttribute {
+            TraitAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: TraitNumberAttributeDisplayType::BoostNumber,
-                value: 2,
-            }),
-            TraitAttribute::Number(TraitNumberAttribute {
+                display_type: Some(TraitDisplayType::BoostNumber),
+                value: "2".to_string(),
+            },
+            TraitAttribute {
                 trait_type: "Deception".to_string(),
-                display_type: TraitNumberAttributeDisplayType::BoostNumber,
-                value: 1,
-            }),
+                display_type: Some(TraitDisplayType::BoostNumber),
+                value: "1".to_string(),
+            },
         ],
     }]);
 
@@ -921,16 +923,16 @@ fn accept_multiple_attributes() {
             description: "Gregg loves oranges".to_string(),
             images: vec!["image".to_string()],
             attributes: vec![
-                MergedAttribute::Decimal(DecimalAttribute {
+                MergedAttribute {
                     trait_type: "Rage".to_string(),
-                    display_type: DecimalDisplayType::Decimal,
-                    value: CwDecimal::from_str("6").unwrap(),
-                }),
-                MergedAttribute::Decimal(DecimalAttribute {
+                    display_type: Some(MergedDisplayType::Decimal),
+                    value: "6".to_string(),
+                },
+                MergedAttribute {
                     trait_type: "Deception".to_string(),
-                    display_type: DecimalDisplayType::Decimal,
-                    value: CwDecimal::from_str("3").unwrap(),
-                })
+                    display_type: Some(MergedDisplayType::Decimal),
+                    value: "3".to_string(),
+                }
             ],
         }
     );
