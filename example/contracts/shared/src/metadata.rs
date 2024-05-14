@@ -96,6 +96,7 @@ pub struct TraitAttribute {
 
 #[cw_serde]
 pub struct TraitExtension {
+    pub name: String,
     pub image: Option<String>,
     pub attributes: Vec<TraitAttribute>,
 }

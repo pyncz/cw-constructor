@@ -22,6 +22,7 @@ fn keep_string_attributes() {
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
+        name: "Trait".to_string(),
         image: None,
         attributes: vec![],
     }]);
@@ -77,6 +78,7 @@ fn ignore_unknown_attributes() {
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
+        name: "Trait".to_string(),
         image: None,
         attributes: vec![TraitAttribute {
             trait_type: "Rage".to_string(),
@@ -137,6 +139,7 @@ fn boost_number_positive() {
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
+        name: "Trait".to_string(),
         image: None,
         attributes: vec![TraitAttribute {
             trait_type: "Rage".to_string(),
@@ -196,6 +199,7 @@ fn boost_number_positive_multiple() {
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
+        name: "Trait".to_string(),
         image: None,
         attributes: vec![
             TraitAttribute {
@@ -262,6 +266,7 @@ fn boost_number_negative() {
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
+        name: "Trait".to_string(),
         image: None,
         attributes: vec![TraitAttribute {
             trait_type: "Rage".to_string(),
@@ -321,6 +326,7 @@ fn boost_number_negative_floor() {
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
+        name: "Trait".to_string(),
         image: None,
         attributes: vec![TraitAttribute {
             trait_type: "Rage".to_string(),
@@ -380,6 +386,7 @@ fn boost_number_order() {
 
     let mut ext1: MergedExtension = base.clone().into();
     ext1.merge(vec![&TraitExtension {
+        name: "Trait".to_string(),
         image: None,
         attributes: vec![
             TraitAttribute {
@@ -397,6 +404,7 @@ fn boost_number_order() {
 
     let mut ext2: MergedExtension = base.clone().into();
     ext2.merge(vec![&TraitExtension {
+        name: "Trait".to_string(),
         image: None,
         attributes: vec![
             TraitAttribute {
@@ -452,6 +460,7 @@ fn boost_percentage_positive() {
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
+        name: "Trait".to_string(),
         image: None,
         attributes: vec![TraitAttribute {
             trait_type: "Rage".to_string(),
@@ -511,6 +520,7 @@ fn boost_percentage_positive_multiple() {
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
+        name: "Trait".to_string(),
         image: None,
         attributes: vec![
             TraitAttribute {
@@ -577,6 +587,7 @@ fn boost_percentage_positive_lt_100() {
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
+        name: "Trait".to_string(),
         image: None,
         attributes: vec![TraitAttribute {
             trait_type: "Rage".to_string(),
@@ -636,6 +647,7 @@ fn boost_percentage_negative() {
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
+        name: "Trait".to_string(),
         image: None,
         attributes: vec![TraitAttribute {
             trait_type: "Rage".to_string(),
@@ -695,6 +707,7 @@ fn boost_percentage_negative_floor() {
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
+        name: "Trait".to_string(),
         image: None,
         attributes: vec![TraitAttribute {
             trait_type: "Rage".to_string(),
@@ -754,6 +767,7 @@ fn boost_percentage_order() {
 
     let mut ext1: MergedExtension = base.clone().into();
     ext1.merge(vec![&TraitExtension {
+        name: "Trait".to_string(),
         image: None,
         attributes: vec![
             TraitAttribute {
@@ -771,6 +785,7 @@ fn boost_percentage_order() {
 
     let mut ext2: MergedExtension = base.clone().into();
     ext2.merge(vec![&TraitExtension {
+        name: "Trait".to_string(),
         image: None,
         attributes: vec![
             TraitAttribute {
@@ -828,6 +843,7 @@ fn boost_combined() {
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
+        name: "Trait".to_string(),
         image: None,
         attributes: vec![
             TraitAttribute {
@@ -901,6 +917,7 @@ fn accept_multiple_attributes() {
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
+        name: "Trait".to_string(),
         image: None,
         attributes: vec![
             TraitAttribute {
@@ -975,6 +992,7 @@ fn aggregate_images() {
     let mut ext: MergedExtension = base.clone().into();
 
     ext.merge(vec![&TraitExtension {
+        name: "Trait".to_string(),
         image: Some("trait-image".to_string()),
         attributes: vec![],
     }]);
@@ -1018,14 +1036,17 @@ fn aggregate_images_multiple() {
 
     ext.merge(vec![
         &TraitExtension {
+            name: "Trait".to_string(),
             image: Some("trait-image-1".to_string()),
             attributes: vec![],
         },
         &TraitExtension {
+            name: "Trait".to_string(),
             image: None,
             attributes: vec![],
         },
         &TraitExtension {
+            name: "Trait".to_string(),
             image: Some("trait-image-2".to_string()),
             attributes: vec![],
         },
