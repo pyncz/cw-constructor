@@ -4,12 +4,12 @@
     {
       "trait_type": "Rage",
       "display_type": "boost_number",
-      "value": 1
+      "value": "1"
     },
     {
       "trait_type": "Deception",
       "display_type": "boost_number",
-      "value": 3
+      "value": "3"
     }
   ],
   "image": "ipfs://QmRV8fwaUKFNcB3MnTYCni2oM7fu8f367ehLg9M9JgfAm7"

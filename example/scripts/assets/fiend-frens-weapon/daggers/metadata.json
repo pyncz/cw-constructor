@@ -4,7 +4,7 @@
     {
       "trait_type": "Rage",
       "display_type": "boost_percentage",
-      "value": 100
+      "value": "100"
     }
   ],
   "image": "ipfs://QmNsWXe2nV1ry3cDjTFeP8yk54AyPSUM8MuDGJgXiPW99i"

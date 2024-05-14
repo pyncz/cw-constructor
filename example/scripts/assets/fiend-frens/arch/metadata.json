@@ -17,17 +17,17 @@
     {
       "trait_type": "Rage",
       "display_type": "number",
-      "value": 3
+      "value": "3"
     },
     {
       "trait_type": "Deception",
       "display_type": "number",
-      "value": 2
+      "value": "2"
     },
     {
       "trait_type": "Psychic Powers",
       "display_type": "number",
-      "value": 2
+      "value": "2"
     }
   ],
   "image": "ipfs://QmQ4eyT3TjRGtqW2p74KQHLZBfWq4F3JG8Ztkt7SP1cTfQ"

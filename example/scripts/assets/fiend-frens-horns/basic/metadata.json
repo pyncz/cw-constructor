@@ -4,12 +4,12 @@
     {
       "trait_type": "Rage",
       "display_type": "boost_number",
-      "value": 2
+      "value": "2"
     },
     {
       "trait_type": "Deception",
       "display_type": "boost_percentage",
-      "value": 50
+      "value": "50"
     }
   ],
   "image": "ipfs://QmYFw5oqRZ5N3yfoLBzWP9xUJ8YKj9PEwimM31JpubHbvq"
