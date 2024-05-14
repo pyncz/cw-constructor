@@ -1,7 +1,7 @@
 {
   "fiend-frens-minter": {
-    "code_id": "2548",
-    "address": null,
+    "code_id": "2559",
+    "address": "archway1yskmqavjm74nptl2udu25y7td2m4af2uwexdtsjxnkpqk2tr0ets3nkk7r",
     "admin": {
       "$var": "sender"
     },
@@ -45,11 +45,12 @@
           "$var": "sender"
         }
       ]
-    }
+    },
+    "tx": "6B80349041080C2E80743FB02E00110032FD65EC59C4C99EF98C24F7E998AD31"
   },
   "fiend-frens": {
-    "code_id": "2549",
-    "address": null,
+    "code_id": "2557",
+    "address": "archway1hftmzeh0e8ss9ptw2cu3p75p6jnf2xn8qd4waa6pdvsp0qkkwpxsmldlj5",
     "admin": {
       "$var": "sender"
     },
@@ -70,12 +71,14 @@
             "$ref": "fiend-frens.address"
           }
         }
-      }
-    }
+      },
+      "tx": "03CF5765CF1AED0831CC9194AF07D3299BAE738DC8E42A48607192943126758C"
+    },
+    "tx": "C26E31C47FABFAD412E08E40A645B1FDC777B2EC747FF9A22FBF3612CEBAC766"
   },
   "fiend-frens-horns-minter": {
-    "code_id": "2543",
-    "address": null,
+    "code_id": "2565",
+    "address": "archway1g9g3vxaexec5a2nn4lcpmum7ep8enrkw87zpdqegf6cjesmdxhkqz029rs",
     "admin": {
       "$var": "sender"
     },
@@ -119,11 +122,12 @@
           "$var": "sender"
         }
       ]
-    }
+    },
+    "tx": "5F7BE785363CCA346CD58783022760D34E4CC8A79E479A187ABFE2742D6BA926"
   },
   "fiend-frens-horns": {
-    "code_id": "2540",
-    "address": null,
+    "code_id": "2564",
+    "address": "archway1ucdy9my37w36w5uuup4fmd24h8ptr4qgz32myk9fkhmn2r5pkcpqrglpe9",
     "admin": {
       "$var": "sender"
     },
@@ -144,12 +148,14 @@
             "$ref": "fiend-frens-horns.address"
           }
         }
-      }
-    }
+      },
+      "tx": "55BFA8E12D3048491ADCAF893A367FAF5D197F74B4D525F0AB511B62FE41CD6C"
+    },
+    "tx": "73EB6B03497BD688DC0C533070D06D790FCF7ECD7C4B24FC884138818CBB59D6"
   },
   "fiend-frens-weapon-minter": {
-    "code_id": "2543",
-    "address": null,
+    "code_id": "2565",
+    "address": "archway17wprz4crwn0asta299jj879y57d4jqnlwanh9qweme9mjjvs8pzse9t2y2",
     "admin": {
       "$var": "sender"
     },
@@ -211,11 +217,12 @@
           "$var": "sender"
         }
       ]
-    }
+    },
+    "tx": "34C724DC7E204164951A98332DB1321324D288CD900750FCEC5B26746EC610AE"
   },
   "fiend-frens-weapon": {
-    "code_id": "2540",
-    "address": null,
+    "code_id": "2564",
+    "address": "archway1ytaf7pj5pvy35ggs95s9ehjspa5xtrv4r85skj7v8gcpt76k5nhsff068f",
     "admin": {
       "$var": "sender"
     },
@@ -236,12 +243,14 @@
             "$ref": "fiend-frens-weapon.address"
           }
         }
-      }
-    }
+      },
+      "tx": "B14EE70AAEF92589DAA0F7AF7E73B1381CAE5A0585E6EEA92327EA69B16FBFA1"
+    },
+    "tx": "AC90865AB9CCDC5D21FECD37869AE55F43A8451ECDA30F847384908952D03628"
   },
   "fiend-frens-wings-minter": {
-    "code_id": "2543",
-    "address": null,
+    "code_id": "2565",
+    "address": "archway1nnnk388mh4tzq2fze8whfjg7n9ejqg0al7ds3n7aq77jererunfsck2ucg",
     "admin": {
       "$var": "sender"
     },
@@ -285,11 +294,12 @@
           "$var": "sender"
         }
       ]
-    }
+    },
+    "tx": "AEC346E32720C9DFDDCCA226F89BE8986DC48173C93614C5F2F851CE2042E2C7"
   },
   "fiend-frens-wings": {
-    "code_id": "2540",
-    "address": null,
+    "code_id": "2564",
+    "address": "archway1clnj0957tcrfmrtqugcpppm43s6dv62wm7adv8mhs9kv35qxgf5suheg5l",
     "admin": {
       "$var": "sender"
     },
@@ -310,12 +320,14 @@
             "$ref": "fiend-frens-wings.address"
           }
         }
-      }
-    }
+      },
+      "tx": "2EAC60BBF15BFA433522BEB6F94983923D58C57F998AD5BA5DC1FB7CCA25112D"
+    },
+    "tx": "278E32692E897F8EF1EC27C214572DD095DC7973913D6102D57F65753B77BAEC"
   },
   "fiend-frens-constructor": {
-    "code_id": "2550",
-    "address": null,
+    "code_id": "2566",
+    "address": "archway13cj0z0zgca02wdlum855fapu9u7hfprwqcczefr2mf0ep75lh7ms3anpjy",
     "admin": {
       "$var": "sender"
     },
@@ -357,6 +369,7 @@
           "$var": "sender"
         }
       ]
-    }
+    },
+    "tx": "A68409CC65972AA601702452C2844C6CAEDC2A2AA3556D4B1341A984EACF18E9"
   }
 }
