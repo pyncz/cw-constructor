@@ -4,5 +4,6 @@
     ".env.*": "properties"
   },
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-  "rust-analyzer.check.command": "clippy"
+  "rust-analyzer.check.command": "clippy",
+  "tailwindCSS.experimental.configFile": "example/client/tailwind.config.ts"
 }
