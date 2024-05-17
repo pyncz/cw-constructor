@@ -12,11 +12,7 @@
 # Cargo
 target
 schema
-Cargo.lock
+artifacts
 
 # Node
 node_modules
-
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
