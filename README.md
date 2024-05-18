@@ -10,7 +10,9 @@ Equip nft traits for a token and render metadata on the fly
 
 ## Example
 
-<img src=".github/logo.png" alt="Fiend Frens" width="200">
+<div align="center">
+  <img src=".github/cover.jpg" alt="Fiend Frens" height="200">
+</div>
 
 Fiend Frens demo collection, that uses `cw-constructor` contract.
 
