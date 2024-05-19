@@ -1,5 +1,6 @@
 import type { ExecuteInstruction } from '@cosmjs/cosmwasm-stargate';
 import { type CallOptions, type Coin, type ExecInstruction, type Msg, NoContractAddressError, NotConnectedError } from '~/types';
+import { MAX_MEMO_LENGTH } from '~/configs';
 
 export const useContract = (contractAddress?: MaybeRefOrGetter<string | undefined>) => {
   const { clientAsync: queryClientAsync } = useRpcClient();
@@ -15,7 +16,7 @@ export const useContract = (contractAddress?: MaybeRefOrGetter<string | undefine
     return await queryClient.queryContractSmart(contract, msg);
   };
 
-  const execute = async (msg: Msg, options?: CallOptions & { memo?: string; funds?: Coin[]; gasAdjustment?: number }) => {
+  const execute = async (msg: Msg, options?: CallOptions & { memo?: string, funds?: Coin[], gasAdjustment?: number }) => {
     const { memo, funds, gasAdjustment } = options ?? {};
 
     if (!address.value || !signingClient.value) {
@@ -26,10 +27,10 @@ export const useContract = (contractAddress?: MaybeRefOrGetter<string | undefine
       throw new NoContractAddressError();
     }
 
-    return await signingClient.value.execute(address.value, contract, msg, gasAdjustment || 'auto', memo, funds);
+    return await signingClient.value.execute(address.value, contract, msg, gasAdjustment || 'auto', memo && truncateString(memo, MAX_MEMO_LENGTH), funds);
   };
 
-  const executeMultiple = async (instructions: ExecInstruction[], options?: CallOptions & { memo?: string; gasAdjustment?: number }) => {
+  const executeMultiple = async (instructions: ExecInstruction[], options?: CallOptions & { memo?: string, gasAdjustment?: number }) => {
     const { memo, gasAdjustment } = options ?? {};
 
     if (!address.value || !signingClient.value) {
@@ -46,7 +47,7 @@ export const useContract = (contractAddress?: MaybeRefOrGetter<string | undefine
       };
     });
 
-    return await signingClient.value.executeMultiple(address.value, parsedInstructions, gasAdjustment || 'auto', memo);
+    return await signingClient.value.executeMultiple(address.value, parsedInstructions, gasAdjustment || 'auto', memo && truncateString(memo, MAX_MEMO_LENGTH));
   };
 
   return {
