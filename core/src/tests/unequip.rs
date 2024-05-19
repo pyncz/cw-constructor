@@ -183,7 +183,7 @@ fn unequip_not_equipped_trait() {
     // Unequip trait
     let resp = app.execute_contract(
         minter.clone(),
-        constructor_contract.clone(),
+        constructor_contract,
         &ExecuteMsg::Unequip(UnequipMsg {
             traits: vec![TokenConfig {
                 token_id: TRAIT_TOKEN_ID.to_string(),
@@ -274,7 +274,7 @@ fn unequip_not_owned_trait() {
     let sender = Addr::unchecked("minter_wannabe");
     let resp = app.execute_contract(
         sender,
-        constructor_contract.clone(),
+        constructor_contract,
         &ExecuteMsg::Unequip(UnequipMsg {
             traits: vec![TokenConfig {
                 token_id: TRAIT_TOKEN_ID.to_string(),

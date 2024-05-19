@@ -14,13 +14,13 @@ pub struct Trait<A: Into<String> + Clone = Addr> {
 pub struct TraitResp {
     pub token_id: String,
     pub token: TokenConfig<Addr>,
-    pub slot: Option<String>,
+    pub slot: String,
 }
 
 #[cw_serde]
 pub struct TraitWithMetadataResp<TTraitExtension> {
     pub token_id: String,
     pub token: TokenConfig<Addr>,
-    pub slot: Option<String>,
+    pub slot: String,
     pub info: TokenMetadata<TTraitExtension>,
 }

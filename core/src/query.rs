@@ -48,10 +48,10 @@ where
                 }
                 let t_slot = self
                     .get_slot_config_by_address(&t.token.address, deps)
-                    .unwrap_or(None)
-                    .map(|s| s.name);
+                    .unwrap_or(None)?
+                    .name;
                 if let Some(slot) = &msg.slot {
-                    if Some(slot.to_owned()) != t_slot {
+                    if *slot != t_slot {
                         return None;
                     }
                 }
@@ -111,21 +111,22 @@ where
         let traits_info = traits
             .into_iter()
             .filter(|t| t.token_id == msg.token_id)
-            .map(|t| {
+            .filter_map(|t| {
                 let slot = self
                     .get_slot_config_by_address(&t.token.address, deps)
-                    .unwrap_or(None)
-                    .map(|s| s.name);
-                Ok(TraitWithMetadataResp {
+                    .unwrap_or(None)?
+                    .name;
+                let info = cw721_info::<TTraitExtension>(
+                    &t.token.address.to_string(),
+                    &t.token.token_id,
+                    deps,
+                );
+                Some(info.map(|info| TraitWithMetadataResp {
                     token_id: t.token_id,
                     token: t.token.to_owned(),
-                    info: cw721_info::<TTraitExtension>(
-                        &t.token.address.to_string(),
-                        &t.token.token_id,
-                        deps,
-                    )?,
+                    info,
                     slot,
-                })
+                }))
             })
             .collect::<StdResult<Vec<TraitWithMetadataResp<TTraitExtension>>>>()?;
 

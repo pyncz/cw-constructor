@@ -110,10 +110,10 @@ fn equip_allowed_trait() {
             traits: vec![TraitResp {
                 token_id: BASE_TOKEN_ID.to_string(),
                 token: TokenConfig {
-                    address: Addr::unchecked(trait_contract.clone()),
+                    address: Addr::unchecked(trait_contract),
                     token_id: TRAIT_TOKEN_ID.to_string(),
                 },
-                slot: Some("slot".to_string()),
+                slot: "slot".to_string(),
             }]
         }
     );
@@ -181,7 +181,7 @@ fn equip_not_allowed_trait() {
     // Equip trait
     let resp = app.execute_contract(
         minter.clone(),
-        constructor_contract.clone(),
+        constructor_contract,
         &ExecuteMsg::Equip(EquipMsg {
             token_id: BASE_TOKEN_ID.to_owned(),
             traits: vec![TokenConfig {
@@ -258,7 +258,7 @@ fn equip_not_owned_trait() {
     // Equip trait not owned nor approved
     let resp = app.execute_contract(
         base_owner.clone(),
-        constructor_contract.clone(),
+        constructor_contract,
         &ExecuteMsg::Equip(EquipMsg {
             token_id: BASE_TOKEN_ID.to_owned(),
             traits: vec![TokenConfig {
@@ -380,10 +380,10 @@ fn equip_approved_trait() {
             traits: vec![TraitResp {
                 token_id: BASE_TOKEN_ID.to_string(),
                 token: TokenConfig {
-                    address: Addr::unchecked(trait_contract.clone()),
+                    address: Addr::unchecked(trait_contract),
                     token_id: TRAIT_TOKEN_ID.to_string(),
                 },
-                slot: Some("slot".to_string()),
+                slot: "slot".to_string(),
             }]
         }
     );
@@ -453,7 +453,7 @@ fn equip_on_not_owned_token() {
     // Equip a trait on base token not owned nor approved
     let resp = app.execute_contract(
         trait_owner.clone(),
-        constructor_contract.clone(),
+        constructor_contract,
         &ExecuteMsg::Equip(EquipMsg {
             token_id: BASE_TOKEN_ID.to_owned(),
             traits: vec![TokenConfig {
@@ -535,7 +535,7 @@ fn equip_on_approved_token() {
         spender: trait_owner.clone().into(),
         expires: None,
     };
-    app.execute_contract(base_owner.clone(), base_contract.clone(), &approve_msg, &[])
+    app.execute_contract(base_owner.clone(), base_contract, &approve_msg, &[])
         .unwrap();
 
     // - equip
@@ -571,10 +571,10 @@ fn equip_on_approved_token() {
             traits: vec![TraitResp {
                 token_id: BASE_TOKEN_ID.to_string(),
                 token: TokenConfig {
-                    address: Addr::unchecked(trait_contract.clone()),
+                    address: Addr::unchecked(trait_contract),
                     token_id: TRAIT_TOKEN_ID.to_string(),
                 },
-                slot: Some("slot".to_string()),
+                slot: "slot".to_string(),
             }]
         }
     );
@@ -688,10 +688,10 @@ fn equipped_info() {
             traits: vec![TraitWithMetadataResp {
                 token_id: BASE_TOKEN_ID.to_string(),
                 token: TokenConfig {
-                    address: trait_contract.clone(),
+                    address: trait_contract,
                     token_id: TRAIT_TOKEN_ID.to_string()
                 },
-                slot: Some("slot".to_string()),
+                slot: "slot".to_string(),
                 info: TokenMetadata {
                     contract: ContractInfoResponse {
                         name: "Test NFT".to_string(),
@@ -794,7 +794,7 @@ fn equip_taken_slot() {
     // Equip another trait as the same slot
     let resp = app.execute_contract(
         minter.clone(),
-        constructor_contract.clone(),
+        constructor_contract,
         &ExecuteMsg::Equip(EquipMsg {
             token_id: BASE_TOKEN_ID.to_owned(),
             traits: vec![TokenConfig {
@@ -929,15 +929,15 @@ fn equip_taken_slot_with_multiple_allowed() {
                         address: Addr::unchecked(trait_contract.clone()),
                         token_id: "1".to_string(),
                     },
-                    slot: Some("slot".to_string()),
+                    slot: "slot".to_string(),
                 },
                 TraitResp {
                     token_id: BASE_TOKEN_ID.to_string(),
                     token: TokenConfig {
-                        address: Addr::unchecked(trait_contract.clone()),
+                        address: Addr::unchecked(trait_contract),
                         token_id: "2".to_string(),
                     },
-                    slot: Some("slot".to_string()),
+                    slot: "slot".to_string(),
                 }
             ]
         }
@@ -1021,7 +1021,7 @@ fn equip_equipped_trait_on_same_token() {
     // Try to equip again
     let resp = app.execute_contract(
         minter.clone(),
-        constructor_contract.clone(),
+        constructor_contract,
         &ExecuteMsg::Equip(EquipMsg {
             token_id: BASE_TOKEN_ID.to_owned(),
             traits: vec![TokenConfig {
@@ -1125,7 +1125,7 @@ fn equip_equipped_trait_on_different_token() {
     // Try to equip again on different base token
     let resp = app.execute_contract(
         minter.clone(),
-        constructor_contract.clone(),
+        constructor_contract,
         &ExecuteMsg::Equip(EquipMsg {
             token_id: "2".to_owned(),
             traits: vec![TokenConfig {
