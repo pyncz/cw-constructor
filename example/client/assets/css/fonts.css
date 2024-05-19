@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Mono */
+  @font-face {
+    font-family: Overpass Mono;
+    font-weight: 300;
+    font-display: swap;
+    font-style: normal;
+    src: local('Overpass Mono Light'), url('/fonts/Overpass_Mono/OverpassMono-Light.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: Overpass Mono;
+    font-weight: 400;
+    font-display: swap;
+    font-style: normal;
+    src: local('Overpass Mono Regular'), url('/fonts/Overpass_Mono/OverpassMono-Regular.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: Overpass Mono;
+    font-weight: 500;
+    font-display: swap;
+    font-style: normal;
+    src: local('Overpass Mono Medium'), url('/fonts/Overpass_Mono/OverpassMono-Medium.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: Overpass Mono;
+    font-weight: 600;
+    font-display: swap;
+    font-style: normal;
+    src: local('Overpass Mono SemiBold'), url('/fonts/Overpass_Mono/OverpassMono-SemiBold.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: Overpass Mono;
+    font-weight: 700;
+    font-display: swap;
+    font-style: normal;
+    src: local('Overpass Mono Bold'), url('/fonts/Overpass_Mono/OverpassMono-Bold.ttf') format('truetype');
+  }
+
+  /* Comic */
+  @font-face {
+    font-family: Coming Soon;
+    font-weight: 400;
+    font-display: swap;
+    font-style: normal;
+    src: local('Coming Soon'), url('/fonts/Coming_Soon/ComingSoon-Regular.ttf') format('truetype');
+  }
+}

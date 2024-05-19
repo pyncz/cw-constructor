@@ -54,5 +54,25 @@ module.exports = {
         asyncArrow: 'always',
       },
     ],
+    'vue/html-self-closing': ['error', {
+      html: {
+        normal: 'always',
+        void: 'always',
+        component: 'always',
+      },
+    }],
+    'vue/max-attributes-per-line': ['error', {
+      singleline: {
+        max: 3,
+      },
+      multiline: {
+        max: 1,
+      },
+    }],
+    'vue/custom-event-name-casing': ['error', 'kebab-case'],
+    'vue/component-name-in-template-casing': ['error', 'kebab-case'],
+    'vue/component-tags-order': ['error', {
+      order: ['script', 'template', 'style'],
+    }],
   },
 };

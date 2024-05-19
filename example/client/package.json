@@ -1,0 +1,29 @@
+{
+  "name": "fiend-frens-client",
+  "version": "0.1.0",
+  "description": "A demo website to view, equip and unequip trait tokens for the **Fiend Frens** NFTs",
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "postinstall": "nuxt prepare",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "start": "nuxt start"
+  },
+  "dependencies": {
+    "@archwayhq/arch3.js": "^0.7.0",
+    "@cosmjs/proto-signing": "^0.32.3",
+    "@tanstack/vue-query": "^5.36.0",
+    "@vueuse/core": "^10.9.0",
+    "bignumber.js": "^9.1.2",
+    "nuxt": "^3.11.2",
+    "nuxt-og-image": "3.0.0-rc.53",
+    "radix-vue": "^1.8.0",
+    "tailwindcss": "^3.4.3",
+    "vue": "^3.4.27",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@cosmjs/cosmwasm-stargate": "^0.32.3"
+  }
+}

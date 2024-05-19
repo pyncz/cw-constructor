@@ -1,0 +1,8 @@
+dist
+.output
+
+.nuxt
+.nitro
+
+.env
+
