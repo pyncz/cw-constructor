@@ -4,5 +4,5 @@
 
 ```toml
 [dependencies]
-cw_constructor = { version = "0.1", features = ["library"] }
+cw_constructor = { version = "0.1", features = [ "library" ] }
 ```

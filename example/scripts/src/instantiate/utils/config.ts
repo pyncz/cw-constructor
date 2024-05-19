@@ -1,11 +1,11 @@
-import fs from 'fs';
-import { dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 export type ConfigResolvedValue = string | number | null | true | false;
-export type ConfigValue = ConfigResolvedValue | { '$ref': string } | { '$var': string } | { '$json': string };
+export type ConfigValue = ConfigResolvedValue | { $ref: string } | { $var: string } | { $json: string };
 
-type Resolver = (input: Config) => Config | undefined;
+type Resolver = (_input: Config) => Config | undefined;
 
 export type Config<V extends ConfigValue = ConfigValue> = V | Config<V>[] | { [key: string]: Config<V> };
 
@@ -59,7 +59,7 @@ export const createRefsResolver = (config: Config) => {
         const cd = referencePath.shift();
         if (cd) {
           if (Array.isArray(target)) {
-            const index = parseInt(cd);
+            const index = Number.parseInt(cd);
             target = target[index] ?? null;
           } else {
             target = target[cd as keyof typeof target] ?? null;

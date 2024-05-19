@@ -1,25 +1,28 @@
 [package]
 name = "cw-minter"
 description = "Minter contract for the Fiend Frens' base and trait NFTs"
-authors       = { workspace = true }
-version       = { workspace = true }
-edition       = { workspace = true }
-license       = { workspace = true }
-repository    = { workspace = true }
-homepage      = { workspace = true }
+authors = { workspace = true }
+version = { workspace = true }
+edition = { workspace = true }
+license = { workspace = true }
+repository = { workspace = true }
+homepage = { workspace = true }
 documentation = { workspace = true }
 
 [lib]
-crate-type = ["cdylib", "rlib"]
+crate-type = [
+  "cdylib",
+  "rlib"
+]
 
 [features]
-backtraces = ["cosmwasm-std/backtraces"]
+backtraces = [ "cosmwasm-std/backtraces" ]
 
 [dependencies]
-cosmwasm-std = { version = "1.0.0-beta8", features = ["staking"] }
+cosmwasm-std = { version = "1.0.0-beta8", features = [ "staking" ] }
 cw721-base = "0.13.4"
 cw721 = "0.13.4"
-serde = { version = "1.0.103", default-features = false, features = ["derive"] }
+serde = { version = "1.0.103", default-features = false, features = [ "derive" ] }
 serde_json = "1.0"
 thiserror = "1.0"
 cosmwasm-schema = "1.1.4"

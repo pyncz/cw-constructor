@@ -1,6 +1,6 @@
-import fs from 'fs';
-import { dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { config as loadEnv } from 'dotenv';
 import { consola } from 'consola';
@@ -43,7 +43,7 @@ try {
     } else {
       // Instantiate the contract with message from config
       const msg = parse(rawMsg, createRefsResolver(config));
-      const { contractAddress, transactionHash } = await client.instantiate(sender, parseInt(codeId), msg, contractSlug, 'auto', {
+      const { contractAddress, transactionHash } = await client.instantiate(sender, Number.parseInt(codeId), msg, contractSlug, 'auto', {
         memo: `Instantiate ${contractSlug}`,
         admin,
       });

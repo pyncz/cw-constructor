@@ -37,7 +37,6 @@ Fiend Frens demo collection, that uses `cw-constructor` contract.
 ### Client
 - [🖥️ `client`](./example/client) - Frontend to view / equip / unequip traits
 
-
 # Scripts
 
 ### Test

@@ -3,37 +3,36 @@
     /* Basic options */
     "incremental": true,
     "target": "es2020",
-    "module": "ESNext",
 
-    /* Strict type-checking options */
-    "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictPropertyInitialization": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-
+    "emitDecoratorMetadata": true,
+    /* Experimental options */
+    "experimentalDecorators": true,
     /* Module resolution options */
     "baseUrl": ".",
-    "moduleResolution": "Node",
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
+    "module": "ESNext",
 
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "allowJs": true,
+    /* Strict type-checking options */
+    "strict": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "alwaysStrict": true,
+
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUncheckedIndexedAccess": true,
     /* Additional setup */
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": true,
-    "noUncheckedIndexedAccess": true,
-    "allowJs": true,
     "noEmit": true,
-    "isolatedModules": true,
-
-    /* Experimental options */
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true
   },
   "exclude": ["node_modules"]
 }

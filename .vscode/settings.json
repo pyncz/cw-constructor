@@ -5,5 +5,23 @@
   },
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "rust-analyzer.check.command": "clippy",
-  "tailwindCSS.experimental.configFile": "example/client/tailwind.config.ts"
+  "tailwindCSS.experimental.configFile": "example/client/tailwind.config.ts",
+  "eslint.experimental.useFlatConfig": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue",
+    "html",
+    "markdown",
+    "json",
+    "jsonc",
+    "yaml",
+    "toml",
+    "xml",
+    "gql",
+    "graphql",
+    "astro"
+  ]
 }
