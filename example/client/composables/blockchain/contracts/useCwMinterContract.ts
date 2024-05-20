@@ -9,7 +9,7 @@ export const useCwMinterContract = (address?: MaybeRefOrGetter<string | undefine
   const { contractInfo: cw721ContractInfo } = useCw721Contract();
 
   // Queries
-  const contractInfo = async <T>(
+  const contractInfo = async <T = any>(
     options?: CallOptions,
   ): Promise<{
     cw721?: string | null

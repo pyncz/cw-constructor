@@ -1,6 +1,6 @@
 import { computedAsync } from '@vueuse/core';
 
-export const useComputedAsync = <T>(fn: (...args: any[]) => Promise<T>) => {
+export const useComputedAsync = <T>(fn: (..._args: any[]) => Promise<T>) => {
   const dataAsync = computed(fn);
 
   const isLoading = ref(false);

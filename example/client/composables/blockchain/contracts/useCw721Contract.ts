@@ -12,7 +12,7 @@ export interface OwnerOfResponse {
   approvals: Approval[]
 }
 
-export interface NftInfoResponse<T> {
+export interface NftInfoResponse<T = any> {
   token_uri: null | string
   extension: null | T
 }
@@ -149,7 +149,7 @@ export const useCw721Contract = (address?: MaybeRefOrGetter<string | undefined>)
     }, options);
   };
 
-  const nftInfo = async <T>(
+  const nftInfo = async <T = any>(
     { tokenId }: { tokenId: string },
     options?: CallOptions,
   ): Promise<NftInfoResponse<T>> => {
@@ -160,7 +160,7 @@ export const useCw721Contract = (address?: MaybeRefOrGetter<string | undefined>)
     }, options);
   };
 
-  const allNftInfo = async <T>(
+  const allNftInfo = async <T = any>(
     { tokenId }: { tokenId: string },
     options?: CallOptions,
   ): Promise<{

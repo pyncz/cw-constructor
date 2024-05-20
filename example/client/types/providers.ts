@@ -7,8 +7,8 @@ interface SignOptions {
 }
 
 export interface EmbeddedProvider {
-  enable(chainIds: string | string[]): Promise<void>
-  getOfflineSignerAuto(chainId: string, signOptions?: SignOptions): Promise<OfflineSigner>
+  enable: (_chainIds: string | string[]) => Promise<void>
+  getOfflineSignerAuto: (_chainId: string, _signOptions?: SignOptions) => Promise<OfflineSigner>
   defaultOptions: {
     sign?: SignOptions
   }

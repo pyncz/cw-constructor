@@ -4,7 +4,7 @@ import type { Cw721ContractInfo, NftInfoResponse } from './useCw721Contract';
 import { useCw721Contract } from './useCw721Contract';
 import type { CallOptions } from '~/types';
 
-export interface TokenInfo<T> {
+export interface TokenInfo<T = any> {
   contract: Cw721ContractInfo
   token: NftInfoResponse<T>
 }
@@ -68,7 +68,7 @@ export const useCwConstructorContract = (address?: MaybeRefOrGetter<string | und
     }, options);
   };
 
-  const tokenInfo = async <E, T, M>({ tokenId }: { tokenId: string }, options?: CallOptions): Promise<{
+  const tokenInfo = async <E = any, T = any, M = any>({ tokenId }: { tokenId: string }, options?: CallOptions): Promise<{
     info: NftInfoResponse<M>
     base_token: TokenInfo<E>
     traits: {

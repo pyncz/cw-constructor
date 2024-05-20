@@ -1,9 +1,10 @@
 import plugin from 'tailwindcss/plugin';
-import { rgbText } from '../../utils';
+import { TEXT_OPACITY, rgbText } from '../../utils';
 
 export const linkPlugin = plugin(({ addComponents, theme }) => {
   addComponents({
     '.link': {
+      [TEXT_OPACITY]: '1',
       'color': rgbText('--main-200'),
       'transitionDuration': theme('transitionDuration.sm'),
       'textDecorationLine': 'underline',

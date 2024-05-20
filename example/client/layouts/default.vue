@@ -7,7 +7,10 @@ const years = useYearsFrom(2024);
   <div class="min-h-screen flex flex-col">
     <div class="flex-1 flex flex-col">
       <header class="py-4 container flex gap-4 justify-between items-center">
-        <img src="/img/logo.png" alt="Fiend Frens logo" class="w-auto h-12 -ml-2" />
+        <nuxt-link to="/" class="shrink-0">
+          <img src="/img/logo.png" alt="Fiend Frens logo" class="w-auto h-12 -ml-1 hidden xs:block" />
+          <img src="/img/logo-symbol.png" alt="Fiend Frens symbol logo" class="size-12 xs:hidden" />
+        </nuxt-link>
         <connect-section />
       </header>
 

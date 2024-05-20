@@ -60,9 +60,6 @@ importers:
       '@cosmjs/cosmwasm-stargate':
         specifier: ^0.32.3
         version: 0.32.3
-      '@eslint/eslintrc':
-        specifier: ^3.1.0
-        version: 3.1.0
 
   example/scripts:
     devDependencies:

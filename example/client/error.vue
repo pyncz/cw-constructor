@@ -7,10 +7,19 @@ defineProps<{
 </script>
 
 <template>
-  <div>
-    <h1>{{ error.statusCode }}</h1>
-    <NuxtLink to="/">
-      Go back home
-    </NuxtLink>
-  </div>
+  <NuxtLayout>
+    <div class="space-y-2">
+      <div>
+        <h5>
+          {{ error.statusCode }}
+        </h5>
+        <pre class="text-main-100">{{ error.message }}</pre>
+      </div>
+      <div>
+        <nuxt-link to="/" class="link">
+          Go back
+        </nuxt-link>
+      </div>
+    </div>
+  </NuxtLayout>
 </template>

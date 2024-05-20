@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { GAS_ADJUSTMENT } from '~/configs';
+
 // Restore connection on mounted
 const { reconnect } = useConnect();
 onMounted(() => {
-  reconnect();
+  reconnect({ gasAdjustment: GAS_ADJUSTMENT });
 });
 
 useHeadSafe({
@@ -47,7 +49,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
+  <nuxt-layout>
+    <nuxt-page />
+  </nuxt-layout>
 </template>

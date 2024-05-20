@@ -14,12 +14,32 @@ export default {
   ],
   plugins: [
     ...Object.values(plugins),
-    plugin(({ addBase }) => {
+    plugin(({ addBase, matchUtilities, theme }) => {
       addBase({
         ':root': {
           '--container-padding': '1.25rem',
         },
       });
+
+      addBase({
+        h1: { fontSize: '2.5rem' },
+        h2: { fontSize: '2rem' },
+        h3: { fontSize: '1.625rem' },
+        h4: { fontSize: '1.25rem' },
+        h5: { fontSize: '1.125rem' },
+        h6: { fontSize: '1rem' },
+      });
+      matchUtilities(
+        {
+          'grid-cols-autofill': (value) => ({
+            gridTemplateColumns: `repeat(auto-fill, minmax(${value}, 1fr))`,
+          }),
+          'grid-cols-autofit': (value) => ({
+            gridTemplateColumns: `repeat(auto-fit, minmax(${value}, 1fr))`,
+          }),
+        },
+        { values: theme('width') },
+      );
     }),
   ],
   theme: {
@@ -35,6 +55,9 @@ export default {
       sans: defaultTheme.fontFamily.sans,
       comic: ['"Coming Soon"', ...defaultTheme.fontFamily.sans],
       mono: ['"Overpass Mono"', ...defaultTheme.fontFamily.mono],
+    },
+    borderRadius: {
+      DEFAULT: '1px',
     },
     transitionDuration: {
       xs: '100ms',

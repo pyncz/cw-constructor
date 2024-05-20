@@ -1,8 +1,8 @@
 {
   "name": "fiend-frens-client",
+  "type": "module",
   "version": "0.1.0",
   "description": "A demo website to view, equip and unequip trait tokens for the **Fiend Frens** NFTs",
-  "type": "module",
   "scripts": {
     "dev": "nuxt dev",
     "postinstall": "nuxt prepare",
