@@ -2,7 +2,7 @@
 
 import type { Cw721ContractInfo, NftInfoResponse } from './useCw721Contract';
 import { useCw721Contract } from './useCw721Contract';
-import type { CallOptions } from '~/types';
+import type { CallOptions, ExecuteOptions } from '~/types';
 
 export interface TokenInfo<T = any> {
   contract: Cw721ContractInfo
@@ -88,7 +88,7 @@ export const useCwConstructorContract = (address?: MaybeRefOrGetter<string | und
   // Transactions
   const equip = async (
     { tokenId, trait }: { tokenId: string, trait: { address: string, tokenId: string } },
-    options?: CallOptions,
+    options?: ExecuteOptions,
   ) => {
     const traitTokenTitle = await nftTitle({ tokenId: trait.tokenId }, { contractAddress: trait.address });
     return await execute({
@@ -104,7 +104,7 @@ export const useCwConstructorContract = (address?: MaybeRefOrGetter<string | und
 
   const unequip = async (
     { trait }: { trait: { address: string, tokenId: string } },
-    options?: CallOptions,
+    options?: ExecuteOptions,
   ) => {
     const traitTokenTitle = await nftTitle({ tokenId: trait.tokenId }, { contractAddress: trait.address });
     return await execute({

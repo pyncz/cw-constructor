@@ -1,5 +1,6 @@
 import type { ExecuteInstruction } from '@cosmjs/cosmwasm-stargate';
-import { type CallOptions, type Coin, type ExecInstruction, type Msg, NoContractAddressError, NotConnectedError } from '~/types';
+import type { CallOptions, ExecInstruction, ExecuteMultipleOptions, ExecuteOptions, Msg } from '~/types';
+import { NoContractAddressError, NotConnectedError } from '~/types';
 import { MAX_MEMO_LENGTH } from '~/configs';
 
 export const useContract = (contractAddress?: MaybeRefOrGetter<string | undefined>) => {
@@ -16,7 +17,7 @@ export const useContract = (contractAddress?: MaybeRefOrGetter<string | undefine
     return await queryClient.queryContractSmart(contract, msg);
   };
 
-  const execute = async (msg: Msg, options?: CallOptions & { memo?: string, funds?: Coin[], gasAdjustment?: number }) => {
+  const execute = async (msg: Msg, options?: ExecuteOptions) => {
     const { memo, funds, gasAdjustment } = options ?? {};
 
     if (!address.value || !signingClient.value) {
@@ -30,7 +31,7 @@ export const useContract = (contractAddress?: MaybeRefOrGetter<string | undefine
     return await signingClient.value.execute(address.value, contract, msg, gasAdjustment || 'auto', memo && truncateString(memo, MAX_MEMO_LENGTH), funds);
   };
 
-  const executeMultiple = async (instructions: ExecInstruction[], options?: CallOptions & { memo?: string, gasAdjustment?: number }) => {
+  const executeMultiple = async (instructions: ExecInstruction[], options?: ExecuteMultipleOptions) => {
     const { memo, gasAdjustment } = options ?? {};
 
     if (!address.value || !signingClient.value) {

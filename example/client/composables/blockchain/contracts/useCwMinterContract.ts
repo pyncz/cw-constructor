@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 
 import { useCw721Contract } from './useCw721Contract';
-import { type CallOptions, type Coin, NoContractAddressError } from '~/types';
+import { type CallOptions, type Coin, type ExecuteOptions, NoContractAddressError } from '~/types';
 
 export const useCwMinterContract = (address?: MaybeRefOrGetter<string | undefined>) => {
   const { query, execute, executeMultiple } = useContract(address);
@@ -28,9 +28,9 @@ export const useCwMinterContract = (address?: MaybeRefOrGetter<string | undefine
 
   // Transactions
   const mint = async (
-    options?: CallOptions,
+    options?: ExecuteOptions,
   ) => {
-    const { cw721 } = await contractInfo(options);
+    const { cw721, price } = await contractInfo(options);
     if (!cw721) {
       throw new NoContractAddressError('cw721 contract to mint is not set!');
     }
@@ -38,7 +38,7 @@ export const useCwMinterContract = (address?: MaybeRefOrGetter<string | undefine
 
     return await execute({
       mint: {},
-    }, { ...options, memo: `Mint ${collectionName}` });
+    }, { ...options, memo: `Mint ${collectionName}${price ? `for ${price.amount}${price.denom}` : ''}` });
   };
 
   return {

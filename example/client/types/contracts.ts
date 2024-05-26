@@ -7,6 +7,15 @@ export interface CallOptions {
   contractAddress?: string
 }
 
+export interface ExecuteMultipleOptions extends CallOptions {
+  memo?: string
+  gasAdjustment?: number
+}
+
+export interface ExecuteOptions extends ExecuteMultipleOptions {
+  funds?: Coin[]
+}
+
 export interface ExecInstruction extends CallOptions {
   msg: Msg
   funds?: readonly Coin[]
