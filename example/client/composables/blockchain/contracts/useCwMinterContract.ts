@@ -38,7 +38,7 @@ export const useCwMinterContract = (address?: MaybeRefOrGetter<string | undefine
 
     return await execute({
       mint: {},
-    }, { ...options, memo: `Mint ${collectionName}${price ? `for ${price.amount}${price.denom}` : ''}` });
+    }, { ...options, memo: `Mint ${collectionName}${price ? ` for ${price.amount}${price.denom}` : ''}` });
   };
 
   return {
