@@ -1,21 +1,19 @@
+// TODO: Remove `symbol` once `/cosmos/bank/v1beta1/denoms_metadata/{denom}` response is fixed
 export const chains = {
   'archway-1': {
-    coin: 'ARCH',
     denom: 'aarch',
-    decimals: 18,
     rpc: 'https://rpc.mainnet.archway.io',
+    symbol: 'ARCH',
   },
   'constantine-3': {
-    coin: 'CONST',
     denom: 'aconst',
-    decimals: 18,
     rpc: 'https://rpc.constantine.archway.io',
+    symbol: 'CONST',
   },
   'titus-2': {
-    coin: 'TITUS',
     denom: 'atitus',
-    decimals: 18,
     rpc: 'https://rpc.titus.archway.io',
+    symbol: 'TITUS',
   },
 };
 

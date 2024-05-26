@@ -57,11 +57,7 @@ export const palettePlugin = plugin(({ addBase }) => {
       },
     },
     opacity: {
-      0: '0',
       accents: 'var(--accents-opacity)',
-      muted: '0.5',
-      soft: '0.8',
-      100: '1',
     },
   },
 });

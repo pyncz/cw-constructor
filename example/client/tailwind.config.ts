@@ -29,6 +29,7 @@ export default {
         h5: { fontSize: '1.125rem' },
         h6: { fontSize: '1rem' },
       });
+
       matchUtilities(
         {
           'grid-cols-autofill': (value) => ({
@@ -59,6 +60,13 @@ export default {
     borderRadius: {
       DEFAULT: '1px',
     },
+    opacity: {
+      0: '0',
+      20: '0.2',
+      50: '0.5',
+      80: '0.8',
+      100: '1',
+    },
     transitionDuration: {
       xs: '100ms',
       sm: '200ms',
@@ -68,6 +76,15 @@ export default {
     extend: {
       screens: {
         xs: '480px',
+      },
+      spacing: {
+        em: '1em',
+      },
+      fontSize: {
+        '7/8': '0.875em',
+        '3/4': '0.75em',
+        '5/4': '1.25em',
+        '9/8': '1.125em',
       },
       padding: {
         container: 'var(--container-padding)',
