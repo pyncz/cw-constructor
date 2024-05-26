@@ -1,2 +1,2 @@
-export * from './truncateAddress';
-export * from './truncateString';
+export * from './ipfs';
+export * from './formatters';
