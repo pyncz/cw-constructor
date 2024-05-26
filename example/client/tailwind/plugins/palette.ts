@@ -18,6 +18,12 @@ export const palettePlugin = plugin(({ addBase }) => {
       '--main-100': '194 194 194',
       '--main-200': '106 106 106',
 
+      '--main-300': '87 87 88',
+      '--main-400': '70 70 72',
+      '--main-500': '55 55 58',
+      '--main-600': '42 42 46',
+      '--main-700': '31 31 36',
+
       // bg colors
       '--main-800': '22 21 28',
       '--main-900': '16 16 21',
@@ -40,21 +46,20 @@ export const palettePlugin = plugin(({ addBase }) => {
     colors: {
       black: rgb('--black'),
       white: rgb('--white'),
-      main: {
-        0: rgb('--main-0'),
-        100: rgb('--main-100'),
-        200: rgb('--main-200'),
-        // ...
-        800: rgb('--main-800'),
-        900: rgb('--main-900'),
-        1000: rgb('--main-1000'),
 
-      },
-      accent: {
-        1: rgb('--accent-1'),
-        2: rgb('--accent-2'),
-        3: rgb('--accent-3'),
-      },
+      // 0-1000
+      main: Array(11).fill(null).reduce((scale, _, i) => {
+        const index = i * 100;
+        scale[index] = rgb(`--main-${index}`);
+        return scale;
+      }, {} as Record<number, string>),
+
+      // 1-3
+      accent: Array(3).fill(null).reduce((scale, _, i) => {
+        const index = i + 1;
+        scale[index] = rgb(`--accent-${index}`);
+        return scale;
+      }, {} as Record<number, string>),
     },
     opacity: {
       accents: 'var(--accents-opacity)',

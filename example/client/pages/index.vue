@@ -20,11 +20,13 @@ useProvideLoading(isLoading);
     <div class="space-y-5">
       <h3>Your frens</h3>
       <connected-only>
-        <div>
-          <div class="grid gap-4 grid-cols-autofill-32">
+        <div class="space-y-4">
+          <div class="grid grid-cols-autofill-32 gap-1">
             <item-preview v-for="tokenId of data?.tokens" :key="tokenId" :token-id />
           </div>
-          <button>Load More</button>
+          <button class="link">
+            Load More
+          </button>
         </div>
         <template #fallback>
           <div class="placeholder">

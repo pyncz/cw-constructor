@@ -1,9 +1,9 @@
 import { createSharedComposable } from '@vueuse/core';
 
 export enum ProgressStatus {
-  Pending,
-  Error,
-  Success,
+  Pending = 'PENDING',
+  Error = 'ERROR',
+  Success = 'SUCCESS',
 }
 
 interface Payload {

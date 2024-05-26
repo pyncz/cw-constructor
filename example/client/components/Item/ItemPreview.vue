@@ -37,8 +37,8 @@ useProvideLoading(isLoading);
 
 <template>
   <skeleton-group class="rounded aspect-square">
-    <nuxt-link :href="`/tokens/${tokenId}`" class="group/card relative duration-sm aspect-square overflow-hidden rounded border border-opacity-0 border-dashed border-main-200 focus-visible:border-solid focus-visible:border-main-100 focus-visible:border-opacity-100 hover:border-opacity-100 outline-none">
-      <div class="absolute -inset-px duration-sm group-hover/card:inset-2 group-focus-visible/card:inset-2 overflow-hidden rounded">
+    <nuxt-link :href="`/tokens/${tokenId}`" class="group/card relative duration-sm aspect-square rounded border border-dashed border-opacity-0 border-main-500 hover:border-opacity-100 focus-visible:border-solid focus-visible:border-main-300 hover:focus-visible:border-main-200 outline-none">
+      <div class="[--inset:theme(spacing.3)] absolute -inset-px duration-sm group-hover/card:inset-[--inset] group-focus-visible/card:inset-[--inset] overflow-hidden rounded">
         <img
           v-for="image of images"
           :key="image"
