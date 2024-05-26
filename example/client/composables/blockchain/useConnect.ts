@@ -1,5 +1,5 @@
-import type { OfflineSigner } from '@cosmjs/proto-signing';
-import { computedAsync, createSharedComposable, useLocalStorage } from '@vueuse/core';
+import type { AccountData, OfflineSigner } from '@cosmjs/proto-signing';
+import { createSharedComposable, useLocalStorage } from '@vueuse/core';
 import { SigningArchwayClient, type SigningArchwayClientOptions } from '@archwayhq/arch3.js';
 import { useAsync } from '../helpers/useAsync';
 import { NotInstalledError, type WalletConfig } from '~/types';
@@ -15,6 +15,18 @@ export const useConnect = createSharedComposable(() => {
   const signer = ref<OfflineSigner>();
   const client = ref<SigningArchwayClient>();
 
+  const accounts = ref<readonly AccountData[] | undefined>();
+  const address = computed(() => {
+    return accounts.value?.at(0)?.address;
+  });
+
+  const refreshAccounts = async () => {
+    accounts.value = await signer.value?.getAccounts();
+  };
+
+  // Once `signer` is initialized, fetch accounts
+  watch(signer, refreshAccounts);
+
   const { execute: connect, isPending: isConnecting } = useAsync(async (wallet: WalletConfig, options?: ConnectOptions) => {
     const provider = wallet.getProvider();
     if (!provider) {
@@ -28,6 +40,7 @@ export const useConnect = createSharedComposable(() => {
     });
 
     client.value = await SigningArchwayClient.connectWithSigner(rpc, signer.value, options);
+    wallet.subscribeToKeystoreChange(refreshAccounts);
     connectedWalletId.value = wallet.id;
   });
 
@@ -44,13 +57,6 @@ export const useConnect = createSharedComposable(() => {
       connectedWalletId.value = undefined;
     }
   };
-
-  const accounts = computedAsync(async () => {
-    return await signer.value?.getAccounts();
-  });
-  const address = computed(() => {
-    return accounts.value?.at(0)?.address;
-  });
 
   const isConnected = computed(() => !!address.value);
 
