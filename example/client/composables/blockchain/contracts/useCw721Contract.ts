@@ -26,6 +26,24 @@ export const useCw721Contract = (address?: MaybeRefOrGetter<string | undefined>)
   const { query, execute, executeMultiple } = useContract(address);
 
   // Queries
+  const contractInfo = async (
+    options?: CallOptions,
+  ): Promise<Cw721ContractInfo> => {
+    return await query({
+      contract_info: {},
+    }, options);
+  };
+
+  const minter = async (
+    options?: CallOptions,
+  ): Promise<{
+    minter?: string
+  }> => {
+    return await query({
+      minter: {},
+    }, options);
+  };
+
   const ownerOf = async (
     { tokenId }: { tokenId: string },
     options?: CallOptions,
@@ -141,14 +159,6 @@ export const useCw721Contract = (address?: MaybeRefOrGetter<string | undefined>)
   };
 
   // - metadata queries
-  const contractInfo = async (
-    options?: CallOptions,
-  ): Promise<Cw721ContractInfo> => {
-    return await query({
-      contract_info: {},
-    }, options);
-  };
-
   const nftInfo = async <T = any>(
     { tokenId }: { tokenId: string },
     options?: CallOptions,
@@ -313,6 +323,8 @@ export const useCw721Contract = (address?: MaybeRefOrGetter<string | undefined>)
     execute,
     executeMultiple,
 
+    contractInfo,
+    minter,
     ownerOf,
     approval,
     approvals,
@@ -321,7 +333,6 @@ export const useCw721Contract = (address?: MaybeRefOrGetter<string | undefined>)
     numTokens,
     tokens,
     allTokens,
-    contractInfo,
     nftInfo,
     allNftInfo,
     nftTitle,
