@@ -8,7 +8,7 @@ export default defineNuxtPlugin((nuxt) => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 60000,
+        staleTime: 60_000, // 1 min
         networkMode: 'offlineFirst',
         throwOnError: process.env.NODE_ENV === 'development',
       },
@@ -29,4 +29,8 @@ export default defineNuxtPlugin((nuxt) => {
       hydrate(queryClient, vueQueryState.value);
     });
   }
+
+  return {
+    provide: { queryClient },
+  };
 });

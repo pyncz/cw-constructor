@@ -40,7 +40,7 @@ export default antfu({
       },
     ],
 
-    'no-unused-vars': [
+    'ts/no-unused-vars': [
       'error',
       {
         argsIgnorePattern: '^_',

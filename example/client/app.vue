@@ -7,6 +7,7 @@ onMounted(() => {
   reconnect({ gasAdjustment: GAS_ADJUSTMENT });
 });
 
+// Meta
 useHeadSafe({
   htmlAttrs: {
     lang: 'en',
