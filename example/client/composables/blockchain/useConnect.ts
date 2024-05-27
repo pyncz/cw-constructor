@@ -3,7 +3,6 @@ import { createSharedComposable, useLocalStorage } from '@vueuse/core';
 import { SigningArchwayClient, type SigningArchwayClientOptions } from '@archwayhq/arch3.js';
 import { useAsync } from '../helpers/useAsync';
 import { NotInstalledError, type WalletConfig } from '~/types';
-import { wallets } from '~/configs';
 
 type ConnectOptions = SigningArchwayClientOptions;
 

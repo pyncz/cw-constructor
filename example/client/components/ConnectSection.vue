@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { GAS_ADJUSTMENT } from '~/configs';
-
 const wallets = useWallets();
 const { connect, isConnecting, address, disconnect } = useConnect();
 

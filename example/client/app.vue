@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { GAS_ADJUSTMENT } from '~/configs';
-
 // Restore connection on mounted
 const { reconnect } = useConnect();
 onMounted(() => {

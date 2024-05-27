@@ -1,7 +1,6 @@
 import type { ExecuteInstruction } from '@cosmjs/cosmwasm-stargate';
 import type { CallOptions, ExecInstruction, ExecuteMultipleOptions, ExecuteOptions, Msg } from '~/types';
 import { NoContractAddressError, NotConnectedError } from '~/types';
-import { MAX_MEMO_LENGTH } from '~/configs';
 
 export const useContract = (contractAddress?: MaybeRefOrGetter<string | undefined>) => {
   const { clientAsync: queryClientAsync } = useRpcClient();

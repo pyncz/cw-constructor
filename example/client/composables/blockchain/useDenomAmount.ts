@@ -1,5 +1,4 @@
 import type { Coin } from '~/types';
-import { DEFAULT_AMOUNT_DISPLAY_PRECISION } from '~/configs';
 import { formatAmount } from '~/utils';
 
 export const useDenomAmount = (coin: MaybeRefOrGetter<Coin | undefined>) => {

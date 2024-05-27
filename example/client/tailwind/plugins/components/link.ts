@@ -25,6 +25,10 @@ export const linkPlugin = plugin(({ addComponents, theme }) => {
           content: '"↗"',
         },
       },
+      '&:disabled': {
+        pointerEvents: 'none',
+        opacity: '0.5',
+      },
     },
   });
 });

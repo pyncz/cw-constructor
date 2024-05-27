@@ -1,5 +1,4 @@
 import { useMounted } from '@vueuse/core';
-import { wallets } from '~/configs';
 
 export const useWallets = () => {
   const isMouted = useMounted();

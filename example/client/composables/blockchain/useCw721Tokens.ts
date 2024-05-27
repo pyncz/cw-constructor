@@ -25,6 +25,9 @@ export const UseCw721Tokens = {
       queryFn: async () => {
         return await tokens({
           owner: toValue(msg.owner)!,
+          // eslint-disable-next-line camelcase
+          start_after: toValue(msg.start_after),
+          limit: toValue(msg.limit),
         }, {
           contractAddress: toValue(address)!,
         });

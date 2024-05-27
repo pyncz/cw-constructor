@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/vue-query';
 import { UseNativeBalance } from '../useNativeBalance';
+import { UseCw721TokensInfinite } from '../useCw721TokensInfinite';
 import { type CallbackOptions, type ExecuteOptions, InsufficientBalanceError, NotConnectedError } from '~/types';
 
 interface Variables extends ExecuteOptions {
@@ -55,6 +56,7 @@ export const useCwMinterMintMutation = (options?: Options) => {
         // tokens
         queryClient.invalidateQueries({ queryKey: UseCw721NumTokens.getKey(cw721!) }),
         queryClient.invalidateQueries({ queryKey: UseCw721Tokens.getKey(cw721!, { owner: address }) }),
+        queryClient.invalidateQueries({ queryKey: UseCw721TokensInfinite.getKey(cw721!, { owner: address }) }),
         queryClient.invalidateQueries({ queryKey: UseCw721NftInfo.getKey(cw721!, { tokenId }) }),
       ]);
 
