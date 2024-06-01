@@ -156,7 +156,7 @@ fn boost_number_positive() {
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: Some(MergedDisplayType::Decimal),
+                display_type: Some(MergedDisplayType::Number),
                 value: "5".to_string(),
             }],
         }
@@ -174,7 +174,7 @@ fn boost_number_positive() {
             "attributes": [
                 {
                     "trait_type": "Rage",
-                    "display_type": "decimal",
+                    "display_type": "number",
                     "value": "5"
                 }
             ]
@@ -223,7 +223,7 @@ fn boost_number_positive_multiple() {
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: Some(MergedDisplayType::Decimal),
+                display_type: Some(MergedDisplayType::Number),
                 value: "6".to_string(),
             }],
         }
@@ -241,7 +241,7 @@ fn boost_number_positive_multiple() {
             "attributes": [
                 {
                     "trait_type": "Rage",
-                    "display_type": "decimal",
+                    "display_type": "number",
                     "value": "6"
                 }
             ]
@@ -283,7 +283,7 @@ fn boost_number_negative() {
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: Some(MergedDisplayType::Decimal),
+                display_type: Some(MergedDisplayType::Number),
                 value: "1".to_string(),
             }],
         }
@@ -301,7 +301,7 @@ fn boost_number_negative() {
             "attributes": [
                 {
                     "trait_type": "Rage",
-                    "display_type": "decimal",
+                    "display_type": "number",
                     "value": "1"
                 }
             ]
@@ -343,7 +343,7 @@ fn boost_number_negative_floor() {
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: Some(MergedDisplayType::Decimal),
+                display_type: Some(MergedDisplayType::Number),
                 value: "0".to_string(),
             }],
         }
@@ -361,7 +361,7 @@ fn boost_number_negative_floor() {
             "attributes": [
                 {
                     "trait_type": "Rage",
-                    "display_type": "decimal",
+                    "display_type": "number",
                     "value": "0"
                 }
             ]
@@ -434,7 +434,7 @@ fn boost_number_order() {
             "attributes": [
                 {
                     "trait_type": "Rage",
-                    "display_type": "decimal",
+                    "display_type": "number",
                     "value": "1"
                 }
             ]
@@ -477,7 +477,7 @@ fn boost_percentage_positive() {
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: Some(MergedDisplayType::Decimal),
+                display_type: Some(MergedDisplayType::Number),
                 value: "6".to_string(),
             }],
         }
@@ -495,7 +495,7 @@ fn boost_percentage_positive() {
             "attributes": [
                 {
                     "trait_type": "Rage",
-                    "display_type": "decimal",
+                    "display_type": "number",
                     "value": "6"
                 }
             ]
@@ -544,7 +544,7 @@ fn boost_percentage_positive_multiple() {
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: Some(MergedDisplayType::Decimal),
+                display_type: Some(MergedDisplayType::Number),
                 value: "7".to_string(),
             }],
         }
@@ -562,7 +562,7 @@ fn boost_percentage_positive_multiple() {
             "attributes": [
                 {
                     "trait_type": "Rage",
-                    "display_type": "decimal",
+                    "display_type": "number",
                     "value": "7"
                 }
             ]
@@ -604,7 +604,7 @@ fn boost_percentage_positive_lt_100() {
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: Some(MergedDisplayType::Decimal),
+                display_type: Some(MergedDisplayType::Number),
                 value: "8.04".to_string(),
             }],
         }
@@ -622,7 +622,7 @@ fn boost_percentage_positive_lt_100() {
             "attributes": [
                 {
                     "trait_type": "Rage",
-                    "display_type": "decimal",
+                    "display_type": "number",
                     "value": "8.04"
                 }
             ]
@@ -664,7 +664,7 @@ fn boost_percentage_negative() {
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: Some(MergedDisplayType::Decimal),
+                display_type: Some(MergedDisplayType::Number),
                 value: "2".to_string(),
             }],
         }
@@ -682,7 +682,7 @@ fn boost_percentage_negative() {
             "attributes": [
                 {
                     "trait_type": "Rage",
-                    "display_type": "decimal",
+                    "display_type": "number",
                     "value": "2"
                 }
             ]
@@ -724,7 +724,7 @@ fn boost_percentage_negative_floor() {
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: Some(MergedDisplayType::Decimal),
+                display_type: Some(MergedDisplayType::Number),
                 value: "0".to_string(),
             }],
         }
@@ -742,7 +742,7 @@ fn boost_percentage_negative_floor() {
             "attributes": [
                 {
                     "trait_type": "Rage",
-                    "display_type": "decimal",
+                    "display_type": "number",
                     "value": "0"
                 }
             ]
@@ -815,7 +815,7 @@ fn boost_percentage_order() {
             "attributes": [
                 {
                     "trait_type": "Rage",
-                    "display_type": "decimal",
+                    "display_type": "number",
                     "value": "4"
                 }
             ]
@@ -867,7 +867,7 @@ fn boost_combined() {
             images: vec!["image".to_string()],
             attributes: vec![MergedAttribute {
                 trait_type: "Rage".to_string(),
-                display_type: Some(MergedDisplayType::Decimal),
+                display_type: Some(MergedDisplayType::Number),
                 value: "10".to_string(),
             }],
         }
@@ -885,7 +885,7 @@ fn boost_combined() {
             "attributes": [
                 {
                     "trait_type": "Rage",
-                    "display_type": "decimal",
+                    "display_type": "number",
                     "value": "10"
                 }
             ]
@@ -942,12 +942,12 @@ fn accept_multiple_attributes() {
             attributes: vec![
                 MergedAttribute {
                     trait_type: "Rage".to_string(),
-                    display_type: Some(MergedDisplayType::Decimal),
+                    display_type: Some(MergedDisplayType::Number),
                     value: "6".to_string(),
                 },
                 MergedAttribute {
                     trait_type: "Deception".to_string(),
-                    display_type: Some(MergedDisplayType::Decimal),
+                    display_type: Some(MergedDisplayType::Number),
                     value: "3".to_string(),
                 }
             ],
@@ -966,12 +966,12 @@ fn accept_multiple_attributes() {
             "attributes": [
                 {
                     "trait_type": "Rage",
-                    "display_type": "decimal",
+                    "display_type": "number",
                     "value": "6"
                 },
                 {
                     "trait_type": "Deception",
-                    "display_type": "decimal",
+                    "display_type": "number",
                     "value": "3"
                 }
             ]

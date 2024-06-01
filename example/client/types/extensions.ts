@@ -28,7 +28,7 @@ export interface TraitExtension {
 // Merged extension
 export interface MergedAttribute {
   trait_type: string
-  display_type?: 'decimal' | null
+  display_type?: 'number' | 'decimal' | null
   value: string
 }
 

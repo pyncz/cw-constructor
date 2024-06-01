@@ -29,14 +29,14 @@ pub struct Extension {
 // Merged extension
 #[cw_serde]
 pub enum MergedDisplayType {
-    Decimal,
+    Number,
 }
 
 #[cw_serde]
 pub struct MergedAttribute {
     pub trait_type: String,
     pub display_type: Option<MergedDisplayType>,
-    pub value: String, // CwDecimal for MergedDisplayType::Decimal
+    pub value: String, // CwDecimal for MergedDisplayType::Number
 }
 
 impl From<&Attribute> for MergedAttribute {
@@ -44,7 +44,7 @@ impl From<&Attribute> for MergedAttribute {
         match value.display_type {
             Some(DisplayType::Number) => MergedAttribute {
                 trait_type: value.trait_type.clone(),
-                display_type: Some(MergedDisplayType::Decimal),
+                display_type: Some(MergedDisplayType::Number),
                 value: CwDecimal::from_str(&value.value)
                     .unwrap_or_default()
                     .to_string(),
@@ -107,7 +107,7 @@ impl MergeWithTraitExtension<TraitExtension> for MergedExtension {
         // to be able to apply 0 floor as the *last* step AND re-use the base values in calculations
         self.attributes.iter_mut().for_each(|base_attr| {
             // Update the attribute only if it's not a string attr
-            if let Some(MergedDisplayType::Decimal) = base_attr.display_type {
+            if let Some(MergedDisplayType::Number) = base_attr.display_type {
                 let initial_value = CwDecimal::from_str(&base_attr.value).unwrap_or_default();
 
                 // Collect all the similar attributes accross traits' extensions
