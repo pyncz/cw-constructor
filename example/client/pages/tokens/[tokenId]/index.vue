@@ -91,7 +91,7 @@ const numericAttributes = computed(() => {
       </div>
     </section>
 
-    <div class="lg:sticky top-0 lg:py-8 space-y-6 overflow-hidden">
+    <div class="lg:sticky top-0 lg:py-8 space-y-4 sm:space-y-6 overflow-hidden -mx-container lg:mx-0">
       <div v-for="{ name, allowed_contracts: [traitAddress] } of config?.slots" :key="name" class="flex">
         <trait-mint-card :name :address="traitAddress" />
         <tokens-list
@@ -99,7 +99,7 @@ const numericAttributes = computed(() => {
           :address="traitAddress"
           class="flex-1 px-4 overflow-hidden"
           grid-class="overflow-auto flex px-4"
-          wrapper-class="w-[calc(100%+2*theme(margin.4))] -mx-4"
+          wrapper-class="!w-[calc(100%+2*theme(spacing.4))] -mx-4"
         >
           <template #default="{ tokenId: traitTokenId }">
             <trait-card :token-id="traitTokenId" :address="traitAddress" />

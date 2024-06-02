@@ -12,12 +12,21 @@ export default {
     './app.vue',
     './error.vue',
   ],
+  corePlugins: {
+    container: false,
+  },
   plugins: [
     ...Object.values(plugins),
-    plugin(({ addBase, matchUtilities, theme }) => {
+    plugin(({ addBase, matchUtilities, addComponents, theme }) => {
       addBase({
         ':root': {
           '--container-padding': '1.25rem',
+          '@screen sm': {
+            '--container-padding': '1.5rem',
+          },
+          '@screen lg': {
+            '--container-padding': '2rem',
+          },
         },
       });
 
@@ -28,6 +37,17 @@ export default {
         h4: { fontSize: '1.25rem', lineHeight: '1.15' },
         h5: { fontSize: '1.125rem', lineHeight: '1.15' },
         h6: { fontSize: '1rem', lineHeight: '1.15' },
+      });
+
+      addComponents({
+        '.container': {
+          width: '100%',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          paddingLeft: 'var(--container-padding)',
+          paddingRight: 'var(--container-padding)',
+          maxWidth: theme('screens.2xl'),
+        },
       });
 
       matchUtilities(
@@ -44,14 +64,6 @@ export default {
     }),
   ],
   theme: {
-    container: {
-      center: true,
-      padding: {
-        DEFAULT: 'var(--container-padding)',
-        sm: '1.5rem',
-        lg: '2rem',
-      },
-    },
     fontFamily: {
       sans: defaultTheme.fontFamily.sans,
       comic: ['"Coming Soon"', ...defaultTheme.fontFamily.sans],
@@ -90,6 +102,7 @@ export default {
       },
       spacing: {
         em: '1em',
+        container: 'var(--container-padding)',
       },
       fontSize: {
         '1/2': '0.5em',
@@ -101,9 +114,6 @@ export default {
         '5/4': '1.25em',
         '11/8': '1.375em',
         '3/2': '1.5em',
-      },
-      padding: {
-        container: 'var(--container-padding)',
       },
     },
   },
