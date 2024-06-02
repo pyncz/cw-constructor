@@ -57,7 +57,9 @@ export const useCwMinterMintMutation = (options?: Options) => {
         queryClient.invalidateQueries({ queryKey: UseCw721NumTokens.getKey(cw721!) }),
         queryClient.invalidateQueries({ queryKey: UseCw721Tokens.getKey(cw721!, { owner: address }) }),
         queryClient.invalidateQueries({ queryKey: UseCw721TokensInfinite.getKey(cw721!, { owner: address }) }),
+        queryClient.invalidateQueries({ queryKey: UseCw721AllNftInfo.getKey(cw721!, { tokenId }) }),
         queryClient.invalidateQueries({ queryKey: UseCw721NftInfo.getKey(cw721!, { tokenId }) }),
+        queryClient.invalidateQueries({ queryKey: UseCwConstructorInfo.getKey({ tokenId }) }),
       ]);
 
       setSuccess({
