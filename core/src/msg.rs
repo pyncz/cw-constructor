@@ -18,7 +18,7 @@ pub enum QueryMsg {
     #[returns(ContractInfoResp)]
     ContractInfo(ContractInfoMsg),
 
-    /// Get filtered traits, i.e. trait tokens and a slot
+    /// Get filtered trait tokens
     #[returns(TraitsResp)]
     Traits(TraitsMsg),
 
@@ -84,7 +84,7 @@ pub enum ExecuteMsg {
     /// Equip new trait tokens to the base token
     Equip(EquipMsg),
 
-    /// Remove applied trait tokens
+    /// Remove equipped trait tokens
     Unequip(UnequipMsg),
 }
 
