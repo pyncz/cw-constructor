@@ -25,8 +25,8 @@ export const palettePlugin = plugin(({ addBase }) => {
       '--main-700': '31 31 36',
 
       // bg colors
-      '--main-800': '22 21 28',
-      '--main-900': '16 16 21',
+      '--main-800': '24 23 31',
+      '--main-900': '18 18 23',
       '--main-1000': '11 10 16',
 
       // accent colors for traits' stats etc
@@ -34,7 +34,7 @@ export const palettePlugin = plugin(({ addBase }) => {
       '--accent-2': '67 186 100',
       '--accent-3': '123 112 255',
 
-      '--accents-opacity': '0.1',
+      '--accents-opacity': '0.2',
     },
     '::selection': {
       color: 'rgb(var(--black))',

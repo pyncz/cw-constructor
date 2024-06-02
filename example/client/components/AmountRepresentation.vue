@@ -10,8 +10,10 @@ const tooltip = computed(() => `${props.amount}${props.denom}`);
 </script>
 
 <template>
-  <div class="inline-flex leading-5 items-center gap-[0.5ch] border-b border-dashed duration-sm cursor-help border-main-200 hover:border-main-100" :title="tooltip">
-    <p>{{ formatted }}</p>
-    <small class="text-main-200 text-3/4">{{ symbol }}</small>
-  </div>
+  <with-tooltip :tooltip>
+    <div class="inline-flex leading-sm items-center gap-[0.5ch]">
+      <p>{{ formatted }}</p>
+      <small class="text-main-200 text-3/4">{{ symbol }}</small>
+    </div>
+  </with-tooltip>
 </template>

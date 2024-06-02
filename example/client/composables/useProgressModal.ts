@@ -19,7 +19,7 @@ interface Payload {
 
 const AUTORESET_TIME = 8000;
 
-export const useTxFlow = createSharedComposable(() => {
+export const useProgressModal = createSharedComposable(() => {
   // State
   const status = ref<ProgressStatus>();
   const payload = ref<Payload>();

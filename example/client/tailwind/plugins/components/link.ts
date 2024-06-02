@@ -1,10 +1,11 @@
 import plugin from 'tailwindcss/plugin';
-import { TEXT_OPACITY, rgbText } from '../../utils';
+import { BG_OPACITY, TEXT_OPACITY, rgbBg, rgbText } from '../../utils';
 
 export const linkPlugin = plugin(({ addComponents, theme }) => {
   addComponents({
     '.link': {
       [TEXT_OPACITY]: '1',
+      [BG_OPACITY]: '1',
       'color': rgbText('--main-200'),
       'transitionDuration': theme('transitionDuration.sm'),
       'textDecorationLine': 'underline',
@@ -17,6 +18,7 @@ export const linkPlugin = plugin(({ addComponents, theme }) => {
         outline: 'none',
         color: rgbText('--main-0'),
         textDecorationStyle: 'solid',
+        background: rgbBg('--main-700'),
       },
       '&[target="_blank"]': {
         '&::after': {
@@ -27,7 +29,7 @@ export const linkPlugin = plugin(({ addComponents, theme }) => {
       },
       '&:disabled': {
         pointerEvents: 'none',
-        opacity: '0.5',
+        opacity: '0.25',
       },
     },
   });

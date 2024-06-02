@@ -40,5 +40,35 @@ export const buttonPlugin = plugin(({ addComponents, theme }) => {
         },
       },
     },
+    '.button-inline': {
+      [TEXT_OPACITY]: '1',
+      [BG_OPACITY]: '1',
+      [BORDER_OPACITY]: '1',
+      'cursor': 'pointer',
+      'padding': '0.25em 0.375em 0.125em 0.375em',
+      'display': 'flex',
+      'gap': '0.5em',
+      'alignItems': 'center',
+      'justifyContent': 'center',
+      'lineHeight': '1',
+      'color': rgbText('--main-300'),
+      'backgroundColor': rgbBg('--main-800'),
+      'borderRadius': theme('borderRadius.md'),
+      'transitionDuration': theme('transitionDuration.md'),
+      '&:hover': {
+        backgroundColor: rgbBg('--main-700'),
+      },
+      '&:focus': {
+        outline: 'none',
+        textDecorationLine: 'underline',
+        textUnderlineOffset: '2px',
+        color: rgbText('--main-200'),
+      },
+      '&:disabled': {
+        cursor: 'default',
+        color: rgbText('--main-400'),
+        backgroundColor: rgbBg('--main-900'),
+      },
+    },
   });
 });

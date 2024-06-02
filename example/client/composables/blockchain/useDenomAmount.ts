@@ -1,13 +1,15 @@
+import { toRefs } from '@vueuse/core';
 import type { Coin } from '~/types';
 import { formatAmount } from '~/utils';
 
 export const useDenomAmount = (coin: MaybeRefOrGetter<Coin | undefined>) => {
   // TODO: Fetch metadata (incl. decimals aka "exponent") from `/cosmos/bank/v1beta1/denoms_metadata/{denom}`?
   const { config: { symbol: nativeSymbol } } = useChain();
-  const denomConfig = {
+  const denomConfig = ref({
     decimals: 18,
     symbol: nativeSymbol,
-  };
+  });
+
   const { decimals, symbol } = toRefs(denomConfig);
 
   /**

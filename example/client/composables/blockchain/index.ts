@@ -6,6 +6,8 @@ export * from './useConnect';
 export * from './useRpcClient';
 export * from './useWallets';
 export * from './useIpfsGateway';
+export * from './useAddress';
+export * from './useMintConfig';
 
 export * from './useDenomAmount';
 
@@ -17,6 +19,7 @@ export * from './useCwConstructorInfo';
 export * from './useCw721Tokens';
 export * from './useCw721TokensInfinite';
 export * from './useCw721NftInfo';
+export * from './useCw721AllNftInfo';
 export * from './useCw721Minter';
 export * from './useCwMinterConfig';
 export * from './useCw721NumTokens';

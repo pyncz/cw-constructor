@@ -12,7 +12,7 @@ export const useCwMinterMintMutation = (options?: Options) => {
   const { $queryClient: queryClient } = useNuxtApp();
   const { address } = useConnect();
   const { mint } = useCwMinterContract();
-  const { setStart, setSuccess, setError } = useTxFlow();
+  const { setStart, setSuccess, setError } = useProgressModal();
   const { config: { denom: nativeDenom } } = useChain();
 
   const mutation = useMutation({

@@ -38,3 +38,10 @@ export interface MergedExtension {
   images: [string, ...string[]] // 1+ images
   attributes: MergedAttribute[]
 }
+
+// Stat attributes
+export enum NumericAttribute {
+  PSYCHIC = 'Psychic Powers',
+  RAGE = 'Rage',
+  DECEPTION = 'Deception',
+}

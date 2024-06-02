@@ -22,12 +22,12 @@ export default {
       });
 
       addBase({
-        h1: { fontSize: '2.5rem' },
-        h2: { fontSize: '2rem' },
-        h3: { fontSize: '1.625rem' },
-        h4: { fontSize: '1.25rem' },
-        h5: { fontSize: '1.125rem' },
-        h6: { fontSize: '1rem' },
+        h1: { fontSize: '2.5rem', lineHeight: '1.15' },
+        h2: { fontSize: '2rem', lineHeight: '1.15' },
+        h3: { fontSize: '1.625rem', lineHeight: '1.15' },
+        h4: { fontSize: '1.25rem', lineHeight: '1.15' },
+        h5: { fontSize: '1.125rem', lineHeight: '1.15' },
+        h6: { fontSize: '1rem', lineHeight: '1.15' },
       });
 
       matchUtilities(
@@ -57,8 +57,16 @@ export default {
       comic: ['"Coming Soon"', ...defaultTheme.fontFamily.sans],
       mono: ['"Overpass Mono"', ...defaultTheme.fontFamily.mono],
     },
+    lineHeight: {
+      1: '1',
+      xs: '1.15',
+      sm: '1.25',
+      md: '1.375',
+    },
     borderRadius: {
       DEFAULT: '1px',
+      md: '2px',
+      lg: '4px',
     },
     opacity: {
       0: '0',
@@ -77,14 +85,22 @@ export default {
       screens: {
         xs: '480px',
       },
+      colors: {
+        current: 'currentColor',
+      },
       spacing: {
         em: '1em',
       },
       fontSize: {
-        '7/8': '0.875em',
+        '1/2': '0.5em',
+        '5/8': '0.625em',
         '3/4': '0.75em',
-        '5/4': '1.25em',
+        '7/8': '0.875em',
+        'em': '1em',
         '9/8': '1.125em',
+        '5/4': '1.25em',
+        '11/8': '1.375em',
+        '3/2': '1.5em',
       },
       padding: {
         container: 'var(--container-padding)',

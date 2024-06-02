@@ -27,5 +27,5 @@ const years = useYearsFrom(2024);
       </small>
     </footer>
   </div>
-  <tx-popover />
+  <progress-popover />
 </template>

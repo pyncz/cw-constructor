@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { isConnected } = useConnect();
+const { isConnected, isConnecting } = useConnect();
 </script>
 
 <template>
@@ -14,6 +14,7 @@ const { isConnected } = useConnect();
       leave-to-class="opacity-0"
     >
       <slot v-if="isConnected" />
+      <slot v-else-if="isConnecting" name="loading" />
       <slot v-else name="fallback" />
     </transition>
   </client-only>

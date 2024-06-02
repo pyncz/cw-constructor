@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { status, payload, reset } = useTxFlow();
+const { status, payload, reset } = useProgressModal();
 </script>
 
 <template>
@@ -12,7 +12,7 @@ const { status, payload, reset } = useTxFlow();
       leave-from-class="opacity-100 translate-y-0"
       leave-to-class="opacity-0 scale-75 translate-y-40"
     >
-      <div v-if="status" class="w-full xs:w-auto xs:min-w-64 max-w-full flex gap-em sm:max-w-96 bg-main-800 p-4 sm:py-2 rounded border border-main-700 pointer-events-auto text-sm text-main-100 leading-tight">
+      <div v-if="status" class="w-full xs:w-auto xs:min-w-64 max-w-full flex gap-em sm:max-w-96 bg-main-800 p-4 sm:py-2 rounded border border-main-700 pointer-events-auto text-sm text-main-100 leading-sm">
         <div class="size-em inline-flex items-center justify-center">
           <span v-if="status === ProgressStatus.Error">×</span>
           <span v-else-if="status === ProgressStatus.Success">✓</span>

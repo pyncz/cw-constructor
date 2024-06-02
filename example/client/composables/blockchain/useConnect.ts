@@ -23,8 +23,8 @@ export const useConnect = createSharedComposable(() => {
     accounts.value = await signer.value?.getAccounts();
   };
 
-  // Once `signer` is initialized, fetch accounts
-  watch(signer, refreshAccounts);
+  // Once `client` is initialized, fetch accounts
+  watch(client, refreshAccounts);
 
   const { execute: connect, isPending: isConnecting } = useAsync(async (wallet: WalletConfig, options?: ConnectOptions) => {
     const provider = wallet.getProvider();

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { type ChainId, chainIds } from './configs';
+import { type ChainId, chainIds } from './utils';
 
 export const envSchema = z
   .object({

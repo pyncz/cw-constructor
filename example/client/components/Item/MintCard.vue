@@ -3,20 +3,10 @@ const props = defineProps<{
   address?: string
 }>();
 
-const { isConnected } = useConnect();
-
-// Get mint config
-const { data: minterRes, isLoading: isMinterLoading } = UseCw721Minter.useQuery(() => props.address);
-const { data: minterConfig, isLoading: isMinterConfigLoading } = UseCwMinterConfig.useQuery(() => minterRes.value?.minter);
-
-// TODO: Consider burned items
-// - either allow to re-mint burned ids in minter's `mint` implementation
-// - or query minter's counter of mints instead of using `num_tokens` to determine the cap
-const { data: numTokensRes, isLoading: isNumTokensLoading } = UseCw721NumTokens.useQuery(() => props.address);
-
-const isLoading = computed(() => !props.address || isMinterLoading.value || isMinterConfigLoading.value || isNumTokensLoading.value);
+const { minterConfig, minterAddress, tokensMinted, funds, isLoading } = useMintConfig(() => props.address);
 useProvideLoading(isLoading);
 
+const { isConnected } = useConnect();
 const { mutate: mint, isPending } = useCwMinterMintMutation();
 </script>
 
@@ -25,7 +15,7 @@ const { mutate: mint, isPending } = useCwMinterMintMutation();
     <img src="/img/placeholder.png" alt="Mysterious Fiend placeholder" class="w-full aspect-square rounded" />
 
     <div class="grid gap-x-4 gap-y-2 xs:grid-cols-4 text-sm sm:text-base">
-      <attribute-item label="Price" class="xs:col-span-2">
+      <attribute-record label="Price" class="xs:col-span-2">
         <skeleton-group>
           <amount-representation
             v-if="minterConfig?.price"
@@ -36,24 +26,24 @@ const { mutate: mint, isPending } = useCwMinterMintMutation();
             Free
           </template>
         </skeleton-group>
-      </attribute-item>
-      <attribute-item label="Supply">
+      </attribute-record>
+      <attribute-record label="Supply">
         <skeleton-group>
           {{ minterConfig?.supply ?? '-' }}
         </skeleton-group>
-      </attribute-item>
-      <attribute-item label="Minted">
+      </attribute-record>
+      <attribute-record label="Minted">
         <skeleton-group>
-          {{ numTokensRes?.count }}
+          {{ tokensMinted }}
         </skeleton-group>
-      </attribute-item>
+      </attribute-record>
     </div>
 
     <div class="space-y-1">
       <button
         class="button-primary w-full font-semibold"
-        :disabled="!isConnected || !minterRes?.minter || !minterConfig || isPending"
-        @click="mint({ contractAddress: minterRes?.minter!, funds: minterConfig?.price ? [minterConfig.price] : undefined })"
+        :disabled="!isConnected || !minterAddress || !minterConfig || isPending"
+        @click="mint({ contractAddress: minterAddress!, funds })"
       >
         mint
       </button>

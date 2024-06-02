@@ -6,6 +6,19 @@
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "rust-analyzer.check.command": "clippy",
   "tailwindCSS.experimental.configFile": "example/client/tailwind.config.ts",
+  "tailwindCSS.classAttributes": [
+    "class",
+    // Vue Transition classes
+    "enter-active-class",
+    "enter-from-class",
+    "enter-to-class",
+    "leave-active-class",
+    "leave-from-class",
+    "leave-to-class",
+    // Custom components
+    "svg-class",
+    "wrapper-class"
+  ],
   "eslint.experimental.useFlatConfig": true,
   "eslint.validate": [
     "javascript",
