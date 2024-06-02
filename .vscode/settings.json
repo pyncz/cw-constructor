@@ -17,7 +17,8 @@
     "leave-to-class",
     // Custom components
     "svg-class",
-    "wrapper-class"
+    "wrapper-class",
+    "grid-class"
   ],
   "eslint.experimental.useFlatConfig": true,
   "eslint.validate": [

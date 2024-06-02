@@ -15,7 +15,7 @@ const tooltip = computed(() => `${label.value} to ${props.trait_type}`);
 </script>
 
 <template>
-  <with-tooltip class="leading-sm text-[rgb(var(--accent))] font-light opacity-80 hover:opacity-100 border-[rgb(var(--accent)_/_var(--tw-border-opacity))]" :tooltip :style="{ '--accent': accentVar }">
+  <with-tooltip class="leading-sm text-[rgb(var(--accent))] font-light opacity-80 hover:opacity-100 !border-[rgb(var(--accent)_/_var(--tw-border-opacity))]" :tooltip :style="{ '--accent': accentVar }">
     {{ label }}
   </with-tooltip>
 </template>

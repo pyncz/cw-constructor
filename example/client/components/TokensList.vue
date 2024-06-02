@@ -2,10 +2,11 @@
 interface Props {
   address?: string
   owner?: string
+  gridClass?: string
   wrapperClass?: string
 };
 const props = withDefaults(defineProps<Props>(), {
-  wrapperClass: 'grid grid-cols-autofill-32 w-full',
+  gridClass: 'grid grid-cols-autofill-32 w-full',
 });
 
 const { address, owner } = toRefs(props);
@@ -18,18 +19,20 @@ useProvideLoading(isLoading);
 
 <template>
   <section class="flex flex-col gap-4 items-start">
-    <skeleton-group>
-      <div v-if="data?.tokens.length" :class="wrapperClass">
-        <slot v-for="tokenId of data.tokens" :key="tokenId" v-bind="{ tokenId }" />
-      </div>
-      <slot v-else name="empty" />
-
-      <template #fallback>
-        <div :class="wrapperClass">
-          <slot v-for="i in 3" :key="i" name="skeleton" />
+    <div class="w-full" :class="wrapperClass">
+      <skeleton-group>
+        <div v-if="data?.tokens.length" :class="gridClass">
+          <slot v-for="tokenId of data.tokens" :key="tokenId" v-bind="{ tokenId }" />
         </div>
-      </template>
-    </skeleton-group>
+        <slot v-else name="empty" />
+
+        <template #fallback>
+          <div :class="gridClass">
+            <slot v-for="i in 3" :key="i" name="skeleton" />
+          </div>
+        </template>
+      </skeleton-group>
+    </div>
     <transition
       mode="out-in"
       enter-active-class="duration-sm"

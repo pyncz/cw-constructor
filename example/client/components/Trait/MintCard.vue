@@ -12,7 +12,7 @@ const { mutate: mint, isPending } = useCwMinterMintMutation();
 </script>
 
 <template>
-  <div class="card flex flex-col gap-4 bg-main-800">
+  <div class="card flex flex-col gap-4 !bg-main-800">
     <div class="text-center flex flex-col items-center justify-center flex-1 gap-2 sm:gap-1">
       <div class="flex flex-col items-center py-1">
         <trait-icon :name class="size-8 text-main-100" />
@@ -25,7 +25,7 @@ const { mutate: mint, isPending } = useCwMinterMintMutation();
           </skeleton-group>
         </span>
       </div>
-      <div class="flex gap-2 text-main-200 text-3/4">
+      <div class="flex flex-col gap-2 text-main-200 text-3/4">
         <attribute-record label="Minted" reversed class="hidden sm:flex">
           <skeleton-group>
             <template v-if="minterConfig?.supply">

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { TraitExtension } from '~/types';
 
+defineOptions({
+  inheritAttrs: false,
+});
+
 const props = defineProps<{
   address: string
   tokenId: string
@@ -32,7 +36,7 @@ const isOwnedByCurrentUser = computed(() => {
 
 <template>
   <skeleton-group>
-    <div class="group/card card flex flex-col gap-3">
+    <div class="group/card card flex flex-col gap-3" v-bind="$attrs">
       <item-image :images class="w-full aspect-square" />
 
       <div class="flex-1 flex flex-col gap-2 -mx-0.5">

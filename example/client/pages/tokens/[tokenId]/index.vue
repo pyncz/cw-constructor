@@ -33,7 +33,7 @@ const numericAttributes = computed(() => {
 
       <div class="text-center md:text-start space-y-4 md:col-span-2">
         <h1>
-          <skeleton-group class="max-w-48">
+          <skeleton-group class="max-w-48 mx-auto md:mx-0">
             {{ info?.extension?.name }}
             <span class="text-main-200 font-light ">#{{ tokenId }}</span>
           </skeleton-group>
@@ -42,9 +42,9 @@ const numericAttributes = computed(() => {
           <skeleton-group>
             {{ info?.extension?.description }}
             <template #fallback>
-              <div class="space-y-[0.5em]">
-                <skeleton-element />
-                <skeleton-element />
+              <div class="gap-[0.5em] flex flex-col items-center md:items-start">
+                <skeleton-element class="w-full" />
+                <skeleton-element class="w-full" />
                 <skeleton-element class="w-1/2" />
               </div>
             </template>
@@ -91,14 +91,15 @@ const numericAttributes = computed(() => {
       </div>
     </section>
 
-    <div class="lg:sticky top-0 lg:py-8 space-y-6">
-      <div v-for="{ name, allowed_contracts: [traitAddress] } of config?.slots" :key="name" class="flex gap-4">
+    <div class="lg:sticky top-0 lg:py-8 space-y-6 overflow-hidden">
+      <div v-for="{ name, allowed_contracts: [traitAddress] } of config?.slots" :key="name" class="flex">
         <trait-mint-card :name :address="traitAddress" />
         <tokens-list
           :owner="address"
           :address="traitAddress"
-          class="border border-main-300 flex-1"
-          wrapper-class="overflow-auto flex gap-4 w-full border border-main-100 flex-1"
+          class="flex-1 px-4 overflow-hidden"
+          grid-class="overflow-auto flex px-4"
+          wrapper-class="w-[calc(100%+2*theme(margin.4))] -mx-4"
         >
           <template #default="{ tokenId: traitTokenId }">
             <trait-card :token-id="traitTokenId" :address="traitAddress" />
@@ -107,7 +108,7 @@ const numericAttributes = computed(() => {
             <skeleton-element class="aspect-square" />
           </template>
           <template #empty>
-            <p class="text-main-200 flex items-center max-w-56 px-4 h-48 pt-6">
+            <p class="text-main-200 flex items-center max-w-56 px-8 h-60 pt-6">
               No tokens owned for this trait.
             </p>
           </template>
