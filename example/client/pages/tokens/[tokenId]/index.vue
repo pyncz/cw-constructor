@@ -24,7 +24,7 @@ const numericAttributes = computed(() => {
 
 <template>
   <div class="py-8 xs:py-12 sm:py-8 md:py-4 lg:py-0 [--w-col:30rem] 2xl:[--w-col:40rem] [--w-img:18rem] grid items-start grid-cols-1 lg:grid-cols-2 xl:grid-cols-[minmax(var(--w-col),1fr)_2fr] gap-8 lg:gap-12 xl:gap-16">
-    <section class="lg:sticky top-0 lg:py-8 grid items-start grid-cols-1 md:grid-cols-[minmax(1fr,var(--w-img))_1fr] gap-x-12 gap-y-8 lg:gap-x-16 lg:gap-y-12">
+    <section class="lg:sticky top-0 lg:py-8 grid items-start grid-cols-1 md:grid-cols-[var(--w-img)_1fr] gap-x-12 gap-y-8 lg:gap-x-14 lg:gap-y-12">
       <div class="lg:col-span-2 2xl:col-span-1">
         <skeleton-group class="aspect-square w-full mx-auto md:mx-0 max-w-[--w-img]">
           <item-image :images="info?.extension?.images" class="w-full aspect-square mx-auto md:mx-0 max-w-[--w-img]" />
