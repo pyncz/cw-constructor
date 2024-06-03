@@ -36,7 +36,7 @@ const isOwnedByCurrentUser = computed(() => {
 
 <template>
   <skeleton-group>
-    <div class="group/card card flex flex-col gap-3" v-bind="$attrs">
+    <div class="card group/card flex flex-col gap-3" v-bind="$attrs">
       <item-image :images class="w-full aspect-square" />
 
       <div class="flex-1 flex flex-col gap-2 -mx-0.5">

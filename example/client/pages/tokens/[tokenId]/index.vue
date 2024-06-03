@@ -24,14 +24,14 @@ const numericAttributes = computed(() => {
 
 <template>
   <div class="py-8 xs:py-12 sm:py-8 md:py-4 lg:py-0 [--w-col:30rem] 2xl:[--w-col:40rem] [--w-img:18rem] grid items-start grid-cols-1 lg:grid-cols-2 xl:grid-cols-[minmax(var(--w-col),1fr)_2fr] gap-8 lg:gap-12 xl:gap-16">
-    <section class="lg:sticky top-0 lg:py-8 grid items-start grid-cols-1 md:grid-cols-[var(--w-img)_1fr] gap-x-12 gap-y-8 lg:gap-x-14 lg:gap-y-12">
+    <section class="lg:sticky top-0 lg:py-8 grid items-start grid-cols-1 md:grid-cols-[var(--w-img)_1fr] gap-x-12 gap-y-8 lg:gap-x-14">
       <div class="lg:col-span-2 2xl:col-span-1">
         <skeleton-group class="aspect-square w-full mx-auto md:mx-0 max-w-[--w-img]">
           <item-image :images="info?.extension?.images" class="w-full aspect-square mx-auto md:mx-0 max-w-[--w-img]" />
         </skeleton-group>
       </div>
 
-      <div class="text-center md:text-start space-y-4 md:col-span-2">
+      <div class="text-center md:text-start space-y-4 md:col-span-2 lg:mt-4">
         <h1>
           <skeleton-group class="max-w-48 mx-auto md:mx-0">
             {{ info?.extension?.name }}
@@ -91,24 +91,28 @@ const numericAttributes = computed(() => {
       </div>
     </section>
 
-    <div class="lg:sticky top-0 lg:py-8 space-y-4 sm:space-y-6 overflow-hidden -mx-container lg:mx-0">
-      <div v-for="{ name, allowed_contracts: [traitAddress] } of config?.slots" :key="name" class="flex">
-        <trait-mint-card :name :address="traitAddress" />
+    <div class="lg:sticky top-0 lg:py-8 space-y-6 sm:space-y-4 lg:space-y-2 overflow-hidden -mx-container lg:mx-0">
+      <div v-for="{ name, allowed_contracts: [traitAddress] } of config?.slots" :key="name" class="flex flex-col xs:flex-row border-y border-main-900 xs:border-y-0">
+        <trait-mint-card
+          :name
+          :address="traitAddress"
+          class="w-full xs:w-24 xs:min-h-60 !bg-main-900/20 xs:!bg-main-800"
+        />
         <tokens-list
           :owner="address"
           :address="traitAddress"
-          class="flex-1 px-4 overflow-hidden"
-          grid-class="overflow-auto flex px-4"
-          wrapper-class="!w-[calc(100%+2*theme(spacing.4))] -mx-4"
+          class="flex-1 px-4 overflow-hidden bg-main-900/50 xs:bg-transparent pb-3"
+          grid-class="overflow-auto flex xs:px-4"
+          wrapper-class="!w-[calc(100%+2*theme(spacing.4))] -mx-4 border-b border-main-800"
         >
           <template #default="{ tokenId: traitTokenId }">
-            <trait-card :token-id="traitTokenId" :address="traitAddress" />
+            <trait-card :token-id="traitTokenId" :address="traitAddress" class="min-h-60" />
           </template>
           <template #skeleton>
             <skeleton-element class="aspect-square" />
           </template>
           <template #empty>
-            <p class="text-main-200 flex items-center max-w-56 px-8 h-60 pt-6">
+            <p class="text-main-200 flex items-center max-w-64 px-8 h-60">
               No tokens owned for this trait.
             </p>
           </template>

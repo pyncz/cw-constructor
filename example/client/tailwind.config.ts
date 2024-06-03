@@ -99,6 +99,7 @@ export default {
       },
       colors: {
         current: 'currentColor',
+        transparent: 'transparent',
       },
       spacing: {
         em: '1em',
