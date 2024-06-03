@@ -50,6 +50,9 @@ const numericAttributes = computed(() => {
             </template>
           </skeleton-group>
         </p>
+        <attribute-record v-if="address && !isOwnedByCurrentUser" label="Owned by">
+          Not you.
+        </attribute-record>
       </div>
 
       <div class="w-full max-w-md md:max-w-xs mx-auto md:mx-0 md:row-start-1 md:col-start-2 lg:col-span-2 lg:row-start-auto lg:col-start-auto 2xl:col-span-1 2xl:row-start-1 2xl:col-start-2">
