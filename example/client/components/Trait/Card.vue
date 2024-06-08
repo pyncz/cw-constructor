@@ -64,9 +64,14 @@ const isOwnedByCurrentUser = computed(() => {
             <button v-if="isEquippedOnCurrent" class="button-secondary w-full">
               unequip
             </button>
-            <button v-else-if="isEquipped" class="button-secondary w-full" disabled>
-              equipped on {{ equippedOn }}
-            </button>
+            <div
+              v-else-if="isEquipped"
+              class="button-secondary w-full"
+              disabled
+              :title="`Equipped on #${equippedOn}`"
+            >
+              in use
+            </div>
             <button v-else class="button-primary w-full" :disabled="slotTaken">
               equip
             </button>
