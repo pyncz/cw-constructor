@@ -84,7 +84,9 @@ const isOwnedByCurrentUser = computed(() => {
     </div>
 
     <template #fallback>
-      <skeleton-element class="rounded aspect-square" />
+      <div class="p-4 w-36 shrink-0" v-bind="$attrs">
+        <skeleton-element class="h-full" />
+      </div>
     </template>
   </skeleton-group>
 </template>

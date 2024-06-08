@@ -27,9 +27,11 @@ useProvideLoading(isLoading);
         <slot v-else name="empty" />
 
         <template #fallback>
-          <div :class="gridClass">
-            <slot v-for="i in 3" :key="i" name="skeleton" />
-          </div>
+          <slot name="fallback">
+            <div :class="gridClass">
+              <slot v-for="i in 3" :key="i" name="skeleton" />
+            </div>
+          </slot>
         </template>
       </skeleton-group>
     </div>

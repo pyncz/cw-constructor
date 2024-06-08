@@ -137,8 +137,12 @@ const numericAttributes = computed(() => {
               class="min-h-60"
             />
           </template>
-          <template #skeleton>
-            <skeleton-element class="aspect-square" />
+          <template #fallback>
+            <div class="overflow-hidden flex xs:px-4 flex-1 px-4">
+              <div v-for="i in 3" :key="i" class="p-4 h-full w-36 min-h-60 shrink-0 flex flex-col">
+                <skeleton-element class="flex-1" />
+              </div>
+            </div>
           </template>
           <template #empty>
             <p class="text-main-200 flex items-center max-w-64 px-8 h-60">
