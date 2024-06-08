@@ -133,7 +133,7 @@ const numericAttributes = computed(() => {
               :token-id="traitTokenId"
               :address="traitAddress"
               :base-token-id="tokenId"
-              :slot-taken="traitsInfoBySlots[name]?.length && !allowMultiple"
+              :slot-taken="!!traitsInfoBySlots?.[name]?.length && !allowMultiple"
               class="min-h-60"
             />
           </template>

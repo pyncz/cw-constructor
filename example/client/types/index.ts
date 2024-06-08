@@ -6,4 +6,3 @@ export * from './errors';
 export * from './extensions';
 export * from './ipfs';
 export * from './queries';
-export * from './callbacks';

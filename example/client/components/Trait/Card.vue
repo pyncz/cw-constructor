@@ -8,12 +8,13 @@ defineOptions({
 const props = defineProps<{
   address: string
   tokenId: string
-  baseTokenId?: string
+  baseTokenId: string
   slotTaken?: boolean
 }>();
 
 const { address, tokenId } = toRefs(props);
 
+const { public: { constructorAddress } } = useRuntimeConfig();
 const { data: info, isLoading: isLoadingInfo } = UseCw721AllNftInfo.useQuery<TraitExtension>(address, {
   tokenId,
 });
@@ -21,7 +22,7 @@ const { data: tokensData, isLoading: isLoadingBaseTokens } = UseCwConstructorTok
 const equippedOn = computed(() => tokensData.value?.tokens.at(0));
 
 const isEquipped = computed(() => !!tokensData.value?.tokens.length);
-const isEquippedOnCurrent = computed(() => !!props.baseTokenId && props.baseTokenId === equippedOn.value);
+const isEquippedOnCurrent = computed(() => props.baseTokenId === equippedOn.value);
 
 const isLoading = computed(() => isLoadingInfo.value || isLoadingBaseTokens.value);
 useProvideLoading(isLoading);
@@ -42,6 +43,11 @@ const isOwnedByCurrentUser = computed(() => {
     ? userAddress.value === info.value.access.owner
     : undefined;
 });
+
+// Actions
+const { mutate: equip, isPending: isPendingEquip } = useCwConstructorEquipMutation();
+const { mutate: unequip, isPending: isPendingUnequip } = useCwConstructorUnequipMutation();
+const isPending = computed(() => isPendingEquip.value || isPendingUnequip.value);
 </script>
 
 <template>
@@ -61,7 +67,19 @@ const isOwnedByCurrentUser = computed(() => {
 
         <div class="text-7/8 font-medium">
           <template v-if="isOwnedByCurrentUser">
-            <button v-if="isEquippedOnCurrent" class="button-secondary w-full">
+            <button
+              v-if="isEquippedOnCurrent"
+              :disabled="isPending"
+              class="button-secondary w-full"
+              @click="unequip({
+                tokenId: equippedOn,
+                contractAddress: constructorAddress,
+                trait: {
+                  tokenId,
+                  address,
+                },
+              })"
+            >
               unequip
             </button>
             <div
@@ -72,7 +90,19 @@ const isOwnedByCurrentUser = computed(() => {
             >
               in use
             </div>
-            <button v-else class="button-primary w-full" :disabled="slotTaken">
+            <button
+              v-else
+              class="button-primary w-full"
+              :disabled="slotTaken || isPending"
+              @click="equip({
+                tokenId: baseTokenId,
+                contractAddress: constructorAddress,
+                trait: {
+                  tokenId,
+                  address,
+                },
+              })"
+            >
               equip
             </button>
           </template>

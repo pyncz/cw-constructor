@@ -1,13 +1,12 @@
 import { useMutation } from '@tanstack/vue-query';
-import { UseNativeBalance } from '../useNativeBalance';
-import { type CallbackOptions, type ExecuteOptions, InsufficientBalanceError, NotConnectedError } from '~/types';
+import { type ExecuteOptions, InsufficientBalanceError, NotConnectedError } from '~/types';
 
 interface Variables extends ExecuteOptions {
-  contractAddress: string // require contract address provided
+  // require contract address provided
+  contractAddress: string
 }
-type Options = CallbackOptions<Variables>;
 
-export const useCwMinterMintMutation = (options?: Options) => {
+export const useCwMinterMintMutation = () => {
   const { $queryClient: queryClient } = useNuxtApp();
   const { address } = useConnect();
   const { mint } = useCwMinterContract();
@@ -52,7 +51,7 @@ export const useCwMinterMintMutation = (options?: Options) => {
             queryClient.invalidateQueries({ queryKey: UseBalance.getKey(address, price.denom) }),
           ]
           : []),
-        // tokens
+        // cw
         queryClient.invalidateQueries({ queryKey: UseCw721NumTokens.getKey(cw721!) }),
         queryClient.invalidateQueries({ queryKey: UseCw721Tokens.getKey(cw721!, { owner: address }) }),
         queryClient.invalidateQueries({ queryKey: UseCw721TokensInfinite.getKey(cw721!, { owner: address }) }),
@@ -71,18 +70,13 @@ export const useCwMinterMintMutation = (options?: Options) => {
           }
           : undefined,
       }, { autoreset: true });
-      await options?.onSuccess?.(variables);
     },
     onError: async (error, variables) => {
       setError({
         title: 'Mint Failed.',
         retry: () => mutation.mutate(variables),
         error,
-      }, { autoreset: false });
-      await options?.onError?.(error);
-    },
-    onSettled: async () => {
-      await options?.onSettled?.();
+      }, { autoreset: true });
     },
   });
 
