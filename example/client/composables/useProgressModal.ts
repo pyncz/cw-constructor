@@ -17,7 +17,11 @@ interface Payload {
   retry?: () => void
 };
 
-const AUTORESET_TIME = 8000;
+interface Options {
+  autoreset?: boolean | number
+}
+
+const DEFAULT_AUTORESET_TIME = 8000;
 
 export const useProgressModal = createSharedComposable(() => {
   // State
@@ -39,9 +43,9 @@ export const useProgressModal = createSharedComposable(() => {
     clearAutoresetTimeout();
   };
 
-  const autoreset = () => {
+  const autoreset = (timeout = DEFAULT_AUTORESET_TIME) => {
     clearAutoresetTimeout();
-    autoresetTimeout = setTimeout(reset, AUTORESET_TIME);
+    autoresetTimeout = setTimeout(reset, timeout);
   };
 
   // Setters
@@ -51,16 +55,20 @@ export const useProgressModal = createSharedComposable(() => {
     clearAutoresetTimeout();
   };
 
-  const setError = (p?: Payload) => {
+  const setError = (p?: Payload, options?: Options) => {
     status.value = ProgressStatus.Error;
     payload.value = p;
-    autoreset();
+    if (options?.autoreset) {
+      autoreset(options.autoreset === true ? undefined : options.autoreset);
+    }
   };
 
-  const setSuccess = (p?: Payload) => {
+  const setSuccess = (p?: Payload, options?: Options) => {
     status.value = ProgressStatus.Success;
     payload.value = p;
-    autoreset();
+    if (options?.autoreset) {
+      autoreset(options.autoreset === true ? undefined : options.autoreset);
+    }
   };
 
   return {

@@ -16,6 +16,7 @@ export * from './useNativeBalance';
 
 export * from './useCwConstructorConfig';
 export * from './useCwConstructorInfo';
+export * from './useCwConstructorTokens';
 export * from './useCw721Tokens';
 export * from './useCw721TokensInfinite';
 export * from './useCw721NftInfo';

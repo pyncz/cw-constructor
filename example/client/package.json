@@ -16,6 +16,7 @@
     "@tanstack/vue-query": "^5.36.0",
     "@vueuse/core": "^10.9.0",
     "bignumber.js": "^9.1.2",
+    "defu": "^6.1.4",
     "nuxt": "^3.11.2",
     "nuxt-og-image": "3.0.0-rc.53",
     "radix-vue": "^1.8.0",

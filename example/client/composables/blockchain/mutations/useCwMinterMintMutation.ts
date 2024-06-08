@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/vue-query';
 import { UseNativeBalance } from '../useNativeBalance';
-import { UseCw721TokensInfinite } from '../useCw721TokensInfinite';
 import { type CallbackOptions, type ExecuteOptions, InsufficientBalanceError, NotConnectedError } from '~/types';
 
 interface Variables extends ExecuteOptions {
@@ -60,6 +59,7 @@ export const useCwMinterMintMutation = (options?: Options) => {
         queryClient.invalidateQueries({ queryKey: UseCw721AllNftInfo.getKey(cw721!, { tokenId }) }),
         queryClient.invalidateQueries({ queryKey: UseCw721NftInfo.getKey(cw721!, { tokenId }) }),
         queryClient.invalidateQueries({ queryKey: UseCwConstructorInfo.getKey({ tokenId }) }),
+        queryClient.invalidateQueries({ queryKey: UseCwConstructorTokens.getKey({ address: cw721!, tokenId }) }),
       ]);
 
       setSuccess({
@@ -70,14 +70,15 @@ export const useCwMinterMintMutation = (options?: Options) => {
             uri: `/tokens/${tokenId}`,
           }
           : undefined,
-      });
+      }, { autoreset: true });
       await options?.onSuccess?.(variables);
     },
     onError: async (error, variables) => {
       setError({
         title: 'Mint Failed.',
         retry: () => mutation.mutate(variables),
-      });
+        error,
+      }, { autoreset: false });
       await options?.onError?.(error);
     },
     onSettled: async () => {

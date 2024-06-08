@@ -19,7 +19,7 @@ const { status, payload, reset } = useProgressModal();
           <spinner v-else-if="status === ProgressStatus.Pending" class="text-main-500" />
         </div>
 
-        <div class="pt-px space-y-0.5">
+        <div class="pt-px space-y-0.5 flex-1">
           <template v-if="payload?.title || payload?.description">
             <b v-if="payload.title">{{ payload.title }}</b>
             <p v-if="payload.description" class="text-main-200 text-xs">
@@ -37,6 +37,8 @@ const { status, payload, reset } = useProgressModal();
               Transaction pending...
             </template>
           </b>
+
+          <error-snippet v-if="payload?.error" :error="payload?.error" class="text-7/8" />
 
           <div v-if="payload?.link || payload?.retry" class="flex gap-em text-xs py-0.5">
             <nuxt-link

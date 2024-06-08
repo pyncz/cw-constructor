@@ -9,6 +9,16 @@ export interface TokenInfo<T = any> {
   token: NftInfoResponse<T>
 }
 
+export interface Trait {
+  token_id: string
+  token: TokenConfig
+  slot: string
+}
+
+export interface TraitInfo<T = any> extends Trait {
+  info: TokenInfo<T>
+}
+
 export interface TokenConfig {
   address: string
   token_id: string
@@ -40,11 +50,7 @@ export const useCwConstructorContract = (address?: MaybeRefOrGetter<string | und
     { slot, tokenId }: { slot?: string, tokenId?: string },
     options?: CallOptions,
   ): Promise<{
-    traits: {
-      token_id: string
-      token: TokenConfig
-      slot: string
-    }[]
+    traits: Trait[]
   }> => {
     return await query({
       traits: {
@@ -71,12 +77,7 @@ export const useCwConstructorContract = (address?: MaybeRefOrGetter<string | und
   const tokenInfo = async <E = any, T = any, M = any>({ tokenId }: { tokenId: string }, options?: CallOptions): Promise<{
     info: NftInfoResponse<M>
     base_token: TokenInfo<E>
-    traits: {
-      token_id: string
-      token: TokenConfig
-      slot: string
-      info: TokenInfo<T>
-    }[]
+    traits: TraitInfo<T>[]
   }> => {
     return await query({
       info: {

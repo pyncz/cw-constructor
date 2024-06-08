@@ -1,4 +1,5 @@
-import type { Extension, MergedExtension } from '~/types';
+import type { TraitInfo } from './blockchain';
+import type { Extension, MergedExtension, TraitExtension } from '~/types';
 
 export const useInfoByTokenId = (tokenId: MaybeRefOrGetter<string | undefined>) => {
   // Get token info
@@ -34,11 +35,23 @@ export const useInfoByTokenId = (tokenId: MaybeRefOrGetter<string | undefined>) 
       : undefined;
   });
 
+  const traitsInfoBySlots = computed(() => {
+    return mergedInfo.value?.traits.reduce((res, t) => {
+      if (res[t.slot]) {
+        res[t.slot].push(t);
+      } else {
+        res[t.slot] = [t];
+      }
+      return res;
+    }, {} as Record<string, TraitInfo<TraitExtension>[]>);
+  });
+
   const isLoading = computed(() => isLoadingMergedInfo.value || isLoadingConfig.value || isLoadingBaseInfo.value);
 
   return {
     info,
     mergedInfo,
+    traitsInfoBySlots,
     owner,
     isLoadingMergedInfo,
     baseInfo,

@@ -51,7 +51,7 @@ useProvideLoading(isLoading);
         Load More
       </button>
       <span v-else class="text-main-500">
-        {{ data?.tokens.length }} total
+        {{ data?.tokens.length ?? 0 }} total
       </span>
     </transition>
   </section>
