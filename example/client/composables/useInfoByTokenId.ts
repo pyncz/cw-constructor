@@ -10,7 +10,7 @@ export const useInfoByTokenId = (tokenId: MaybeRefOrGetter<string | undefined>) 
   });
   // - original one from cw721 contract
   const { data: config, isLoading: isLoadingConfig } = UseCwConstructorConfig.useQuery();
-  const { data: allBaseInfo, isLoading: isLoadingBaseInfo } = UseCw721AllNftInfo.useQuery<Extension>(() => config.value?.base_token, {
+  const { suspense, data: allBaseInfo, isLoading: isLoadingBaseInfo } = UseCw721AllNftInfo.useQuery<Extension>(() => config.value?.base_token, {
     tokenId: toRef(tokenId),
   });
 
@@ -42,6 +42,7 @@ export const useInfoByTokenId = (tokenId: MaybeRefOrGetter<string | undefined>) 
     owner,
     isLoadingMergedInfo,
     baseInfo,
+    suspense,
     isLoadingBaseInfo,
     config,
     isLoadingConfig,

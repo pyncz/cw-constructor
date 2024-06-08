@@ -6,7 +6,19 @@ const tokenId = route.params.tokenId as string;
 
 const { address } = useConnect();
 
-const { info, config, baseInfo, mergedInfo, isLoading, owner } = useInfoByTokenId(tokenId);
+const { suspense, info, config, baseInfo, mergedInfo, traitsInfoBySlots, isLoading, owner } = useInfoByTokenId(tokenId);
+onServerPrefetch(async () => {
+  let prefetchedData: any;
+  try {
+    const res = await suspense();
+    prefetchedData = res.data;
+  } catch (e) {}
+
+  if (!prefetchedData) {
+    throw createNuxtNotFoundError();
+  }
+});
+
 useProvideLoading(isLoading);
 
 const isOwnedByCurrentUser = computed(() => owner.value ? owner.value === address.value : undefined);
