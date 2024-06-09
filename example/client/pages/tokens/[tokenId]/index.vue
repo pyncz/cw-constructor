@@ -47,9 +47,10 @@ const numericAttributes = computed(() => {
         <h1>
           <skeleton-group class="max-w-48 mx-auto md:mx-0">
             {{ info?.extension?.name }}
-            <span class="text-main-200 font-light ">#{{ tokenId }}</span>
+            <span class="hidden xs:inline text-main-200 font-light">#{{ tokenId }}</span>
           </skeleton-group>
         </h1>
+        <span class="xs:hidden text-main-200 font-light -mt-8">Token #{{ tokenId }}</span>
         <p v-if="isLoading || info?.extension?.description" class="font-light text-sm text-main-100 max-w-lg mx-auto md:mx-0">
           <skeleton-group>
             {{ info?.extension?.description }}
