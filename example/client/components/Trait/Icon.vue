@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { IconHorns, IconWeapon, IconWings } from '../Icon';
+import IconHorns from '../Icon/Horns.vue';
+import IconWeapon from '../Icon/Weapon.vue';
+import IconWings from '../Icon/Wings.vue';
 
 const props = defineProps<{
   name: string
