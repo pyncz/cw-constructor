@@ -2,19 +2,12 @@ import antfu from '@antfu/eslint-config';
 
 export default antfu({
   vue: true,
-  typescript: {
-    parserOptions: {
-
-    },
-  },
-
   rules: {
     'no-console': 'warn',
     'curly': ['error', 'all'],
     'camelcase': 'error',
     'no-useless-constructor': 'error',
     'no-control-regex': 'error',
-    'no-console': 'warn',
     'antfu/top-level-function': 'off',
     'node/prefer-global/process': ['error', 'always'],
 
