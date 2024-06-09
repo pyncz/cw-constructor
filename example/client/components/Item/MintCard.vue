@@ -11,7 +11,7 @@ const { mutate: mint, isPending } = useCwMinterMintMutation();
 </script>
 
 <template>
-  <div class="text-lg space-y-6 sm:space-y-8">
+  <div class="text-lg space-y-6">
     <img src="/img/placeholder.png" alt="Mysterious Fiend placeholder" class="w-full aspect-square rounded" />
 
     <div class="grid gap-x-4 gap-y-2 xs:grid-cols-4 text-sm sm:text-base">

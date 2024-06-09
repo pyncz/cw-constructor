@@ -55,7 +55,7 @@ const isPending = computed(() => isPendingEquip.value || isPendingUnequip.value)
     <div
       v-bind="$attrs"
       class="card group/card flex flex-col gap-3"
-      :class="{ 'relative border-solid border-main-700 focus-within:border-main-400 [--b:1em] before:absolute before:-inset-y-px before:-left-px before:w-[--b] before:pointer-events-none before:border-l before:border-y before:border-main-100 before:[maskImage:linear-gradient(0deg,rgb(0,0,0)_var(--b),rgba(0,0,0,0)_var(--b),rgba(0,0,0,0)_calc(100%-var(--b)),rgb(0,0,0)_calc(100%-var(--b)))] after:absolute after:-inset-y-px after:-right-px after:w-[--b] after:pointer-events-none after:border-r after:border-y after:border-main-100 after:[maskImage:linear-gradient(0deg,rgb(0,0,0)_var(--b),rgba(0,0,0,0)_var(--b),rgba(0,0,0,0)_calc(100%-var(--b)),rgb(0,0,0)_calc(100%-var(--b)))]': isEquippedOnCurrent }"
+      :class="{ 'frame focus-within:border-main-400': isEquippedOnCurrent }"
     >
       <item-image :images class="w-full aspect-square" />
 

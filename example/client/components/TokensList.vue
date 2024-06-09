@@ -6,7 +6,7 @@ interface Props {
   wrapperClass?: string
 };
 const props = withDefaults(defineProps<Props>(), {
-  gridClass: 'grid grid-cols-autofill-32 w-full',
+  gridClass: 'grid grid-cols-autofill-24 xs:grid-cols-autofill-32 w-full',
 });
 
 const { address, owner } = toRefs(props);
