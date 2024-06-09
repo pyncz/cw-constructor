@@ -32,6 +32,10 @@ const numericAttributes = computed(() => {
     return attrs;
   }, [] as { attr: MergedAttribute, base?: Attribute }[]);
 });
+
+const bodyColor = computed(() => {
+  return baseInfo.value?.extension?.attributes.find((a) => a.trait_type === 'Body Color')?.value;
+});
 </script>
 
 <template>
@@ -39,7 +43,7 @@ const numericAttributes = computed(() => {
     <section class="lg:sticky top-0 lg:py-8 grid items-start grid-cols-1 md:grid-cols-[var(--w-img)_1fr] gap-x-12 gap-y-8 lg:gap-x-14">
       <div class="lg:col-span-2 2xl:col-span-1">
         <skeleton-group class="aspect-square w-full mx-auto md:mx-0 max-w-[--w-img]">
-          <item-image :images="info?.extension?.images" class="w-full aspect-square mx-auto md:mx-0 max-w-[--w-img]" />
+          <item-image :images="info?.extension?.images" class="w-full aspect-square mx-auto md:mx-0 max-w-[--w-img] relative before:inset-0 before:absolute before:opacity-20 hover:before:opacity-[0.28] before:duration-lg before:shadow-[0_0_12rem_var(--bg)]" :style="{ '--bg': bodyColor }" />
         </skeleton-group>
       </div>
 
