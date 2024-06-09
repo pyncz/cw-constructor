@@ -92,20 +92,17 @@ const numericAttributes = computed(() => {
           Equipped
         </h6>
         <div class="space-y-2 xs:space-y-0">
-          <div
+          <item-trait
             v-for="trait of mergedInfo?.traits"
             :key="trait.slot"
-            class="flex flex-col xs:flex-row xs:items-center gap-2 group/trait xs:border-b border-main-700 sm:border-b-0 py-2 xs:px-2 xs:h-[4.5rem] sm:h-auto"
+            :name="trait.slot"
+            :address="trait.token.address"
+            :token-id="trait.token.token_id"
+            :base-token-id="tokenId"
+            :with-controls="isOwnedByCurrentUser"
           >
-            <trait-label :name="trait.slot" class="flex-1 sm:flex-none">
-              <span class="text-main-100 duration-sm group-hover/trait:text-main-0">
-                {{ trait.info.token.extension?.name }}
-              </span>
-            </trait-label>
-            <button v-if="isOwnedByCurrentUser" class="max-sm:button-secondary button-inline-secondary text-7/8 duration-md sm:opacity-0 group-hover/trait:opacity-100">
-              unequip
-            </button>
-          </div>
+            {{ trait.info.token.extension?.name }}
+          </item-trait>
         </div>
       </div>
     </section>
