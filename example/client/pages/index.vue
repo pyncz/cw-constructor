@@ -11,9 +11,9 @@ useProvideLoading(isLoading);
 </script>
 
 <template>
-  <section class="grid gap-12 grid-cols-1 sm:grid-cols-2 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+  <section class="grid gap-12 grid-cols-1 md:grid-cols-2 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
     <div>
-      <item-mint-card :address="constructorConfig?.base_token" class="mx-auto max-w-xs sm:my-16" />
+      <item-mint-card :address="constructorConfig?.base_token" class="mx-auto max-w-xs md:my-16" />
     </div>
     <div class="space-y-5">
       <h3>Your frens</h3>
