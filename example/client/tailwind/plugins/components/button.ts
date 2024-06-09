@@ -1,14 +1,14 @@
 import { defu } from 'defu';
 import plugin from 'tailwindcss/plugin';
 import type { CSSRuleObject } from 'tailwindcss/types/config';
-import { BG_OPACITY, BORDER_OPACITY, TEXT_OPACITY, rgbBg, rgbText } from '../../utils';
+import { BG_OPACITY, BORDER_OPACITY, TEXT_OPACITY, rgbBg, rgbBorder, rgbText } from '../../utils';
 
 export const buttonPlugin = plugin(({ addComponents, theme }) => {
   // Base components
   const baseButton: CSSRuleObject = {
     [TEXT_OPACITY]: '1',
     [BG_OPACITY]: '1',
-    [BORDER_OPACITY]: '1',
+    [BORDER_OPACITY]: '0',
     'cursor': 'pointer',
     'display': 'flex',
     'gap': '0.5em',
@@ -17,6 +17,8 @@ export const buttonPlugin = plugin(({ addComponents, theme }) => {
     'lineHeight': '1',
     'transitionDuration': theme('transitionDuration.md'),
     'borderRadius': theme('borderRadius.DEFAULT'),
+    'borderStyle': 'solid',
+    'borderWidth': '1px',
     '&:focus': {
       outline: 'none',
       textDecorationLine: 'underline',
@@ -51,6 +53,7 @@ export const buttonPlugin = plugin(({ addComponents, theme }) => {
   const primaryButtonColors: CSSRuleObject = {
     'color': rgbText('--main-1000'),
     'backgroundColor': rgbBg('--main-0'),
+    'borderColor': rgbBorder('--main-0'),
     '&:hover': {
       backgroundColor: rgbBg('--main-100'),
     },
@@ -68,6 +71,7 @@ export const buttonPlugin = plugin(({ addComponents, theme }) => {
   const secondaryButtonColors: CSSRuleObject = {
     'color': rgbText('--main-300'),
     'backgroundColor': rgbBg('--main-800'),
+    'borderColor': rgbBorder('--main-800'),
     '&:hover': {
       backgroundColor: rgbBg('--main-700'),
     },
@@ -76,7 +80,7 @@ export const buttonPlugin = plugin(({ addComponents, theme }) => {
     },
     '&:disabled': {
       color: rgbText('--main-400'),
-      backgroundColor: rgbBg('--main-900'),
+      backgroundColor: `${rgbBg('--main-800')} !important`,
     },
   };
   addComponents({
