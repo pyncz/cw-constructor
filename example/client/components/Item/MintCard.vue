@@ -3,7 +3,7 @@ const props = defineProps<{
   address?: string
 }>();
 
-const { minterConfig, minterAddress, tokensMinted, funds, isLoading } = useMintConfig(() => props.address);
+const { minterConfig, minterAddress, tokensMinted, funds, isMintedOut, isLoading } = useMintConfig(() => props.address);
 useProvideLoading(isLoading);
 
 const { isConnected } = useConnect();
@@ -42,7 +42,7 @@ const { mutate: mint, isPending } = useCwMinterMintMutation();
     <div class="space-y-1">
       <button
         class="button-primary w-full font-semibold"
-        :disabled="!isConnected || !minterAddress || !minterConfig || isPending"
+        :disabled="!isConnected || !minterAddress || !minterConfig || isPending || isMintedOut"
         @click="mint({ contractAddress: minterAddress!, funds })"
       >
         mint

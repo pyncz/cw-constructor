@@ -12,6 +12,12 @@ export const useMintConfig = (address: MaybeRefOrGetter<string | undefined>) => 
   const { data: numTokensRes, isLoading: isNumTokensLoading } = UseCw721NumTokens.useQuery(address);
   const tokensMinted = computed(() => numTokensRes.value?.count);
 
+  const isMintedOut = computed(() => {
+    return tokensMinted.value && minterConfig.value?.supply
+      ? tokensMinted.value >= minterConfig.value.supply
+      : undefined;
+  });
+
   const isLoading = computed(() => !toValue(address) || isMinterLoading.value || isMinterConfigLoading.value || isNumTokensLoading.value);
 
   return {
@@ -19,6 +25,7 @@ export const useMintConfig = (address: MaybeRefOrGetter<string | undefined>) => 
     minterConfig,
     funds,
     tokensMinted,
+    isMintedOut,
     isLoading,
   };
 };
