@@ -86,14 +86,15 @@ const isPending = computed(() => isPendingEquip.value || isPendingUnequip.value)
             >
               unequip
             </button>
-            <div
+            <button
               v-else-if="isEquipped"
               class="button-secondary w-full"
               disabled
-              :title="`Equipped on #${equippedOn}`"
             >
-              in use
-            </div>
+              <with-tooltip :tooltip="`Equipped on #${equippedOn}`">
+                in use
+              </with-tooltip>
+            </button>
             <button
               v-else
               class="button-primary w-full"
