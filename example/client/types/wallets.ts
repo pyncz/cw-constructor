@@ -5,4 +5,5 @@ export interface WalletConfig {
   name: string
   getProvider: EmbeddedProviderAccessor
   subscribeToKeystoreChange: (_cb: (e?: any) => void) => void
+  download: string
 }

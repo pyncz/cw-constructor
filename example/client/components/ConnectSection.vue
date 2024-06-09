@@ -12,7 +12,7 @@ const { formatted: formattedAddress } = useAddress(address);
       <a role="button" class="link" @click="disconnect()">Disconnect</a>
     </small>
     <div class="text-main-100 text-sm">
-      <code>{{ formattedAddress }}</code>
+      <pre>{{ formattedAddress }}</pre>
     </div>
   </div>
   <div v-else class="flex flex-col items-end">

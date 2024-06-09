@@ -30,15 +30,6 @@ export default {
         },
       });
 
-      addBase({
-        h1: { fontSize: '2.5rem', lineHeight: '1.15' },
-        h2: { fontSize: '2rem', lineHeight: '1.15' },
-        h3: { fontSize: '1.625rem', lineHeight: '1.15' },
-        h4: { fontSize: '1.25rem', lineHeight: '1.15' },
-        h5: { fontSize: '1.125rem', lineHeight: '1.15' },
-        h6: { fontSize: '1rem', lineHeight: '1.15' },
-      });
-
       addComponents({
         '.container': {
           width: '100%',
