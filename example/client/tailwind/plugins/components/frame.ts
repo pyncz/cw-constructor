@@ -3,7 +3,7 @@ import { defu } from 'defu';
 import type { CSSRuleObject } from 'tailwindcss/types/config';
 import { BORDER_OPACITY, rgbBorder } from '../../utils';
 
-export const framePlugin = plugin(({ addComponents }) => {
+export const framePlugin = plugin(({ addComponents, theme }) => {
   const overlay: CSSRuleObject = {
     content: 'var(--tw-content)',
     position: 'absolute',
@@ -23,9 +23,13 @@ export const framePlugin = plugin(({ addComponents }) => {
       [BORDER_OPACITY]: '1',
       '--b': '1em',
       'position': 'relative',
+      'transitionDuration': theme('transitionDuration.md'),
       'borderWidth': '1px',
       'borderStyle': 'solid',
       'borderColor': rgbBorder('--main-700'),
+      '&:focus-within': {
+        borderColor: rgbBorder('--main-400'),
+      },
       '&:before': defu({
         left: '-1px',
         borderLeftWidth: '1px',
