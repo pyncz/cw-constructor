@@ -40,6 +40,7 @@ useSeoMeta({
 
   // other meta
   ogUrl: appUri,
+  ogSiteName: name,
   applicationName: name,
   twitterCard: 'summary_large_image',
   twitterSite: author.twitterHandle,
