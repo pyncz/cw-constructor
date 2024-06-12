@@ -68,7 +68,7 @@ impl<'a, TExtension, TTraitExtension, TMergedExtension>
         info: MessageInfo,
         msg: UnequipMsg,
     ) -> ContractResponse {
-        self.require_instantiated(&deps.as_ref(), &info)?;
+        let config = self.require_instantiated(&deps.as_ref(), &info)?;
 
         let equipped_traits = self.traits.load(deps.storage)?;
 
@@ -77,17 +77,23 @@ impl<'a, TExtension, TTraitExtension, TMergedExtension>
             .iter()
             .map(|t| {
                 // To unequip traits:
-                // - the sender must be the trait tokens' owner / approved spender
-                self.require_sender_cw721_approval(&t.address, &t.token_id, &deps.as_ref(), &info)?;
-
                 // - trait must be currently equipped
                 // TODO: Or is it better to just skip it silently..?
-                if !equipped_traits
+                let current_trait = equipped_traits
                     .iter()
-                    .any(|current_t| current_t.token == *t)
-                {
-                    return Err(ContractError::NotEquipped {});
-                }
+                    .find(|current_t| current_t.token == *t)
+                    .ok_or(ContractError::NotEquipped {})?;
+
+                // - the sender must be the trait or base token's owner / approved spender
+                self.require_sender_cw721_approval(&t.address, &t.token_id, &deps.as_ref(), &info)
+                    .or_else(|_| {
+                        self.require_sender_cw721_approval(
+                            config.base_token.clone(),
+                            &current_trait.token_id,
+                            &deps.as_ref(),
+                            &info,
+                        )
+                    })?;
 
                 let address = deps.api.addr_validate(&t.address)?;
                 Ok(TokenConfig {

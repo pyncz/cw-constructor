@@ -94,7 +94,7 @@ fn unequip_allowed_trait() {
 
     // Unequip trait
     app.execute_contract(
-        minter.clone(),
+        minter,
         constructor_contract.clone(),
         &ExecuteMsg::Unequip(UnequipMsg {
             traits: vec![TokenConfig {
@@ -182,7 +182,7 @@ fn unequip_not_equipped_trait() {
 
     // Unequip trait
     let resp = app.execute_contract(
-        minter.clone(),
+        minter,
         constructor_contract,
         &ExecuteMsg::Unequip(UnequipMsg {
             traits: vec![TokenConfig {
@@ -196,7 +196,7 @@ fn unequip_not_equipped_trait() {
     assert!(resp.is_err());
 }
 
-/// Test unequip not owned nor approved trait from owned base token - should fail
+/// Test unequip not owned nor approved trait from not owned base token - should fail
 #[test]
 fn unequip_not_owned_trait() {
     let mut app = App::default();
@@ -287,7 +287,123 @@ fn unequip_not_owned_trait() {
     assert!(resp.is_err());
 }
 
-/// Test unequip not owned but approved trait from owned base token
+/// Test unequip not owned nor approved trait from owned base token
+#[test]
+fn unequip_not_owned_trait_from_owned() {
+    let mut app = App::default();
+    let code = ContractWrapper::new(
+        constructor::execute,
+        constructor::instantiate,
+        constructor::query,
+    );
+    let code_id = app.store_code(Box::new(code));
+
+    // Instantiate cw721 contracts
+    let minter = Addr::unchecked("player");
+    let base_contract = instantiate_cw721::<Extension>(&mut app, &minter, "BASE");
+    let trait_contract = instantiate_cw721::<TraitExtension>(&mut app, &minter, "TRAIT");
+
+    // Mint base token
+    let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
+        token_id: BASE_TOKEN_ID.to_string(),
+        owner: minter.to_string(),
+        token_uri: None,
+        extension: Extension {
+            name: "Collection".to_string(),
+            value: 10,
+        },
+    });
+    app.execute_contract(minter.clone(), base_contract.clone(), &mint_msg, &[])
+        .unwrap();
+
+    // Mint trait token
+    let mint_msg = Cw721BaseExecuteMsg::Mint(MintMsg {
+        token_id: TRAIT_TOKEN_ID.to_string(),
+        owner: minter.to_string(),
+        token_uri: None,
+        extension: TraitExtension { value: 2 },
+    });
+    app.execute_contract(minter.clone(), trait_contract.clone(), &mint_msg, &[])
+        .unwrap();
+
+    // Instantiate constructor contract
+    let constructor_contract = app
+        .instantiate_contract(
+            code_id,
+            Addr::unchecked("owner"),
+            &InstantiateMsg {
+                base_token: base_contract.clone().into(),
+                slots: vec![SlotConfig {
+                    name: "slot".to_string(),
+                    allowed_contracts: vec![trait_contract.to_string()],
+                    allow_multiple: false,
+                }],
+                admins: vec![],
+            },
+            &[],
+            "Character",
+            None,
+        )
+        .unwrap();
+
+    // Equip trait
+    app.execute_contract(
+        minter.clone(),
+        constructor_contract.clone(),
+        &ExecuteMsg::Equip(EquipMsg {
+            token_id: BASE_TOKEN_ID.to_owned(),
+            traits: vec![TokenConfig {
+                token_id: TRAIT_TOKEN_ID.to_string(),
+                address: trait_contract.to_string(),
+            }],
+        }),
+        &[],
+    )
+    .unwrap();
+
+    // Transfer base token
+    let new_owner = Addr::unchecked("new_owner");
+    app.execute_contract(
+        minter.clone(),
+        Addr::unchecked(base_contract),
+        &Cw721ExecuteMsg::TransferNft {
+            recipient: new_owner.clone().into(),
+            token_id: BASE_TOKEN_ID.to_string(),
+        },
+        &[],
+    )
+    .unwrap();
+
+    // Unequip trait
+    app.execute_contract(
+        new_owner,
+        constructor_contract.clone(),
+        &ExecuteMsg::Unequip(UnequipMsg {
+            traits: vec![TokenConfig {
+                token_id: TRAIT_TOKEN_ID.to_string(),
+                address: trait_contract.to_string(),
+            }],
+        }),
+        &[],
+    )
+    .unwrap();
+
+    // Validate removed traits
+    let resp: TraitsResp = app
+        .wrap()
+        .query_wasm_smart(
+            constructor_contract,
+            &QueryMsg::Traits(TraitsMsg {
+                token_id: Some(BASE_TOKEN_ID.to_string()),
+                slot: None,
+            }),
+        )
+        .unwrap();
+
+    assert_eq!(resp, TraitsResp { traits: vec![] });
+}
+
+/// Test unequip not owned but approved trait from not owned base token
 #[test]
 fn unequip_approved_trait() {
     let mut app = App::default();
@@ -477,7 +593,7 @@ fn unequipped_info() {
 
     // Unequip trait
     app.execute_contract(
-        minter.clone(),
+        minter,
         constructor_contract.clone(),
         &ExecuteMsg::Unequip(UnequipMsg {
             traits: vec![TokenConfig {
