@@ -21,6 +21,7 @@ export * from './useCw721Tokens';
 export * from './useCw721TokensInfinite';
 export * from './useCw721NftInfo';
 export * from './useCw721AllNftInfo';
+export * from './useCw721OwnerOf';
 export * from './useCw721Minter';
 export * from './useCwMinterConfig';
 export * from './useCw721NumTokens';
