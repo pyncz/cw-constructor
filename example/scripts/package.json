@@ -1,7 +1,7 @@
 {
   "name": "fiend-frens-scripts",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Scripts to upload NFTs' assets on IPFS, instantiate example contracts etc",
   "scripts": {
     "upload": "esno ./src/upload/index.ts",
