@@ -1,39 +1,14 @@
-import type { TraitInfo } from './blockchain';
-import type { Extension, MergedExtension, TraitExtension } from '~/types';
+import { type TraitInfo, UseCw721OwnerOf } from './blockchain';
+import type { TraitExtension } from '~/types';
 
 export const useInfoByTokenId = (tokenId: MaybeRefOrGetter<string | undefined>) => {
   // Get token info
-  // - merged with traits from constructor contract, if exists
-  const { data: mergedInfo, isLoading: isLoadingMergedInfo } = UseCwConstructorInfo.useQuery({
-    tokenId: toRef(tokenId),
-  }, {
-    throwOnError: false,
-  });
-  // - original one from cw721 contract
-  const { data: config, isLoading: isLoadingConfig } = UseCwConstructorConfig.useQuery();
-  const { suspense, data: allBaseInfo, isLoading: isLoadingBaseInfo } = UseCw721AllNftInfo.useQuery<Extension>(() => config.value?.base_token, {
+  const { suspense, data: mergedInfo, isLoading: isLoadingMergedInfo } = UseCwConstructorInfo.useQuery({
     tokenId: toRef(tokenId),
   });
 
-  const baseInfo = computed(() => allBaseInfo.value?.info);
-  const owner = computed(() => allBaseInfo.value?.access.owner);
-
-  const info = computed<NftInfoResponse<MergedExtension> | undefined>(() => {
-    if (mergedInfo.value) {
-      return mergedInfo.value.info;
-    }
-    return baseInfo.value
-      ? {
-        ...baseInfo.value,
-        extension: baseInfo.value.extension
-          ? {
-            ...baseInfo.value.extension,
-            images: [baseInfo.value.extension.image],
-          }
-          : null,
-      }
-      : undefined;
-  });
+  const baseInfo = computed(() => mergedInfo.value?.base_token.token);
+  const info = computed(() => mergedInfo.value?.info);
 
   const traitsInfoBySlots = computed(() => {
     return mergedInfo.value?.traits.reduce((res, t) => {
@@ -46,7 +21,15 @@ export const useInfoByTokenId = (tokenId: MaybeRefOrGetter<string | undefined>) 
     }, {} as Record<string, TraitInfo<TraitExtension>[]>);
   });
 
-  const isLoading = computed(() => isLoadingMergedInfo.value || isLoadingConfig.value || isLoadingBaseInfo.value);
+  // Get base token's owner
+  const { data: config, isLoading: isLoadingConfig } = UseCwConstructorConfig.useQuery();
+  const { data: ownerInfo, isLoading: isLoadingOwner } = UseCw721OwnerOf.useQuery(() => config.value?.base_token, {
+    tokenId: toRef(tokenId),
+  });
+
+  const owner = computed(() => ownerInfo.value?.owner);
+
+  const isLoading = computed(() => isLoadingMergedInfo.value || isLoadingConfig.value || isLoadingOwner.value);
 
   return {
     info,
@@ -56,7 +39,7 @@ export const useInfoByTokenId = (tokenId: MaybeRefOrGetter<string | undefined>) 
     isLoadingMergedInfo,
     baseInfo,
     suspense,
-    isLoadingBaseInfo,
+    isLoadingOwner,
     config,
     isLoadingConfig,
     isLoading,
