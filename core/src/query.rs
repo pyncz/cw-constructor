@@ -91,7 +91,7 @@ where
             })
             .map(|t| t.token_id.to_owned())
             .unique()
-            .collect::<Vec<String>>();
+            .collect();
 
         Ok(TokensResp { tokens })
     }
@@ -105,6 +105,7 @@ where
         let config = self.config.load(deps.storage)?;
         let traits = self.traits.load(deps.storage)?;
 
+        // Raise the error in case the base token is burned
         let base_token_info =
             cw721_info::<TExtension>(&config.base_token.to_string(), &msg.token_id, deps)?;
 
@@ -116,19 +117,17 @@ where
                     .get_slot_config_by_address(&t.token.address, deps)
                     .unwrap_or(None)?
                     .name;
-                let info = cw721_info::<TTraitExtension>(
-                    &t.token.address.to_string(),
-                    &t.token.token_id,
-                    deps,
-                );
-                Some(info.map(|info| TraitWithMetadataResp {
-                    token_id: t.token_id,
-                    token: t.token.to_owned(),
-                    info,
-                    slot,
-                }))
+                // Ignore the trait in case the token is burned
+                cw721_info::<TTraitExtension>(&t.token.address.to_string(), &t.token.token_id, deps)
+                    .ok()
+                    .map(|info| TraitWithMetadataResp {
+                        token_id: t.token_id,
+                        token: t.token.to_owned(),
+                        info,
+                        slot,
+                    })
             })
-            .collect::<StdResult<Vec<TraitWithMetadataResp<TTraitExtension>>>>()?;
+            .collect::<Vec<_>>();
 
         let mut merged_extension: TMergedExtension = base_token_info.token.extension.clone().into();
         merged_extension.merge(
