@@ -326,7 +326,7 @@
     "tx": "278E32692E897F8EF1EC27C214572DD095DC7973913D6102D57F65753B77BAEC"
   },
   "fiend-frens-constructor": {
-    "code_id": "2566",
+    "code_id": "2912",
     "address": "archway13cj0z0zgca02wdlum855fapu9u7hfprwqcczefr2mf0ep75lh7ms3anpjy",
     "admin": {
       "$var": "sender"
