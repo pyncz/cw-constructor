@@ -225,7 +225,7 @@ dependencies = [
 
 [[package]]
 name = "cw-constructor"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "cosmwasm-schema",
  "cosmwasm-std",
@@ -236,6 +236,7 @@ dependencies = [
  "cw721-base 0.13.4",
  "itertools 0.12.1",
  "schemars",
+ "semver",
  "serde",
  "serde_json",
  "thiserror",
@@ -243,18 +244,19 @@ dependencies = [
 
 [[package]]
 name = "cw-fiend-frens-constructor"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "cosmwasm-schema",
  "cosmwasm-std",
  "cw-constructor",
  "cw-fiend-frens-shared",
  "cw2 1.1.2",
+ "semver",
 ]
 
 [[package]]
 name = "cw-fiend-frens-minter"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "cosmwasm-schema",
  "cosmwasm-std",
@@ -265,7 +267,7 @@ dependencies = [
 
 [[package]]
 name = "cw-fiend-frens-shared"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "cosmwasm-schema",
  "cosmwasm-std",
@@ -275,7 +277,7 @@ dependencies = [
 
 [[package]]
 name = "cw-fiend-frens-trait-minter"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "cosmwasm-schema",
  "cosmwasm-std",
@@ -286,7 +288,7 @@ dependencies = [
 
 [[package]]
 name = "cw-minter"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "cosmwasm-schema",
  "cosmwasm-std",
@@ -551,7 +553,7 @@ dependencies = [
 
 [[package]]
 name = "cw721-fiend-frens"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "cosmwasm-schema",
  "cosmwasm-std",
@@ -562,7 +564,7 @@ dependencies = [
 
 [[package]]
 name = "cw721-fiend-frens-trait"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "cosmwasm-schema",
  "cosmwasm-std",
